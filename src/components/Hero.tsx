@@ -45,15 +45,13 @@ export default function Hero() {
           <h1 className="mt-2 text-[clamp(2.6rem,8.6vw,7.6rem)] uppercase leading-[0.88] tracking-[-0.03em] text-ink">
             <span
               data-distort-text
-              className="hero-line"
-              style={{ "--line-delay": "0.16s" } as CSSProperties}
+              className="hero-line"              style={{ "--line-delay": "0.06s" } as CSSProperties }
             >
               <span className="font-display font-extrabold">Stories in motion</span>
             </span>
             <span
               data-distort-text
-              className="hero-line"
-              style={{ "--line-delay": "0.28s" } as CSSProperties}
+              className="hero-line"              style={{ "--line-delay": "0.14s" } as CSSProperties }
             >
               <span className="font-serif font-normal tracking-[-0.015em]">
                 Brands with character

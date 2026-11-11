@@ -27,6 +27,7 @@ export async function generateMetadata({
       title: `${project.title} — ${site.name}`,
       description: project.summary,
       type: "article",
+      url: `/work/${project.slug}`,
       images: [{ url: ogSrc, ...ogDims }],
     },
     twitter: { card: "summary_large_image" },

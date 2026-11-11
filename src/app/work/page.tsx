@@ -5,11 +5,13 @@ import { profile } from "@/lib/content";
 import { projects } from "@/lib/projects";
 import { projectLogos } from "@/lib/logos";
 import { archiveSummaries, archiveTotals } from "@/lib/archive";
+import { ogFor } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: "Work",
   description: `Selected and archived work by ${profile.name} — ${profile.role.toLowerCase()}.`,
   alternates: { canonical: "/work" },
+  openGraph: ogFor("/work"),
 };
 
 const hours = (seconds: number) => String(Math.round(seconds / 3600));

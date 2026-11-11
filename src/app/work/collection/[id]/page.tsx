@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { archive, archiveById, formatDuration, formatRuntime } from "@/lib/archive";
 import type { ArchiveItem } from "@/lib/archive";
+import { ogFor } from "@/lib/metadata";
 
 export function generateStaticParams() {
   return archive.map((collection) => ({ id: collection.id }));
@@ -23,6 +24,7 @@ export async function generateMetadata({
     title: `${collection.title} — archive`,
     description: collection.summary,
     alternates: { canonical: `/work/collection/${collection.id}` },
+    openGraph: ogFor(`/work/collection/${collection.id}`),
   };
 }
 

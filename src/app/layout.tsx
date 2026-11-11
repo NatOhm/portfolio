@@ -13,6 +13,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { site } from "@/lib/site";
 import { mediaDims } from "@/lib/media-dimensions";
+import { ogFor } from "@/lib/metadata";
 
 const ogDefault = mediaDims("/images/og/default.jpg") ?? { width: 1200, height: 630 };
 
@@ -24,12 +25,7 @@ export const metadata: Metadata = {
   },
   description: site.description,
   alternates: { canonical: "/" },
-  openGraph: {
-    title: `${site.name} — ${site.role}`,
-    description: site.description,
-    type: "website",
-    images: [{ url: "/images/og/default.jpg", ...ogDefault }],
-  },
+  openGraph: ogFor("/"),
   twitter: { card: "summary_large_image" },
 };
 

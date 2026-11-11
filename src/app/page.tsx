@@ -6,9 +6,11 @@ import Capabilities from "@/components/Capabilities";
 import AboutPreview from "@/components/AboutPreview";
 import ContactCTA from "@/components/ContactCTA";
 import type { Metadata } from "next";
+import { ogFor } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
+  openGraph: ogFor("/"),
 };
 
 export default function Home() {

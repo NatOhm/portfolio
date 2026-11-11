@@ -12,12 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/about`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE_URL}/experience`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE_URL}/contact`, changeFrequency: "yearly", priority: 0.5 },
-    {
-      url: `${BASE_URL}/th`,
-      changeFrequency: "monthly",
-      priority: 0.8,
-      alternates: { languages: { en: `${BASE_URL}/`, th: `${BASE_URL}/th` } },
-    },
   ];
 
   const projectRoutes: MetadataRoute.Sitemap = projects.map((p) => ({

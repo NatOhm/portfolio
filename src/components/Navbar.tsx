@@ -7,7 +7,6 @@ import { profile } from "@/lib/content";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import MobileMenu from "@/components/MobileMenu";
-import { thai } from "@/lib/thai";
 
 const links = [
   { href: "/work", label: "Work" },
@@ -18,7 +17,6 @@ const links = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isThai = pathname.startsWith("/th");
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuBtnRef = useRef<HTMLButtonElement>(null);
@@ -57,7 +55,7 @@ export default function Navbar() {
             </Link>
 
             <div className="hidden items-center gap-1 md:flex">
-              {(isThai ? thai.nav : links).map((link) => {
+              {links.map((link) => {
                 const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
                 return (
                   <Link
@@ -77,15 +75,6 @@ export default function Navbar() {
               })}
             </div>
 
-            <Link
-              href={isThai ? "/" : "/th"}
-              hrefLang={isThai ? "en" : "th"}
-              lang={isThai ? "en" : "th"}
-              aria-label={isThai ? "Switch to English" : "เปลี่ยนเป็นภาษาไทย"}
-              className="clay-chip ml-1 font-meta text-meta uppercase"
-            >
-              {isThai ? "EN" : "ไทย"}
-            </Link>
             <a
               href={site.resumePath}
               download={site.resumeFilename}
@@ -119,7 +108,7 @@ export default function Navbar() {
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
         triggerRef={menuBtnRef}
-        links={isThai ? thai.nav : links}
+        links={links}
       />
     </>
   );

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import { site } from "@/lib/site";
 
@@ -19,7 +18,6 @@ interface MobileMenuProps {
  */
 export default function MobileMenu({ open, onClose, triggerRef, links }: MobileMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
-  const isThai = usePathname().startsWith("/th");
 
   useEffect(() => {
     if (!open) return;
@@ -98,17 +96,6 @@ export default function MobileMenu({ open, onClose, triggerRef, links }: MobileM
             {link.label}
           </Link>
         ))}
-        <Link
-          href={isThai ? "/" : "/th"}
-          hrefLang={isThai ? "en" : "th"}
-          lang={isThai ? "en" : "th"}
-          onClick={onClose}
-          className="rise clay-btn mt-3 self-start"
-          style={{ animationDelay: `${0.04 * links.length}s` }}
-        >
-          {isThai ? "EN" : "ไทย"}
-        </Link>
-
         <a
           href={site.resumePath}
           download={site.resumeFilename}

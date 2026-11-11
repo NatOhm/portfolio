@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox",
   },
+  async redirects() {
+    /* The Thai front door is gone from the product; keep any inbound link or
+       search result pointing at /th landing on the English home instead of a
+       404. Permanent, so crawlers drop the old URL. */
+    return [{ source: "/th", destination: "/", permanent: true }];
+  },
 };
 
 export default nextConfig;

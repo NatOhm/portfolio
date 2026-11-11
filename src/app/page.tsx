@@ -8,10 +8,7 @@ import ContactCTA from "@/components/ContactCTA";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  alternates: {
-    canonical: "/",
-    languages: { en: "/", th: "/th" },
-  },
+  alternates: { canonical: "/" },
 };
 
 export default function Home() {

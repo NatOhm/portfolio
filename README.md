@@ -15,7 +15,7 @@ database, no contact backend (v1 ships a `mailto:` CTA).
 
 | Path | What lives there |
 | --- | --- |
-| `src/app/` | Routes: `/`, `/work`, `/work/[slug]`, `/work/collection/[slug]`, `/about`, `/experience`, `/contact`, `/th` |
+| `src/app/` | Routes: `/`, `/work`, `/work/[slug]`, `/work/collection/[slug]`, `/about`, `/experience`, `/contact` |
 | `src/components/` | One file per surface — hero shader, case-study body, archive grid, footer, compare slider |
 | `src/lib/` | Content and types: `site.ts`, `content.ts`, `projects.ts`, `archive.generated.json`, `media-dimensions.ts` |
 | `public/images`, `public/videos` | Deployed derivatives: project stills, posters, the homepage reel |

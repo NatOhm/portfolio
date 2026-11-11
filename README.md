@@ -11,6 +11,22 @@ database, no contact backend (v1 ships a `mailto:` CTA).
 - `ARCHITECTURE.md` — the decisions behind the structure: layers, media
   pipeline, rendering model, deployment.
 
+## Layout
+
+| Path | What lives there |
+| --- | --- |
+| `src/app/` | Routes: `/`, `/work`, `/work/[slug]`, `/work/collection/[slug]`, `/about`, `/experience`, `/contact`, `/th` |
+| `src/components/` | One file per surface — hero shader, case-study body, archive grid, footer, compare slider |
+| `src/lib/` | Content and types: `site.ts`, `content.ts`, `projects.ts`, `archive.generated.json`, `media-dimensions.ts` |
+| `public/images`, `public/videos` | Deployed derivatives: project stills, posters, the homepage reel |
+| `public/archive/` | The archive browser's 1,069 items — full JPEGs, 12-second preview clips, two process PDFs |
+| `media-originals/` | Full-length source videos. Gitignored, never deployed |
+| `scripts/` | Content check, archive builder, OG generator, UI verifier |
+| `docs/` | `HANDOFF.md`, `PRODUCTION.md`, the media manifest, `trace/` reference shots |
+
+Only `public/` ships with the site; `.next/`, `node_modules/`, `media-originals/`
+and the local logs stay out of the repository.
+
 ## Run
 
 ```bash

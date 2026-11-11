@@ -66,7 +66,10 @@ export default function Monitor({
           io.disconnect();
         }
       },
-      { rootMargin: "400px 0px" },
+      /* No lead-in: a 400 px margin still caught the monitor on a desktop
+         first screen, which defeated the point. It attaches when the frame is
+         actually on screen, which is also the moment it can be seen. */
+      { rootMargin: "0px", threshold: 0.01 },
     );
     io.observe(shell);
     return () => io.disconnect();

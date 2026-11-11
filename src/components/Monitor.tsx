@@ -37,14 +37,44 @@ export default function Monitor({
   label?: string;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const pendingPlay = useRef(false);
   const motionAllowed = useMotionAllowed();
+  const [attached, setAttached] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [current, setCurrent] = useState(0);
 
+  /*
+   * The reel is the heaviest request on the page (about 1.4 MB) and it sits
+   * below the fold, so its source is held back until the monitor is nearly in
+   * view. The poster paints immediately, first paint and LCP stop competing
+   * with the clip, and the file itself is untouched — it still plays at full
+   * quality, just a moment later.
+   */
+  useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell || attached) return;
+    if (typeof IntersectionObserver !== "function") {
+      setAttached(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setAttached(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" },
+    );
+    io.observe(shell);
+    return () => io.disconnect();
+  }, [attached]);
+
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !motionAllowed) return;
+    if (!video || !motionAllowed || !attached) return;
     /*
      * Reflect the intent immediately: the transport must read "Pause" from the
      * moment autoplay starts, not one `play` event later. The event handlers
@@ -52,9 +82,16 @@ export default function Monitor({
      */
     setPlaying(true);
     video.play().catch(() => setPlaying(false));
-  }, [motionAllowed]);
+  }, [motionAllowed, attached]);
 
   const toggle = () => {
+    /* A click before the clip is attached means the visitor wants it now, so
+       skip the visibility wait and start it as soon as metadata lands. */
+    if (!attached) {
+      pendingPlay.current = true;
+      setAttached(true);
+      return;
+    }
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
@@ -78,20 +115,30 @@ export default function Monitor({
     <section aria-label={label} className="px-4 md:px-6">
       <div className="mx-auto max-w-[1280px]">
         <div className="clay-lg rounded-[40px] bg-surface p-3 md:p-4">
-          <div className="clay-inset relative overflow-hidden rounded-[28px] bg-ink">
+          <div
+            ref={shellRef}
+            className="clay-inset relative overflow-hidden rounded-[28px] bg-ink"
+          >
             <video
               ref={videoRef}
               className="aspect-video w-full object-cover"
-              src={src}
+              src={attached ? src : undefined}
               poster={poster}
               muted
               loop
               playsInline
-              preload={motionAllowed ? "metadata" : "none"}
+              preload={attached && motionAllowed ? "metadata" : "none"}
               aria-label={`Looping render — ${title}`}
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
-              onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
+              onLoadedMetadata={(event) => {
+                setDuration(event.currentTarget.duration);
+                if (pendingPlay.current) {
+                  pendingPlay.current = false;
+                  setPlaying(true);
+                  void event.currentTarget.play().catch(() => setPlaying(false));
+                }
+              }}
               onTimeUpdate={(event) => setCurrent(event.currentTarget.currentTime)}
             />
           </div>

@@ -996,12 +996,7 @@
     animation: rise-in 0.5s var(--ease-out) both;
   }
 
-  /* Masked line reveal: the wrapper clips, the word rides up from below.
-     Duration is part of the LCP budget, not just taste: a clipped line is not
-     painted, so the headline's paint — and with it LCP — cannot happen until
-     the rise has uncovered it. 0.55s still reads as a rise on entry but hands
-     the largest element back to the browser over a third of a second sooner
-     than the original 0.9s did. */
+  /* Masked line reveal: the wrapper clips, the word rides up from below. */
   .hero-line {
     display: block;
     overflow: hidden;
@@ -1010,7 +1005,7 @@
   }
   .hero-line > span {
     display: block;
-    animation: line-rise 0.55s var(--ease-out) var(--line-delay, 0s) backwards;
+    animation: line-rise 0.9s var(--ease-out) var(--line-delay, 0s) backwards;
   }
 
 

@@ -1,0 +1,19 @@
+{
+  "url": "https://www.marckuiper.com/",
+  "sel": "section[data-framer-name=\"Work\"] a",
+  "clip": {
+    "x": 80,
+    "y": 0,
+    "width": 1280,
+    "height": 900
+  },
+  "detail": {
+    "cursor": "auto",
+    "transitions": "all",
+    "transform": "none",
+    "opacity": "1",
+    "filter": "none",
+    "boxShadow": "none",
+    "html": "<a class=\"framer-3KDyl framer-LA8cV framer-bOxIk framer-1a21txk framer-v-1a21txk hover framer-1kthxhl\" href=\"./work/estrella-football-group\" style=\"width: 100%; opacity: 1;\"><div class=\"framer-1x7qzw-container\" style=\"opacity: 1;\"><!--$--><div style=\"width:100%;height:100%;position:relative;isolation:isolate;overflow:hidden;border-radius:8px\"><div style=\"width: 100%; height: 100%; background-color"
+  }
+}

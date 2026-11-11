@@ -1,0 +1,337 @@
+(node:39592) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TK Reels — 01_Short-Form Video/TK Reels
+  [  2/ 31] video    Highlight_อ้อยตอ ผู้ใหญ่ประสาน มีปก.mp4  (162s)
+  [  6/ 31] video    Reel_อ้อย ผู้ใหญ่ประสาน_1.mp4  (204s)
+  [  3/ 31] video    Reel_ข้าวโพด คุณจำลอง เพชรบูรณ์.mp4  (212s)
+  [  4/ 31] video    Reel_ยางพารา พี่ทูล_Highlight_1.mp4  (249s)
+  [ 10/ 31] video    Reels_มะเขือ-1_แก้เสียง.mp4  (417s)
+  [  9/ 31] video    Reel-2.mp4  (435s)
+  [  7/ 31] video    Reel_อ้อย ผู้ใหญ่ประสาน_2.mp4  (533s)
+  [  8/ 31] video    Reel_อ้อย ผู้ใหญ่ประสาน_3.mp4  (539s)
+  [  5/ 31] video    Reel_วิธีฉีด_ยางพารา พี่ทูล.mp4  (559s)
+  [  1/ 31] video    Be-Herb สก หนองเรือ.mp4  (611s)
+  [ 14/ 31] video    Reels_อ้อยตอ ลุงมานพ_1.mp4  (660s)
+  [ 15/ 31] video    Reels_อ้อยตอ ลุงมานพ_1(1).mp4  (685s)
+  [ 11/ 31] video    Reels_มะเขือ-2_แก้เสียง.mp4  (685s)
+  [ 13/ 31] video    Reels_มะเขือ-4_แก้เสียง.mp4  (694s)
+  [ 12/ 31] video    Reels_มะเขือ-3_แก้เสียง.mp4  (787s)
+  [ 17/ 31] video    Reels_อ้อยตอ ลุงมานพ_3.mp4  (805s)
+  [ 20/ 31] video    Reels-Montage-B_organic-2.mp4  (896s)
+  [ 19/ 31] video    Reels-Montage-B_organic-1.mp4  (923s)
+  [ 16/ 31] video    Reels_อ้อยตอ ลุงมานพ_2.mp4  (936s)
+  [ 21/ 31] video    Reels-Montage-B_organic-3.mp4  (1073s)
+  [ 18/ 31] video    Reels_อ้อยตอ ลุงมานพ_4.mp4  (1074s)
+  [ 22/ 31] video    Sequence 01.mp4  (1113s)
+  [ 25/ 31] video    บีออร์แกนิพลัส-โปรเดือนหก-พี่ชัย_มีเบอร์.mp4  (1123s)
+  [ 23/ 31] video    บีออร์แกนิพลัส เขาสวนกวาง 1.mp4  (1145s)
+  [ 24/ 31] video    บีออร์แกนิพลัส เขาสวนกวาง 2.mp4  (1188s)
+  [ 26/ 31] video    บีออร์แกนิพลัส-โปรเดือนหก-พี่ชัย_ไม่มีเบอร์.mp4  (1198s)
+  [ 27/ 31] video    บีออร์แกนิพลัส-โปรเดือนหก-พี่ชัย.mp4  (1198s)
+  [ 29/ 31] video    รีวิว ยาสีฟัน ไม่ทราบชื่อ เขาสวนกวาง_2.mp4  (1234s)
+  [ 30/ 31] video    รีวิว ยาสีฟัน ไม่ทราบชื่อ เขาสวนกวาง_4.mp4  (1238s)
+  [ 28/ 31] video    รีวิว แม่เกสร สกก.หนองเรือ บิวตี้.mp4  (1269s)
+  [ 31/ 31] video    ลุงสง่า เรียบเรียงใหม่.mp4  (1283s)
+  → 0 image, 31 video, 0 document
+
+TK Highlights & Ads — 01_Short-Form Video/TK Highlights & Ads
+  [  5/ 11] video    B-Soil-45Sec_1_1.mp4  (1331s)
+  [  6/ 11] video    B-Soil-45Sec_1.mp4  (1337s)
+  [  2/ 11] video    B-organic-45Sec_1(1).mp4  (1338s)
+  [  3/ 11] video    B-organic-45Sec_2.mp4  (1344s)
+  [  1/ 11] video    B-organic-45Sec_1.mp4  (1354s)
+  [  4/ 11] video    B-organic-45Sec_2(1).mp4  (1355s)
+  [ 11/ 11] video    Highlight_อ้อยตอ ลุงมานพ.mp4  (1409s)
+  [  9/ 11] video    Highlight_มะเขือ_แก้เสียง.mp4  (1409s)
+  [  7/ 11] video    Highlight_ข้าวโพด คุณจำลอง เพชรบูรณ์.mp4  (1410s)
+  [ 10/ 11] video    Highlight_อ้อย ผู้ใหญ่ประสาน.mp4  (1410s)
+  [  8/ 11] video    Highlight_ปก_ป้ามุ่ย.mp4  (1411s)
+  → 0 image, 11 video, 0 document
+
+Anim Hoodie renders — 01_Short-Form Video/AnimHoodie Renders
+  [  1/  3] video    0001-0100.mp4  (1415s)
+  [  3/  3] video    0001-0100(2).mp4  (1415s)
+  [  2/  3] video    0001-0100(1).mp4  (1415s)
+  → 0 image, 3 video, 0 document
+
+EN KKU short-form — 01_Short-Form Video/En KKU Short
+  [  1/  2] video    Sport Selection day 2022_Short.mp4  (1441s)
+  [  2/  2] video    teaser 10 sec full.mp4  (1446s)
+  → 0 image, 2 video, 0 document
+
+BlueVenture TPA e-learning — 02_Long-Form Video/BlueVentureTPA E-Learning
+  [  6/ 20] video    วิชา_กฏหมาย_10_บทเรียน_หลักการรับช่วงสิทธิและกฎหมายที่  (1980s)
+  [  5/ 20] video    วิชา_กฏหมาย_1B_บทเรียน_ความหมายของการประกันวินาศภัย แล  (2019s)
+  [  3/ 20] video    วิชา_กฎหมาย_6_บทเรียน_รายการที่มีอยู่ในกรมธรรม์ประกันภ  (2396s)
+  [  4/ 20] video    วิชา_กฎหมาย_9_บทเรียน_หลักการชดใช้ค่าสินไหมทดแทน และกฎ  (2406s)
+  [  7/ 20] video    วิชา_กฏหมาย_11_บทเรียน_หลักการร่วมชดใช้ค่าสินไหมทดแทนแ  (2606s)
+  [ 10/ 20] video    วิชา_การวิเคราะห์_4_การวิเคราะห์ความมั่นคงทางการเงินขอ  (2718s)
+  [  2/ 20] video    วิชา_IAIS_4_บทเรียน_ การเป็นนายหน้าประกันวินาศภัยนิติบ  (2827s)
+  [ 11/ 20] video    วิชา_การวิเคราะห์_5_บทเรียน_การวิเคราะห์สภาพคล้องของบร  (2862s)
+  [ 12/ 20] video    วิชา_การวิเคราะห์_8_บทเรียน_การวิเคราะห์ความสามารถในกา  (2936s)
+  [  1/ 20] video    วิชา_IAIS_3_บทเรียน_มาตรฐานการกำกับดูแลธุรกิจประกันภัย  (3024s)
+  [  9/ 20] video    วิชา_การรับประกันภัย_2_กระบวนการในการพิจารณารับประกันภ  (3233s)
+  [ 14/ 20] video    วิชา_จรรยาบรรณ_28_บทเรียน_ กรณีศึกษาจรรยาบรรณและแนวทาง  (3272s)
+  [  8/ 20] video    วิชา_กฏหมาย_13_บทเรียน_การประกันภัยค้ำจุนในสัญญาประกัน  (3388s)
+  [ 13/ 20] video    วิชา_จรรยาบรรณ_16_ความแตกต่างของจรรยาบรรณกับกฎหมาย_3.m  (3513s)
+  [ 15/ 20] video    วิชา_แนวทางปฏิบัติ_6_บทเรียน_ปัจจัยที่มีอิทธิพลต่อการเ  (3538s)
+  [ 18/ 20] video    วิชา_แนวทางปฏิบัติ_10_บทเรียน_ การให้คำแนะนำด้านการทำป  (3584s)
+  [ 16/ 20] video    วิชา_แนวทางปฏิบัติ_7_บทเรียน_ช่องทางการจำหน่ายและแนวทา  (3709s)
+  [ 17/ 20] video    วิชา_แนวทางปฏิบัติ_9_บทเรียน_การวิเคราะห์ความต้องการขอ  (3818s)
+  [ 19/ 20] video    วิชา_แนวทางปฏิบัติ_11_บทเรียน_ การให้คำแนะนําด้านการจั  (3902s)
+  [ 20/ 20] video    หลักพื้นฐานของการประกันวินาศภัย การประกันวินาศภัยมีหลั  (3949s)
+  → 0 image, 20 video, 0 document
+
+TK full interviews — 02_Long-Form Video/TK Full Interviews
+  [  6/  7] video    ยางพารา พี่ทูล_Highlight_2.mp4  (4131s)
+  [  5/  7] video    Full_อ้อยตอ ลุงมานพ.mp4  (4671s)
+  [  3/  7] video    Full_มะเขือ_แก้เสียง.mp4  (4672s)
+  [  7/  7] video    วิธีฉีด_ยางพารา พี่ทูล_1.mp4  (4728s)
+  [  4/  7] video    Full_อ้อย ผู้ใหญ่ประสาน.mp4  (4766s)
+  [  1/  7] video    Full_ข้าวโพด คุณจำลอง เพชรบูรณ์.mp4  (4793s)
+EXIT=1
+=== en-kku-events
+(node:5012) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+EN KKU events — 02_Long-Form Video/En KKU Events
+  [  1/  5] video    En volleyball.mp4  (0s)
+  [  3/  5] video    Sport day 2023.mp4  (1s)
+  [  2/  5] video    KhonKaenTimeLess.mp4  (1s)
+  [  5/  5] video    Sports Selection Day 2022.mp4  (135s)
+  [  4/  5] video    Sports Selection Day 2021.mp4  (166s)
+  → 0 image, 5 video, 0 document
+
+414 images · 97 videos · 2 documents · 8.2 h runtime · 1971 MB derivative · 166s
+EXIT=0
+=== en-kku-short
+(node:25040) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+EN KKU short-form — 01_Short-Form Video/En KKU Short
+  [  2/  3] video    Sport Selection day 2022_Short.mp4  (0s)
+  [  3/  3] video    teaser 10 sec full.mp4  (1s)
+  [  1/  3] video    Sport Selection day 2021_Short.mp4  (6s)
+  → 0 image, 3 video, 0 document
+
+414 images · 98 videos · 2 documents · 8.3 h runtime · 1973 MB derivative · 6s
+EXIT=0
+=== anim-hoodie-process
+(node:5160) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Anim Hoodie — process — 03_Motion Graphics & 3D/Project AnimHoodie (Art toy Concept)
+  [  2/ 23] image    deep-cut-poster-en-01.png  (1s)
+  [  3/ 23] image    deep-cut-poster-en-02.png  (1s)
+  [  4/ 23] image    deep-cut-poster-th-01.png  (2s)
+  [  5/ 23] image    deep-cut-poster-th-02.png  (3s)
+  [  6/ 23] image    eye-closeup.png  (3s)
+  [  7/ 23] image    final_back.png  (3s)
+  [  8/ 23] image    final_dedtail.png  (3s)
+  [  9/ 23] image    final_front.png  (3s)
+  [ 10/ 23] image    final_side.png  (4s)
+  [ 11/ 23] image    logo-lockup-light.png  (4s)
+  [ 12/ 23] image    logo-lockup-white.png  (4s)
+  [ 13/ 23] image    logo-lockup.png  (4s)
+  [ 14/ 23] image    logo-script.png  (4s)
+  [ 15/ 23] image    packaging-mockup.png  (5s)
+  [ 16/ 23] image    texture-black.png  (5s)
+  [ 17/ 23] image    texture-green-01.png  (5s)
+  [ 18/ 23] image    texture-green-02.png  (5s)
+  [ 19/ 23] image    texture-green-03.png  (6s)
+  [ 20/ 23] image    texture-green-04.png  (6s)
+  [  1/ 23] document Project AnimHoodie Presentation.pdf  (9s)
+  [ 22/ 23] video    city-flythrough.mov  (15s)
+  [ 21/ 23] video    character-scene-square.mp4  (16s)
+  [ 23/ 23] video    logo-animation-4k.mp4  (19s)
+  → 19 image, 3 video, 1 document
+
+429 images · 101 videos · 2 documents · 8.3 h runtime · 1981 MB derivative · 19s
+EXIT=0
+=== en-kku-events
+(node:28792) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+EN KKU events — 02_Long-Form Video/En KKU Events
+  [  1/  5] video    En volleyball.mp4  (0s)
+  [  3/  5] video    Sport day 2023.mp4  (1s)
+  [  2/  5] video    KhonKaenTimeLess.mp4  (1s)
+  [  4/  5] video    Sports Selection Day 2021.mp4  (1s)
+  [  5/  5] video    Sports Selection Day 2022.mp4  (1s)
+  → 0 image, 5 video, 0 document
+
+429 images · 101 videos · 2 documents · 8.3 h runtime · 1941 MB derivative · 1s
+EXIT=0
+=== en-kku-short
+(node:6436) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+EN KKU short-form — 01_Short-Form Video/En KKU Short
+  [  1/  3] video    Sport Selection day 2021_Short.mp4  (0s)
+  [  2/  3] video    Sport Selection day 2022_Short.mp4  (0s)
+  [  3/  3] video    teaser 10 sec full.mp4  (1s)
+  → 0 image, 3 video, 0 document
+
+429 images · 101 videos · 2 documents · 8.3 h runtime · 1941 MB derivative · 1s
+EXIT=0
+=== anim-hoodie-process
+(node:29044) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Anim Hoodie — process — 03_Motion Graphics & 3D/Project AnimHoodie (Art toy Concept)
+  [  2/ 23] image    deep-cut-poster-en-01.png  (0s)
+  [  3/ 23] image    deep-cut-poster-en-02.png  (0s)
+  [  4/ 23] image    deep-cut-poster-th-01.png  (0s)
+  [  5/ 23] image    deep-cut-poster-th-02.png  (0s)
+  [  6/ 23] image    eye-closeup.png  (1s)
+  [  7/ 23] image    final_back.png  (1s)
+  [  8/ 23] image    final_dedtail.png  (1s)
+  [  9/ 23] image    final_front.png  (1s)
+  [ 10/ 23] image    final_side.png  (1s)
+  [ 11/ 23] image    logo-lockup-light.png  (1s)
+  [ 12/ 23] image    logo-lockup-white.png  (1s)
+  [ 13/ 23] image    logo-lockup.png  (1s)
+  [ 14/ 23] image    logo-script.png  (2s)
+  [ 15/ 23] image    packaging-mockup.png  (2s)
+  [ 16/ 23] image    texture-black.png  (2s)
+  [ 17/ 23] image    texture-green-01.png  (2s)
+  [ 18/ 23] image    texture-green-02.png  (2s)
+  [ 19/ 23] image    texture-green-03.png  (2s)
+  [ 20/ 23] image    texture-green-04.png  (2s)
+  [ 21/ 23] video    character-scene-square.mp4  (3s)
+  [ 22/ 23] video    city-flythrough.mov  (3s)
+  [ 23/ 23] video    logo-animation-4k.mp4  (3s)
+  [  1/ 23] document Project AnimHoodie Presentation.pdf  (9s)
+  → 19 image, 3 video, 1 document
+
+429 images · 101 videos · 2 documents · 8.3 h runtime · 1941 MB derivative · 9s
+EXIT=0
+=== anim-hoodie-process
+(node:20888) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Anim Hoodie — process — 03_Motion Graphics & 3D/Project AnimHoodie (Art toy Concept)
+  [  2/ 19] image    eye-closeup.png  (0s)
+  [  3/ 19] image    final_back.png  (0s)
+  [  4/ 19] image    final_dedtail.png  (0s)
+  [  5/ 19] image    final_front.png  (1s)
+  [  6/ 19] image    final_side.png  (1s)
+  [  7/ 19] image    logo-lockup-light.png  (1s)
+  [  8/ 19] image    logo-lockup-white.png  (1s)
+  [  9/ 19] image    logo-lockup.png  (1s)
+  [ 10/ 19] image    logo-script.png  (1s)
+  [ 11/ 19] image    packaging-mockup.png  (1s)
+  [ 12/ 19] image    texture-black.png  (1s)
+  [ 13/ 19] image    texture-green-01.png  (2s)
+  [ 14/ 19] image    texture-green-02.png  (2s)
+  [ 15/ 19] image    texture-green-03.png  (2s)
+  [ 16/ 19] image    texture-green-04.png  (2s)
+  [ 17/ 19] video    character-scene-square.mp4  (2s)
+  [ 18/ 19] video    city-flythrough.mov  (3s)
+  [ 19/ 19] video    logo-animation-4k.mp4  (3s)
+  [  1/ 19] document Project AnimHoodie Presentation.pdf  (9s)
+  → 15 image, 3 video, 1 document
+
+425 images · 101 videos · 2 documents · 8.3 h runtime · 1941 MB derivative · 9s
+EXIT=0
+=== personal-art
+(node:23224) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Personal art — 04_Graphic Design/Personal Art
+  [  1/ 12] image    2026-10-26_02-54-12.png  (0s)
+  [  2/ 12] image    152028942_883142345918179_6161378145088904463_n.jpg  (0s)
+  [  4/ 12] image    476838385_1844674976431573_1200930784535434319_n.jpg  (0s)
+  [  3/ 12] image    152482630_881417166090697_796328922469092236_n.jpg  (0s)
+  [  5/ 12] image    477460154_1844674889764915_7294078828264731479_n.jpg  (1s)
+  [  6/ 12] image    angel is watching.png  (1s)
+  [  7/ 12] image    silly-fool-poster-en-01.png  (2s)
+  [  8/ 12] image    silly-fool-poster-en-02.png  (2s)
+  [  9/ 12] image    silly-fool-poster-th-01.png  (3s)
+  [ 10/ 12] image    silly-fool-poster-th-02.png  (3s)
+  [ 11/ 12] image    stop grieving 2.png  (3s)
+  [ 12/ 12] image    stop grieving.png  (3s)
+  → 12 image, 0 video, 0 document
+
+429 images · 101 videos · 2 documents · 8.3 h runtime · 1943 MB derivative · 3s
+EXIT=0
+=== silly-fool
+(node:13528) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Silly Fool — Deep Cut — 04_Graphic Design/Silly Fool Posters
+  [  1/  4] image    silly-fool-poster-en-01.png  (1s)
+  [  2/  4] image    silly-fool-poster-en-02.png  (1s)
+  [  3/  4] image    silly-fool-poster-th-01.png  (2s)
+  [  4/  4] image    silly-fool-poster-th-02.png  (2s)
+  → 4 image, 0 video, 0 document
+
+433 images · 101 videos · 2 documents · 8.3 h runtime · 1943 MB derivative · 2s
+EXIT=0
+=== personal-art
+(node:3996) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Personal art — 04_Graphic Design/Personal Art
+  [  1/  8] image    2026-10-26_02-54-12.png  (0s)
+  [  2/  8] image    152028942_883142345918179_6161378145088904463_n.jpg  (0s)
+  [  3/  8] image    152482630_881417166090697_796328922469092236_n.jpg  (0s)
+  [  4/  8] image    476838385_1844674976431573_1200930784535434319_n.jpg  (0s)
+  [  5/  8] image    477460154_1844674889764915_7294078828264731479_n.jpg  (1s)
+  [  6/  8] image    angel is watching.png  (1s)
+  [  7/  8] image    stop grieving 2.png  (1s)
+  [  8/  8] image    stop grieving.png  (1s)
+  → 8 image, 0 video, 0 document
+
+429 images · 101 videos · 2 documents · 8.3 h runtime · 1943 MB derivative · 1s
+EXIT=0
+=== khon-kaen-timeless
+(node:16700) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Khon Kaen Timeless — 02_Long-Form Video/Internship
+  [  1/  1] video    KhonKaenTimeLess.mp4  (64s)
+  → 0 image, 1 video, 0 document
+
+429 images · 102 videos · 2 documents · 8.3 h runtime · 1952 MB derivative · 64s
+EXIT=0
+=== en-kku-events
+(node:23692) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/archive-collections.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+EN KKU events — 02_Long-Form Video/En KKU Events
+  [  2/  4] video    Sport day 2023.mp4  (0s)
+  [  1/  4] video    En volleyball.mp4  (0s)
+  [  3/  4] video    Sports Selection Day 2021.mp4  (1s)
+  [  4/  4] video    Sports Selection Day 2022.mp4  (1s)
+  → 0 image, 4 video, 0 document
+
+429 images · 101 videos · 2 documents · 8.3 h runtime · 1952 MB derivative · 1s
+EXIT=0

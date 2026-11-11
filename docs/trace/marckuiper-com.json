@@ -1,0 +1,106 @@
+{
+  "url": "https://marckuiper.com",
+  "status": {
+    "http": 308,
+    "finalUrl": "https://marckuiper.com",
+    "error": null
+  },
+  "finalUrl": "https://www.marckuiper.com/",
+  "frames": [
+    900,
+    1800,
+    2700,
+    3600
+  ],
+  "scripts": [
+    "https://events.framer.com/script?v=2",
+    "https://framerusercontent.com/sites/1e91RWYJ6sJZNBgB2Rl8an/script_main.DDlNLynR.mjs"
+  ],
+  "found": {
+    "title": "Marc Kuiper → Freelance designer & no-code developer",
+    "generator": "Framer 99770fa",
+    "framework": {
+      "next": false,
+      "nuxt": false,
+      "webflow": false,
+      "framer": true,
+      "squarespace": false,
+      "shopify": false
+    },
+    "globals": {
+      "gsap": false,
+      "scrollTrigger": false,
+      "lenis": false,
+      "three": true,
+      "lottie": false,
+      "splitType": false,
+      "scrollTriggerData": false
+    },
+    "canvases": 1,
+    "webgl": true,
+    "videos": 0,
+    "autoplayVideos": 0,
+    "iframes": [],
+    "cssAnimations": [
+      null
+    ],
+    "cssAnimationCount": 1,
+    "keyframeNames": [
+      "__framer-editorbar-spinner-spin"
+    ],
+    "hoverRules": [
+      {
+        "hover": "[data-framer-component-type=\"Text\"] a:hover, [data-framer-component-type=\"Text\"] a div spa",
+        "sample": "--font-family: var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--framer-font-family))); --font-sty"
+      },
+      {
+        "hover": "a.framer-text:hover, a.framer-text:hover span.framer-text:not([data-text-fill]), span.fram",
+        "sample": "font-family: var(--framer-font-family-preview,var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--fr"
+      },
+      {
+        "hover": "a.framer-text:hover, span.framer-text[data-nested-link]:hover",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-text-color,var(--framer-blockquote-text-color,var(--framer-t"
+      },
+      {
+        "hover": "code.framer-text a.framer-text:hover, code.framer-text span.framer-text[data-nested-link]:",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-text-color,var(--framer-blockquote-text-color,var(--framer-c"
+      },
+      {
+        "hover": "a.framer-text[data-framer-page-link-current]:hover, a.framer-text[data-framer-page-link-cu",
+        "sample": "color: inherit; font-family: var(--framer-font-family-preview,var(--framer-link-hover-font-family,var(--framer-link-curr"
+      },
+      {
+        "hover": "a.framer-text[data-framer-page-link-current]:hover, span.framer-text[data-framer-page-link",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-current-text-color,var(--framer-link-text-color,var(--framer"
+      },
+      {
+        "hover": "code.framer-text a.framer-text[data-framer-page-link-current]:hover, code.framer-text span",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-current-text-color,var(--framer-link-text-color,var(--framer"
+      },
+      {
+        "hover": "[data-framer-component-type=\"DeprecatedRichText\"] a:hover, [data-framer-component-type=\"De",
+        "sample": "font-family: var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--framer-font-family,Inter, Inter Pla"
+      },
+      {
+        "hover": "[data-framer-component-type=\"DeprecatedRichText\"] a[data-framer-page-link-current]:hover, ",
+        "sample": "font-family: var(--framer-link-hover-font-family,var(--framer-link-current-font-family,var(--framer-link-font-family,var"
+      }
+    ],
+    "reducedMotionMedia": 0,
+    "smoothScroll": "auto",
+    "positionFixed": [
+      "div.framer-won2m2-container"
+    ],
+    "docHeight": 7832,
+    "transitions": [
+      "all",
+      "all",
+      "all",
+      "all",
+      "all",
+      "all",
+      "all",
+      "all"
+    ]
+  }
+}

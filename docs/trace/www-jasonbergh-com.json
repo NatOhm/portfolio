@@ -1,0 +1,187 @@
+{
+  "url": "https://www.jasonbergh.com/",
+  "status": {
+    "http": 200,
+    "finalUrl": "https://www.jasonbergh.com/",
+    "error": null
+  },
+  "finalUrl": "https://www.jasonbergh.com/",
+  "frames": [
+    0,
+    77,
+    0,
+    0
+  ],
+  "scripts": [
+    "https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js",
+    "https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=696e26954ee505294b4b866c",
+    "https://cdn.prod.website-files.com/696e26954ee505294b4b866c/js/webflow.schunk.36b8fb49256177c8.js",
+    "https://cdn.prod.website-files.com/696e26954ee505294b4b866c/js/webflow.e212cdbd.5e557d9267d3a235.js",
+    "https://cdn.prod.website-files.com/gsap/3.15.0/gsap.min.js",
+    "https://cdn.prod.website-files.com/gsap/3.15.0/ScrollTrigger.min.js",
+    "https://cdn.prod.website-files.com/gsap/3.15.0/CustomEase.min.js",
+    "https://cdn.prod.website-files.com/gsap/3.15.0/Draggable.min.js",
+    "https://cdn.prod.website-files.com/gsap/3.15.0/InertiaPlugin.min.js",
+    "https://cdn.prod.website-files.com/gsap/3.15.0/Observer.min.js"
+  ],
+  "found": {
+    "title": "Jason Bergh | Director, Cinematographer, Producer",
+    "generator": null,
+    "framework": {
+      "next": false,
+      "nuxt": false,
+      "webflow": true,
+      "framer": false,
+      "squarespace": false,
+      "shopify": false
+    },
+    "globals": {
+      "gsap": true,
+      "scrollTrigger": true,
+      "lenis": false,
+      "three": true,
+      "lottie": false,
+      "splitType": true,
+      "scrollTriggerData": false
+    },
+    "canvases": 1,
+    "webgl": true,
+    "videos": 137,
+    "autoplayVideos": 5,
+    "iframes": [],
+    "cssAnimations": [
+      "fadePulse"
+    ],
+    "cssAnimationCount": 1,
+    "keyframeNames": [
+      "spin",
+      "fadePulse",
+      "playerOpen",
+      "playerClose",
+      "noise"
+    ],
+    "hoverRules": [
+      {
+        "hover": "a:active, a:hover",
+        "sample": "outline: 0px;"
+      },
+      {
+        "hover": ".w-lightbox-inactive, .w-lightbox-inactive:hover",
+        "sample": "opacity: 0;"
+      },
+      {
+        "hover": ".name-large.has--hover:hover",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".text-abs.has--low-opacity:hover",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".text-mono.has--color-light.has--low-opacity:hover",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".text-mono.has--color-light.has--low-opacity.has--no-hover:hover",
+        "sample": "color: rgba(255, 251, 242, 0.7);"
+      },
+      {
+        "hover": ".text-mono.has--color-light.has--pointer-events:hover",
+        "sample": "color: rgb(255, 251, 242);"
+      },
+      {
+        "hover": ".text-mono.has--pointer:hover",
+        "sample": "color: rgb(255, 251, 242);"
+      },
+      {
+        "hover": ".mode-block:hover, .mode-block.is--active",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".nav-link-block:hover, .nav-link-block.is--active",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".creator-block:hover",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".filter-item:hover",
+        "sample": "color: rgb(255, 251, 242);"
+      },
+      {
+        "hover": ".option-item:hover",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".preview-block_reportage:hover",
+        "sample": "filter: brightness();"
+      },
+      {
+        "hover": ".preview-video_reportage:hover",
+        "sample": "transform: scale(1.15);"
+      },
+      {
+        "hover": ".option-item-archive:hover",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".press-image-wrapper:hover",
+        "sample": "border-radius: 5px;"
+      },
+      {
+        "hover": ".press-hover:hover",
+        "sample": "background-color: rgba(0, 0, 0, 0.8);"
+      },
+      {
+        "hover": ".creator-block-mobile:hover",
+        "sample": "color: var(--lemon);"
+      },
+      {
+        "hover": ".text-abs-2.has--low-opacity:hover",
+        "sample": "color: rgb(255, 238, 200);"
+      },
+      {
+        "hover": ".option-item-2:hover",
+        "sample": "color: rgb(255, 238, 200);"
+      },
+      {
+        "hover": ".text-mono-2.has--color-light-2.has--low-opacity:hover",
+        "sample": "color: rgb(255, 238, 200);"
+      },
+      {
+        "hover": ".creator-block-2:hover",
+        "sample": "color: rgb(255, 238, 200);"
+      },
+      {
+        "hover": ".mode-block-2:hover",
+        "sample": "color: rgb(255, 238, 200);"
+      },
+      {
+        "hover": ".option-item-archive-2:hover",
+        "sample": "color: rgb(255, 238, 200);"
+      }
+    ],
+    "reducedMotionMedia": 0,
+    "smoothScroll": "auto",
+    "positionFixed": [
+      "div.blocked-block",
+      "div.navbar",
+      "div.transition-wrapper",
+      "div.background-decor",
+      "div.popup-container",
+      "div.cursor-block_play"
+    ],
+    "docHeight": 977,
+    "transitions": [
+      "all",
+      "color 0.3s",
+      "color 0.3s",
+      "color 0.3s",
+      "color 0.3s",
+      "color 0.3s",
+      "color 0.3s",
+      "all"
+    ]
+  }
+}

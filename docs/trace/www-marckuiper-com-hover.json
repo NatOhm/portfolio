@@ -1,0 +1,25 @@
+{
+  "url": "https://www.marckuiper.com/",
+  "pick": "section[data-framer-name=\"Work\"] a",
+  "box": {
+    "x": 80,
+    "y": 830,
+    "width": 1280,
+    "height": 1035.203125
+  },
+  "info": {
+    "count": 5,
+    "sample": [
+      "A.framer-3KDyl framer-LA8cV framer-bOxIk framer-1a21txk framer",
+      "A.framer-3KDyl framer-LA8cV framer-bOxIk framer-1a21txk framer",
+      "A.framer-3KDyl framer-LA8cV framer-bOxIk framer-1a21txk framer"
+    ]
+  },
+  "before": {
+    "cursor": "auto",
+    "cursorLike": []
+  },
+  "after": {
+    "cursorLike": []
+  }
+}

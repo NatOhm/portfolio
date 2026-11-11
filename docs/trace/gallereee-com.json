@@ -1,0 +1,108 @@
+{
+  "url": "https://gallereee.com",
+  "status": {
+    "http": 308,
+    "finalUrl": "https://gallereee.com",
+    "error": null
+  },
+  "finalUrl": "https://www.gallereee.com/",
+  "frames": [
+    900,
+    1800,
+    2700,
+    3600
+  ],
+  "scripts": [
+    "https://events.framer.com/script?v=2",
+    "https://framerusercontent.com/sites/6MiAB6qGs59arml65t71XS/script_main.DddMcRvQ.mjs"
+  ],
+  "found": {
+    "title": "Best Inspirational Portfolio Websites. Handpicked for Creatives.",
+    "generator": "Framer 941e113",
+    "framework": {
+      "next": false,
+      "nuxt": false,
+      "webflow": false,
+      "framer": true,
+      "squarespace": false,
+      "shopify": false
+    },
+    "globals": {
+      "gsap": false,
+      "scrollTrigger": false,
+      "lenis": false,
+      "three": false,
+      "lottie": false,
+      "splitType": false,
+      "scrollTriggerData": false
+    },
+    "canvases": 0,
+    "webgl": true,
+    "videos": 0,
+    "autoplayVideos": 0,
+    "iframes": [
+      "https://framer.com/edit?framerSiteId=4133798a2a7c03791aa8a6531ba91cea5ed022a99f76fa3cbacbe442d2b26ebe&source=www.gallereee.com&features=%7B%22editorBarDisableFrameAncestorsSecurity%22%3Afalse%2C%22onPageRichTextBlockSelection%22%3Atrue%7D&loadStart=1794195648253"
+    ],
+    "cssAnimations": [],
+    "cssAnimationCount": 0,
+    "keyframeNames": [
+      "__framer-blink-input",
+      "__framer-editorbar-spinner-spin"
+    ],
+    "hoverRules": [
+      {
+        "hover": "[data-framer-component-type=\"Text\"] a:hover, [data-framer-component-type=\"Text\"] a div spa",
+        "sample": "--font-family: var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--framer-font-family))); --font-sty"
+      },
+      {
+        "hover": "a.framer-text:where(:not(.framer-image)):hover, a.framer-text:hover span.framer-text:not([",
+        "sample": "font-family: var(--framer-font-family-preview,var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--fr"
+      },
+      {
+        "hover": "a.framer-text:hover, span.framer-text[data-nested-link]:hover",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-text-color,var(--framer-blockquote-text-color,var(--framer-t"
+      },
+      {
+        "hover": "code.framer-text a.framer-text:hover, code.framer-text span.framer-text[data-nested-link]:",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-text-color,var(--framer-blockquote-text-color,var(--framer-c"
+      },
+      {
+        "hover": "a.framer-text:where(:not(.framer-image))[data-framer-page-link-current]:hover, a.framer-te",
+        "sample": "color: inherit; font-family: var(--framer-font-family-preview,var(--framer-link-hover-font-family,var(--framer-link-curr"
+      },
+      {
+        "hover": "a.framer-text[data-framer-page-link-current]:hover, span.framer-text[data-framer-page-link",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-current-text-color,var(--framer-link-text-color,var(--framer"
+      },
+      {
+        "hover": "code.framer-text a.framer-text[data-framer-page-link-current]:hover, code.framer-text span",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-current-text-color,var(--framer-link-text-color,var(--framer"
+      },
+      {
+        "hover": "[data-framer-component-type=\"DeprecatedRichText\"] a:hover, [data-framer-component-type=\"De",
+        "sample": "font-family: var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--framer-font-family,Inter, Inter Pla"
+      },
+      {
+        "hover": "[data-framer-component-type=\"DeprecatedRichText\"] a[data-framer-page-link-current]:hover, ",
+        "sample": "font-family: var(--framer-link-hover-font-family,var(--framer-link-current-font-family,var(--framer-link-font-family,var"
+      }
+    ],
+    "reducedMotionMedia": 0,
+    "smoothScroll": "auto",
+    "positionFixed": [
+      "div.framer-6k9f0v-container",
+      "iframe.status_hidden"
+    ],
+    "docHeight": 6127,
+    "transitions": [
+      "all",
+      "color 0.4s cubic-bezier(0.44, 0, 0.56, 1)",
+      "color 0.4s cubic-bezier(0.44, 0, 0.56, 1)",
+      "color 0.4s cubic-bezier(0.44, 0, 0.56, 1)",
+      "all",
+      "all",
+      "all",
+      "all"
+    ]
+  }
+}

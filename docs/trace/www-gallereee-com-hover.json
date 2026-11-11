@@ -1,0 +1,25 @@
+{
+  "url": "https://www.gallereee.com/",
+  "pick": "[data-framer-name=\"Desktop Default\"]",
+  "box": {
+    "x": 40,
+    "y": 476,
+    "width": 437.65625,
+    "height": 500.65625
+  },
+  "info": {
+    "count": 22,
+    "sample": [
+      "DIV.framer-gjioQ framer-gn1EJ framer-3kQuM framer-soe9S framer-u",
+      "DIV.framer-gjioQ framer-gn1EJ framer-3kQuM framer-soe9S framer-u",
+      "DIV.framer-gjioQ framer-gn1EJ framer-3kQuM framer-soe9S framer-u"
+    ]
+  },
+  "before": {
+    "cursor": "auto",
+    "cursorLike": []
+  },
+  "after": {
+    "cursorLike": []
+  }
+}

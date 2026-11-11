@@ -1,0 +1,19 @@
+{
+  "url": "https://www.gallereee.com/",
+  "sel": "[data-framer-name=\"Desktop Default\"] a",
+  "clip": {
+    "x": 40,
+    "y": 462,
+    "width": 437.65625,
+    "height": 437.65625
+  },
+  "detail": {
+    "cursor": "auto",
+    "transitions": "all",
+    "transform": "none",
+    "opacity": "1",
+    "filter": "none",
+    "boxShadow": "none",
+    "html": "<a class=\"framer-mifz55 framer-pk5rct\" data-framer-name=\"Image\" href=\"./websites/william-phan\" style=\"background-color: var(--token-f94cd32f-d03f-4267-9244-fd06d9047f64, rgb(28, 28, 28)); border-radius: 16px; opacity: 1;\"><figure as=\"figure\" class=\"framer-1yw8ddt\" data-framer-name=\"Image\" draggable=\"false\" style=\"border-radius: 8px; transform: none; opacity: 1;\"><div style=\"position:absolute;borde"
+  }
+}

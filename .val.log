@@ -1,0 +1,9 @@
+(node:9260) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///E:/%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B0%E0%B8%88%E0%B9%8A%E0%B8%B0/Port/Port-full/Web/src/lib/projects.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to \\?\E:\งานนะจ๊ะ\Port\Port-full\Web\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Content check — 7 projects, 60 media files, 534 archive pieces in 26 collections
+Warnings (2)
+  ! 10 owner decisions still open in content.ts
+  ! NEXT_PUBLIC_SITE_URL is unset — canonical URLs, sitemap and metadata fall back to https://natnithichai.portfolio
+Content check passed.

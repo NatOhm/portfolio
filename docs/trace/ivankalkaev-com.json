@@ -1,0 +1,206 @@
+{
+  "url": "https://ivankalkaev.com",
+  "status": {
+    "http": 200,
+    "finalUrl": "https://ivankalkaev.com",
+    "error": null
+  },
+  "finalUrl": "https://ivankalkaev.com/",
+  "frames": [
+    900,
+    1800,
+    2700,
+    2909
+  ],
+  "scripts": [
+    "https://ivankalkaev.com/_astro/Pilot.astro_astro_type_script_index_0_lang.CE76d5CF.js",
+    "https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092"
+  ],
+  "found": {
+    "title": "Ivan Kalkaev | Product Design Partner",
+    "generator": null,
+    "framework": {
+      "next": false,
+      "nuxt": false,
+      "webflow": false,
+      "framer": true,
+      "squarespace": false,
+      "shopify": false
+    },
+    "globals": {
+      "gsap": false,
+      "scrollTrigger": false,
+      "lenis": false,
+      "three": true,
+      "lottie": false,
+      "splitType": false,
+      "scrollTriggerData": false
+    },
+    "canvases": 2,
+    "webgl": true,
+    "videos": 0,
+    "autoplayVideos": 0,
+    "iframes": [],
+    "cssAnimations": [
+      "opacity",
+      "opacity",
+      "opacity",
+      "mail-metal",
+      "apple-metal-shift",
+      "hero-object-float",
+      "hero-object-float",
+      "hero-object-float",
+      "hero-object-float",
+      "hero-object-float",
+      "ik-gold-shift",
+      "ik-gold-shift",
+      "ik-gold-shift",
+      "ik-gold-shift",
+      "ik-gold-shift"
+    ],
+    "cssAnimationCount": 15,
+    "keyframeNames": [
+      "ik-vt-hero-old",
+      "ik-vt-hero-new",
+      "ik-grip",
+      "ik-pull",
+      "ik-vt-out",
+      "ik-vt-in",
+      "mail-metal",
+      "ik-selected-rise",
+      "ik-selected-reduced-fade",
+      "ik-selected-title-line-in",
+      "ik-selected-highlight-reveal",
+      "ik-selected-marker-in",
+      "ik-selected-edge-track",
+      "ik-selected-handle-track",
+      "ik-selected-menu-slot-open",
+      "ik-selected-menu-reveal",
+      "apple-metal-shift",
+      "hero-object-float",
+      "ik-gold-shift"
+    ],
+    "hoverRules": [
+      {
+        "hover": "[data-framer-component-type=\"Text\"] a:hover, [data-framer-component-type=\"Text\"] a div spa",
+        "sample": "--font-family: var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--framer-font-family))); --font-sty"
+      },
+      {
+        "hover": "a.framer-text:hover, a.framer-text:hover span.framer-text:not([data-text-fill]), span.fram",
+        "sample": "font-family: var(--framer-font-family-preview,var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--fr"
+      },
+      {
+        "hover": "a.framer-text:hover, span.framer-text[data-nested-link]:hover",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-text-color,var(--framer-blockquote-text-color,var(--framer-t"
+      },
+      {
+        "hover": "code.framer-text a.framer-text:hover, code.framer-text span.framer-text[data-nested-link]:",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-text-color,var(--framer-blockquote-text-color,var(--framer-c"
+      },
+      {
+        "hover": "a.framer-text[data-framer-page-link-current]:hover, a.framer-text[data-framer-page-link-cu",
+        "sample": "color: inherit; font-family: var(--framer-font-family-preview,var(--framer-link-hover-font-family,var(--framer-link-curr"
+      },
+      {
+        "hover": "a.framer-text[data-framer-page-link-current]:hover, span.framer-text[data-framer-page-link",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-current-text-color,var(--framer-link-text-color,var(--framer"
+      },
+      {
+        "hover": "code.framer-text a.framer-text[data-framer-page-link-current]:hover, code.framer-text span",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-current-text-color,var(--framer-link-text-color,var(--framer"
+      },
+      {
+        "hover": "[data-framer-component-type=\"DeprecatedRichText\"] a:hover, [data-framer-component-type=\"De",
+        "sample": "font-family: var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--framer-font-family,Inter, Inter Pla"
+      },
+      {
+        "hover": "[data-framer-component-type=\"DeprecatedRichText\"] a[data-framer-page-link-current]:hover, ",
+        "sample": "font-family: var(--framer-link-hover-font-family,var(--framer-link-current-font-family,var(--framer-link-font-family,var"
+      },
+      {
+        "hover": "[data-framer-component-type=\"Text\"] a:hover, [data-framer-component-type=\"Text\"] a div spa",
+        "sample": "--font-family: var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--framer-font-family))); --font-sty"
+      },
+      {
+        "hover": "a.framer-text:hover, a.framer-text:hover span.framer-text:not([data-text-fill]), span.fram",
+        "sample": "font-family: var(--framer-font-family-preview,var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--fr"
+      },
+      {
+        "hover": "a.framer-text:hover, span.framer-text[data-nested-link]:hover",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-text-color,var(--framer-blockquote-text-color,var(--framer-t"
+      },
+      {
+        "hover": "code.framer-text a.framer-text:hover, code.framer-text span.framer-text[data-nested-link]:",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-text-color,var(--framer-blockquote-text-color,var(--framer-c"
+      },
+      {
+        "hover": "a.framer-text[data-framer-page-link-current]:hover, a.framer-text[data-framer-page-link-cu",
+        "sample": "color: inherit; font-family: var(--framer-font-family-preview,var(--framer-link-hover-font-family,var(--framer-link-curr"
+      },
+      {
+        "hover": "a.framer-text[data-framer-page-link-current]:hover, span.framer-text[data-framer-page-link",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-current-text-color,var(--framer-link-text-color,var(--framer"
+      },
+      {
+        "hover": "code.framer-text a.framer-text[data-framer-page-link-current]:hover, code.framer-text span",
+        "sample": "color: var(--framer-link-hover-text-color,var(--framer-link-current-text-color,var(--framer-link-text-color,var(--framer"
+      },
+      {
+        "hover": "[data-framer-component-type=\"DeprecatedRichText\"] a:hover, [data-framer-component-type=\"De",
+        "sample": "font-family: var(--framer-link-hover-font-family,var(--framer-link-font-family,var(--framer-font-family,Inter, Inter Pla"
+      },
+      {
+        "hover": "[data-framer-component-type=\"DeprecatedRichText\"] a[data-framer-page-link-current]:hover, ",
+        "sample": "font-family: var(--framer-link-hover-font-family,var(--framer-link-current-font-family,var(--framer-link-font-family,var"
+      },
+      {
+        "hover": ".portfolio-email:hover .email-icon, .portfolio-email:focus-visible .email-icon",
+        "sample": "opacity: 1; transform: translateX(0px) scale(1) rotate(-12deg); filter: blur(0px); transition-duration: 180ms, 260ms, 18"
+      },
+      {
+        "hover": ".portfolio-email:hover .pill-label, .portfolio-email:focus-visible .pill-label",
+        "sample": "transform: translateX(-7px); transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);"
+      },
+      {
+        "hover": ".portfolio-pill-navigation .portfolio-email:hover, .portfolio-pill-navigation .portfolio-e",
+        "sample": "padding-right: 30px !important;"
+      },
+      {
+        "hover": ".portfolio-email:hover .metal-bands, .portfolio-email:focus-visible .metal-bands",
+        "sample": "animation-play-state: running;"
+      },
+      {
+        "hover": ".portfolio-email:hover .email-icon, .portfolio-email:focus-visible .email-icon",
+        "sample": "opacity: 1; transform: translateX(0px) scale(1) rotate(-12deg); filter: blur(0px); transition-duration: 180ms, 260ms, 18"
+      },
+      {
+        "hover": ".portfolio-email:hover .pill-label, .portfolio-email:focus-visible .pill-label",
+        "sample": "transform: translateX(-7px); transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);"
+      },
+      {
+        "hover": ".portfolio-pill-navigation .portfolio-email:hover, .portfolio-pill-navigation .portfolio-e",
+        "sample": "padding-right: 30px !important;"
+      }
+    ],
+    "reducedMotionMedia": 0,
+    "smoothScroll": "auto",
+    "positionFixed": [
+      "div.framer-utlzwh-container",
+      "div.framer-utlzwh-container",
+      "div.framer-2h0j2z-container",
+      "div.portfolio-nav-scrim",
+      "div.portfolio-nav-scrim"
+    ],
+    "docHeight": 3809,
+    "transitions": [
+      "scale 0.15s ease-out",
+      "scale 0.15s ease-out",
+      "scale 0.15s ease-out",
+      "padding-right 0.23s cubic-bezier(0.16, 1, 0.3, 1)",
+      "background-color 0.35s, border-color 0.35s",
+      "all",
+      "all",
+      "all"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "url": "https://willphan.com",
+  "pick": "a.block.group",
+  "box": {
+    "x": 3.703125,
+    "y": 300,
+    "width": 475.0625,
+    "height": 296.359375
+  },
+  "info": {
+    "count": 6,
+    "sample": [
+      "A.w-full min-w-0 block group outline-none focus-visible:ring-1",
+      "A.w-full min-w-0 block group outline-none focus-visible:ring-1",
+      "A.w-full min-w-0 block group outline-none focus-visible:ring-1"
+    ]
+  },
+  "before": {
+    "cursor": "auto",
+    "cursorLike": []
+  },
+  "after": {
+    "cursorLike": []
+  }
+}

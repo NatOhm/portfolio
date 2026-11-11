@@ -1,0 +1,213 @@
+{
+  "url": "https://willphan.com",
+  "status": {
+    "http": 200,
+    "finalUrl": "https://willphan.com",
+    "error": null
+  },
+  "finalUrl": "https://willphan.com/",
+  "frames": [
+    697,
+    697,
+    697,
+    697
+  ],
+  "scripts": [
+    "https://willphan.com/_next/static/chunks/815ddf01-07f4833def3afa8f.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/7997-8553f8eb52b3f33f.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/main-app-4d92d42f30c53e11.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/835-ad0599906d1c93bd.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/7270-3aaa18f4f1a21507.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/8521-1d0c43b01c7d569e.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/4699-099fba786c754917.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/1036-7915504189b4e12e.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/9574-b07f0732563e2f63.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/1345-c259241521b9c317.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/7502-4ff5ca1ec2fac27a.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/app/page-54939aefbb58d4a6.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/6516-13d4a63039e105e1.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/app/layout-01f08c6ce0377b1b.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/app/error-987e82d7d8495761.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/app/global-error-2511d958752e93d4.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_next/static/chunks/polyfills-42372ed130431b0a.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D",
+    "https://willphan.com/_vercel/insights/script.js",
+    "https://willphan.com/_vercel/speed-insights/script.js",
+    "https://willphan.com/_next/static/chunks/webpack-6d35af52eb40febc.js?dpl=dpl_5XwGXcU5McJ3jrEc7WKx1cUW955D"
+  ],
+  "found": {
+    "title": "Will Phan",
+    "generator": null,
+    "framework": {
+      "next": true,
+      "nuxt": false,
+      "webflow": false,
+      "framer": false,
+      "squarespace": false,
+      "shopify": false
+    },
+    "globals": {
+      "gsap": false,
+      "scrollTrigger": false,
+      "lenis": true,
+      "three": true,
+      "lottie": false,
+      "splitType": false,
+      "scrollTriggerData": false
+    },
+    "canvases": 1,
+    "webgl": true,
+    "videos": 7,
+    "autoplayVideos": 7,
+    "iframes": [],
+    "cssAnimations": [
+      "left",
+      "opacity",
+      "left",
+      "opacity",
+      "left",
+      "opacity",
+      "left",
+      "left",
+      "left",
+      "left",
+      "left",
+      "left",
+      "left",
+      "opacity",
+      "orbit_turn__5uicG"
+    ],
+    "cssAnimationCount": 15,
+    "keyframeNames": [
+      "orbit_turn__5uicG",
+      "page-fade-out",
+      "page-fade-in",
+      "page-slide-up",
+      "pulse",
+      "rise_rise__BNyE9",
+      "portfolio-context-out",
+      "portfolio-context-in",
+      "studio-gallery_explore-caption-out__e0_LV",
+      "studio-gallery_explore-background__PqtjX"
+    ],
+    "hoverRules": [
+      {
+        "hover": ".hover\\:bg-\\[\\#1F1F1F\\]:hover",
+        "sample": "--tw-bg-opacity: 1 !important; background-color: rgb(31 31 31/var(--tw-bg-opacity)) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-\\[\\#1a1a1a\\]:hover",
+        "sample": "--tw-bg-opacity: 1 !important; background-color: rgb(26 26 26/var(--tw-bg-opacity)) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-black\\/30:hover",
+        "sample": "background-color: rgba(0, 0, 0, 0.3) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-blue-600:hover",
+        "sample": "--tw-bg-opacity: 1 !important; background-color: rgb(37 99 235/var(--tw-bg-opacity)) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-ink\\/20:hover",
+        "sample": "background-color: rgb(var(--ink)/.2) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-ink\\/\\[0\\.06\\]:hover",
+        "sample": "background-color: rgb(var(--ink)/.06) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-ink\\/\\[0\\.10\\]:hover",
+        "sample": "background-color: rgb(var(--ink)/.1) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-surface-button-secondary:hover",
+        "sample": "background-color: var(--surface-button-secondary) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-white:hover",
+        "sample": "--tw-bg-opacity: 1 !important; background-color: rgb(255 255 255/var(--tw-bg-opacity)) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-white\\/10:hover",
+        "sample": "background-color: rgba(255, 255, 255, 0.1) !important;"
+      },
+      {
+        "hover": ".hover\\:bg-white\\/\\[0\\.14\\]:hover",
+        "sample": "background-color: rgba(255, 255, 255, 0.14) !important;"
+      },
+      {
+        "hover": ".hover\\:text-black:hover",
+        "sample": "--tw-text-opacity: 1 !important; color: rgb(0 0 0/var(--tw-text-opacity)) !important;"
+      },
+      {
+        "hover": ".hover\\:text-ink:hover",
+        "sample": "--tw-text-opacity: 1 !important; color: rgb(var(--ink)/var(--tw-text-opacity)) !important;"
+      },
+      {
+        "hover": ".hover\\:text-ink-high:hover",
+        "sample": "color: rgb(var(--ink)/var(--ink-high)) !important;"
+      },
+      {
+        "hover": ".hover\\:text-ink-lifted:hover",
+        "sample": "color: rgb(var(--ink)/var(--ink-lifted)) !important;"
+      },
+      {
+        "hover": ".hover\\:text-ink-strong:hover",
+        "sample": "color: rgb(var(--ink)/var(--ink-strong)) !important;"
+      },
+      {
+        "hover": ".hover\\:text-ink\\/35:hover",
+        "sample": "color: rgb(var(--ink)/.35) !important;"
+      },
+      {
+        "hover": ".hover\\:text-white:hover",
+        "sample": "--tw-text-opacity: 1 !important; color: rgb(255 255 255/var(--tw-text-opacity)) !important;"
+      },
+      {
+        "hover": ".hover\\:decoration-ink\\/60:hover",
+        "sample": "text-decoration-color: rgb(var(--ink)/.6) !important;"
+      },
+      {
+        "hover": ".hover\\:opacity-50:hover",
+        "sample": "opacity: 0.5 !important;"
+      },
+      {
+        "hover": ".hover\\:opacity-70:hover",
+        "sample": "opacity: 0.7 !important;"
+      },
+      {
+        "hover": ".hover\\:opacity-90:hover",
+        "sample": "opacity: 0.9 !important;"
+      },
+      {
+        "hover": ".group:hover .group-hover\\:left-\\[0px\\]",
+        "sample": "left: 0px !important;"
+      },
+      {
+        "hover": ".group:hover .group-hover\\:translate-x-5",
+        "sample": "--tw-translate-x: 1.25rem !important;"
+      },
+      {
+        "hover": ".group:hover .group-hover\\:translate-x-5, .group:hover .group-hover\\:translate-x-\\[12px\\]",
+        "sample": "transform: translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY"
+      }
+    ],
+    "reducedMotionMedia": 6,
+    "smoothScroll": "smooth",
+    "positionFixed": [
+      "button.group",
+      "button.group",
+      "div.pointer-events-none"
+    ],
+    "docHeight": 1597,
+    "transitions": [
+      "color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), fill 0.2s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      "color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), fill 0.2s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      "color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), text-decoration-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), fill 0.2s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      "opacity 0.2s",
+      "color 0.15s",
+      "color 0.15s",
+      "color 0.15s",
+      "all"
+    ]
+  }
+}

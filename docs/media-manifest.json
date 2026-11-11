@@ -1,0 +1,276 @@
+{
+  "generated": "2026-10-31",
+  "policy": "derivatives only; originals untouched",
+  "items": [
+    {
+      "project": "anim-hoodie",
+      "derivative": "images/anim-hoodie/final-back.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\03_Motion Graphics & 3D\\Project AnimHoodie (Art toy Concept)\\Pic\\final_back.png"
+    },
+    {
+      "project": "anim-hoodie",
+      "derivative": "images/anim-hoodie/final-front.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\03_Motion Graphics & 3D\\Project AnimHoodie (Art toy Concept)\\Pic\\final_front.png"
+    },
+    {
+      "project": "anim-hoodie",
+      "derivative": "images/anim-hoodie/final-side.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\03_Motion Graphics & 3D\\Project AnimHoodie (Art toy Concept)\\Pic\\final_side.png"
+    },
+    {
+      "project": "anim-hoodie",
+      "derivative": "images/anim-hoodie/final-detail.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\03_Motion Graphics & 3D\\Project AnimHoodie (Art toy Concept)\\Pic\\final_dedtail.png"
+    },
+    {
+      "project": "anim-hoodie",
+      "derivative": "videos/anim-hoodie/preview.mp4",
+      "source": "AnimHoodie Renders/*.mp4 (3 turntable renders, concatenated)"
+    },
+    {
+      "project": "anim-hoodie",
+      "derivative": "images/anim-hoodie/hero.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\01_Short-Form Video\\AnimHoodie Renders\\0001-0100.mp4"
+    },
+    {
+      "project": "anim-hoodie",
+      "derivative": "images/anim-hoodie/cover.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\03_Motion Graphics & 3D\\Project AnimHoodie (Art toy Concept)\\Pic\\final_front.png"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/graphic-1.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\TK Promo Graphics\\รีวิวเกษตรกร\\Final\\1.png"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/graphic-2.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\TK Promo Graphics\\โปร 5.5\\1\\Artboard 1.png"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/graphic-3.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\TK Promo Graphics\\ยาสีฟัน\\Final\\1.png"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/graphic-4.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\TK Promo Graphics\\Partner 26-2-68\\Bsoil N BOG-26-2-68.png"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "videos/tk-campaign/montage.mp4",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\01_Short-Form Video\\TK Highlights & Ads\\B-organic-45Sec_1.mp4"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "videos/tk-campaign/reel-1.mp4",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\01_Short-Form Video\\TK Reels\\Reel_อ้อย ผู้ใหญ่ประสาน_1.mp4"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "videos/tk-campaign/reel-2.mp4",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\01_Short-Form Video\\TK Reels\\Reel_วิธีฉีด_ยางพารา พี่ทูล.mp4"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/cover.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\01_Short-Form Video\\TK Highlights & Ads\\B-organic-45Sec_1.mp4"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/hero.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\01_Short-Form Video\\TK Highlights & Ads\\B-organic-45Sec_1.mp4"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/cover.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W3 Post for 29 Dec - 4 Jan Pattaya\\1.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/post-1.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W17  Post for 06 - 12 April\\1.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/post-2.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W1 Post For 15 - 22 Dec Pattaya\\2.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/post-3.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W3 Post for 29 Dec - 4 Jan Pattaya\\10.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/post-4.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W7 Post for 26 Jan - 1 Feb\\2.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/post-5.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W13 Post for 9 -  15 Mar\\2.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/post-6.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W17  Post for 06 - 12 April\\2.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/post-7.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W21 Post for 4 - 10 May  2026\\1.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/post-8.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\PattayaGuide.Thailand\\W21 Post for 4 - 10 May  2026\\2.png"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/pattaya-guide/contact-sheet.jpg",
+      "source": "12 representative weekly posts (composed contact sheet)"
+    },
+    {
+      "project": "blueventure-elearning",
+      "derivative": "videos/blueventure-elearning/module-preview.mp4",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\02_Long-Form Video\\BlueVentureTPA E-Learning\\วิชา_กฏหมาย_13_บทเรียน_การประกันภัยค้ำจุนในสัญญาประกันภัย_แก้ไขตามแคนวา1.mp4"
+    },
+    {
+      "project": "blueventure-elearning",
+      "derivative": "images/blueventure-elearning/hero.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\02_Long-Form Video\\BlueVentureTPA E-Learning\\วิชา_กฏหมาย_13_บทเรียน_การประกันภัยค้ำจุนในสัญญาประกันภัย_แก้ไขตามแคนวา1.mp4"
+    },
+    {
+      "project": "blueventure-elearning",
+      "derivative": "images/blueventure-elearning/frame-1.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\02_Long-Form Video\\BlueVentureTPA E-Learning\\วิชา_กฎหมาย_6_บทเรียน_รายการที่มีอยู่ในกรมธรรม์ประกันภัย_26-1-26-.mp4"
+    },
+    {
+      "project": "blueventure-elearning",
+      "derivative": "images/blueventure-elearning/frame-2.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\02_Long-Form Video\\BlueVentureTPA E-Learning\\วิชา_กฏหมาย_13_บทเรียน_การประกันภัยค้ำจุนในสัญญาประกันภัย_แก้ไขตามแคนวา1.mp4"
+    },
+    {
+      "project": "blueventure-elearning",
+      "derivative": "images/blueventure-elearning/frame-3.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\02_Long-Form Video\\BlueVentureTPA E-Learning\\วิชา_กฎหมาย_6_บทเรียน_รายการที่มีอยู่ในกรมธรรม์ประกันภัย_26-1-26-.mp4"
+    },
+    {
+      "project": "en-kku",
+      "derivative": "videos/en-kku/event-preview.mp4",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\02_Long-Form Video\\En KKU Events\\Sport day 2023.mp4"
+    },
+    {
+      "project": "en-kku",
+      "derivative": "images/en-kku/hero.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\02_Long-Form Video\\En KKU Events\\Sport day 2023.mp4"
+    },
+    {
+      "project": "en-kku",
+      "derivative": "images/en-kku/graphic-1.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\ENPHOTO\\โพสต์เคาดาวน์ (2021)\\01-18d-9.00.png"
+    },
+    {
+      "project": "en-kku",
+      "derivative": "images/en-kku/graphic-2.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\ENPHOTO\\โพสต์เคาดาวน์(2025)\\1dayleft.png"
+    },
+    {
+      "project": "en-kku",
+      "derivative": "images/en-kku/graphic-3.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\ENPHOTO\\ออกแบบเสื้อ\\11.png"
+    },
+    {
+      "project": "en-kku",
+      "derivative": "images/en-kku/graphic-4.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\ENPHOTO\\ตรุษจีน66.png"
+    },
+    {
+      "project": "sci-fi-environments",
+      "derivative": "images/sci-fi-environments/cover.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\03_Motion Graphics & 3D\\3D Scifi Environment\\Remake retro.mp4"
+    },
+    {
+      "project": "sci-fi-environments",
+      "derivative": "images/sci-fi-environments/still-2.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\03_Motion Graphics & 3D\\3D Scifi Environment\\Tube Looping.mp4"
+    },
+    {
+      "project": "-",
+      "derivative": "documents/natnithichai-srikolchan-resume.pdf",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Natnithichai_Resume.pdf"
+    },
+    {
+      "project": "-",
+      "derivative": "images/og/default.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Web\\public\\images\\projects\\anim-hoodie\\cover.jpg"
+    },
+    {
+      "project": "-",
+      "derivative": "images/og/anim-hoodie.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Web\\public\\images\\projects\\anim-hoodie\\cover.jpg"
+    },
+    {
+      "project": "-",
+      "derivative": "images/og/tk-campaign.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Web\\public\\images\\projects\\tk-campaign\\cover.jpg"
+    },
+    {
+      "project": "-",
+      "derivative": "images/og/pattaya-guide.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Web\\public\\images\\projects\\pattaya-guide\\cover.jpg"
+    },
+    {
+      "project": "-",
+      "derivative": "images/og/blueventure-elearning.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Web\\public\\images\\projects\\blueventure-elearning\\cover.jpg"
+    },
+    {
+      "project": "-",
+      "derivative": "images/og/en-kku.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Web\\public\\images\\projects\\en-kku\\cover.jpg"
+    },
+    {
+      "project": "-",
+      "derivative": "images/og/sci-fi-environments.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Web\\public\\images\\projects\\sci-fi-environments\\cover.jpg"
+    },
+    {
+      "project": "sci-fi-environments",
+      "derivative": "videos/hero/reel.mp4",
+      "source": "videos/projects/sci-fi-environments/loop-1.mp4 — first 3.2s re-encoded 1280x720 ping-pong so the hero loop has no cut"
+    },
+    {
+      "project": "anim-hoodie",
+      "derivative": "videos/projects/anim-hoodie/turntable.mp4",
+      "source": "videos/projects/anim-hoodie/preview.mp4 — rotated 90° to portrait, 720x1280, audio stripped"
+    },
+    {
+      "project": "anim-hoodie",
+      "derivative": "images/projects/anim-hoodie/turntable.jpg",
+      "source": "videos/projects/anim-hoodie/turntable.mp4 @1.2s — poster frame"
+    },
+    {
+      "project": "pattaya-guide",
+      "derivative": "images/projects/pattaya-guide/system-band.jpg",
+      "source": "images/projects/pattaya-guide/post-1.jpg + post-3.jpg + post-5.jpg — 3-up band, 2160x900"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/farmer-review-1.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\TK Promo Graphics\\รีวิวเกษตรกร\\Final\\1.png"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/farmer-review-2.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\TK Promo Graphics\\รีวิวเกษตรกร\\Final\\2.png"
+    },
+    {
+      "project": "tk-campaign",
+      "derivative": "images/tk-campaign/b-soil-promo.jpg",
+      "source": "E:\\งานนะจ๊ะ\\Port\\Port-full\\Portfolio\\04_Graphic Design\\TK Promo Graphics\\โปรบีซอยล์เดือน 3\\3\\Bsoil-All-3.png"
+    }
+  ]
+}

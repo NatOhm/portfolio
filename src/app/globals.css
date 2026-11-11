@@ -1,0 +1,4373 @@
+@import "tailwindcss";
+
+/*
+ * Soft Studio — porcelain canvas, moulded clay surfaces, one fired accent.
+ *
+ * Layer 1 (primitives) are hex values and raw scales. Layer 2 (semantic)
+ * names what a surface is for. Layer 3 (component utilities) are the clay
+ * buttons, chips and wells. Components never reference a raw hex.
+ */
+@theme {
+  /* --- primitives ------------------------------------------------------- */
+  --color-canvas: #ede6dc; /* warm porcelain page */
+  --color-surface: #f6f1e9; /* raised clay */
+  --color-well: #e1d9cc; /* pressed/recessed clay */
+  --color-ink: #241f1a; /* 13.2:1 on canvas */
+  --color-muted: #3a332c; /* 4.89:1 worst, tooth + ether, weave */
+  --color-faint: #3f3830; /* 4.80:1 worst, tooth + ether, scan */
+  --color-accent: #a63d1b; /* 5.1:1 on canvas; fired clay */
+  --color-accent-deep: #873114;
+  --color-on-accent: #fbf7f0; /* 5.7:1 on the fired accent */
+  --color-line: #d6ccbd; /* hairline, decorative only */
+
+  /* --- type ------------------------------------------------------------- */
+  /* Each stack keeps its Latin face first and a Thai face behind it, so a
+     Thai word inside an English line (or a Latin word inside a Thai one)
+     keeps the site's voice: only the glyphs the Latin face does not have fall
+     through. Thai display = Bai Jamjuree, the squarish grotesk that sits
+     closest to Bricolage; Thai text = Anuphan, the loopless sans built to sit
+     beside Inter. See `.thai-type` for the leading and tracking Thai needs. */
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Bai Jamjuree",
+    system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-body: "Inter", "Anuphan Variable", system-ui, sans-serif;
+  --font-meta: "Space Mono", "Anuphan Variable", ui-monospace, monospace;
+
+  --text-display-xl: clamp(3rem, 8vw, 7.5rem);
+  --text-display-xl--line-height: 0.92;
+  --text-display-xl--letter-spacing: -0.035em;
+  --text-display-xl--font-weight: 600;
+
+  --text-display-l: clamp(2.25rem, 4.5vw, 3.75rem);
+  --text-display-l--line-height: 0.98;
+  --text-display-l--letter-spacing: -0.03em;
+  --text-display-l--font-weight: 600;
+
+  --text-title: 1.5rem;
+  --text-title--line-height: 1.15;
+  --text-title--letter-spacing: -0.02em;
+  --text-title--font-weight: 600;
+
+  --text-lede: clamp(1.125rem, 1.5vw, 1.375rem);
+  --text-lede--line-height: 1.5;
+  --text-lede--font-weight: 400;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+
+  --text-meta: 0.6875rem;
+  --text-meta--line-height: 1.2;
+  --text-meta--letter-spacing: 0.12em;
+
+  /* --- shape & motion --------------------------------------------------- */
+  --radius-control: 16px;
+  --radius-card: 28px;
+  --radius-slab: 40px;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+:root {
+  /* Three depth levels and one recess. Shadow is depth, never the only
+     signal — every pressed control also changes its fill. */
+  --shadow-clay-sm:
+    4px 4px 10px rgb(92 76 58 / 0.16), -4px -4px 10px rgb(255 255 255 / 0.8),
+    inset 0 1px 0 rgb(255 255 255 / 0.7);
+  --shadow-clay:
+    8px 8px 18px rgb(92 76 58 / 0.18), -8px -8px 18px rgb(255 255 255 / 0.85),
+    inset 0 1px 0 rgb(255 255 255 / 0.7);
+  --shadow-clay-lg:
+    14px 16px 32px rgb(92 76 58 / 0.22), -10px -10px 26px rgb(255 255 255 / 0.9),
+    inset 0 1px 0 rgb(255 255 255 / 0.8);
+  --shadow-inset-sm:
+    inset 3px 3px 7px rgb(92 76 58 / 0.18), inset -3px -3px 7px rgb(255 255 255 / 0.8);
+  --shadow-inset:
+    inset 5px 5px 12px rgb(92 76 58 / 0.22), inset -5px -5px 12px rgb(255 255 255 / 0.85);
+}
+
+@layer base {
+  html {
+    background: var(--color-canvas);
+    scroll-behavior: smooth;
+    /* Fixed rail would otherwise cover anchor and focused targets (WCAG 2.4.11) */
+    scroll-padding-top: 6.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  [id] {
+    scroll-margin-top: 6.5rem;
+  }
+
+  /* Transparent, not porcelain: the canvas comes from `html`, and a body
+     background would paint over the fixed ambient layer at z-index: -1. */
+  body {
+    background: transparent;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Default hairline; utilities still win because this is in the base layer. */
+  * {
+    border-color: var(--color-line);
+  }
+
+  .font-display {
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  /* Display sizes always come with the display face: one ramp, no drift. */
+  .text-display-xl,
+  .text-display-l,
+  .text-title {
+    font-family: var(--font-display);
+  }
+
+  /* Clay never removes focus: a 2px ring on porcelain, offset so it sits
+     outside the soft shadow. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+@layer components {
+  /* --- clay surfaces ---------------------------------------------------- */
+  .clay {
+    box-shadow: var(--shadow-clay);
+  }
+  .clay-sm {
+    box-shadow: var(--shadow-clay-sm);
+  }
+  .clay-lg {
+    box-shadow: var(--shadow-clay-lg);
+  }
+  .clay-inset {
+    box-shadow: var(--shadow-inset);
+  }
+  .clay-press {
+    box-shadow: var(--shadow-inset-sm);
+  }
+
+  /* --- pressable card --------------------------------------------------- */
+  /*
+   * Press and settle: the card lifts on hover/focus, then sits into the page
+   * under the finger. Feedback is shape + depth, never colour alone, and the
+   * keyboard gets the same lift through :focus-visible.
+   */
+  .clay-card {
+    transition:
+      box-shadow 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+  .clay-card:hover,
+  .clay-card:focus-visible {
+    box-shadow: var(--shadow-clay-lg);
+    transform: translateY(-2px);
+  }
+  .clay-card:active {
+    box-shadow: var(--shadow-inset-sm);
+    transform: translateY(1px) scale(0.995);
+    transition-duration: 90ms;
+  }
+  /* One small nudge, no bounce — the arrow leans toward where it goes. */
+  .clay-card .clay-nudge {
+    transition: transform 180ms var(--ease-out);
+  }
+  .clay-card:hover .clay-nudge,
+  .clay-card:focus-visible .clay-nudge {
+    transform: translateX(3px);
+  }
+
+  /* --- clay controls ---------------------------------------------------- */
+  .clay-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.625rem 1.25rem;
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: var(--shadow-clay-sm);
+    transition:
+      box-shadow 160ms var(--ease-out),
+      transform 160ms var(--ease-out),
+      background-color 160ms var(--ease-out),
+      color 160ms var(--ease-out);
+  }
+  .clay-btn:hover {
+    box-shadow: var(--shadow-clay);
+    transform: translateY(-1px);
+  }
+  .clay-btn:active {
+    box-shadow: var(--shadow-inset-sm);
+    transform: translateY(0) scale(0.99);
+  }
+
+  .clay-btn-accent {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  .clay-btn-accent:hover {
+    background: var(--color-accent-deep);
+  }
+
+  /* Recessed secondary: the button sits *in* the surface, not on it. */
+  .clay-ghost {
+    background: transparent;
+    color: var(--color-ink);
+    box-shadow: var(--shadow-inset-sm);
+  }
+  .clay-ghost:hover {
+    background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  }
+
+  /* --- filter chips / drawer tabs -------------------------------------- */
+  .clay-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    box-shadow: var(--shadow-clay-sm);
+    transition:
+      box-shadow 150ms var(--ease-out),
+      color 150ms var(--ease-out),
+      background-color 150ms var(--ease-out);
+  }
+  .clay-chip:hover {
+    color: var(--color-ink);
+  }
+  /* Pressed state changes shape, fill and text — never shadow alone. */
+  .clay-chip[aria-pressed="true"] {
+    background: var(--color-well);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-inset-sm);
+  }
+
+  /* --- media mat -------------------------------------------------------- */
+  /* The work sits on paper: no tint, no coloured glow, no clay over a photo. */
+  .print {
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    padding: 0.625rem;
+    box-shadow: var(--shadow-clay);
+  }
+
+  /* --- transport scrubber ---------------------------------------------- */
+  .scrub {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--color-accent) 0 var(--progress, 0%),
+      var(--color-well) var(--progress, 0%) 100%
+    );
+    box-shadow: var(--shadow-inset-sm);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .scrub::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-surface);
+    box-shadow:
+      2px 2px 5px rgb(92 76 58 / 0.32),
+      -2px -2px 5px rgb(255 255 255 / 0.95);
+  }
+  .scrub::-moz-range-track {
+    height: 12px;
+    border-radius: 999px;
+    background: var(--color-well);
+  }
+  .scrub::-moz-range-progress {
+    height: 12px;
+    border-radius: 999px;
+    background: var(--color-accent);
+  }
+  .scrub::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-surface);
+    box-shadow:
+      2px 2px 5px rgb(92 76 58 / 0.32),
+      -2px -2px 5px rgb(255 255 255 / 0.95);
+  }
+
+  /* --- capabilities drawer --------------------------------------------- */
+  /*
+   * Micro-motion, all CSS and all reversible. The row lifts under the pointer
+   * or keyboard focus, its number warms to the accent and steps in, the label
+   * follows a beat behind it, and the toggle takes a quarter turn while the two
+   * glyphs cross-fade inside it. Hover and press are separated by timing as
+   * well as shape: the lift is 200ms, the press is 90ms, so the row reads as
+   * poked rather than shoved. Nothing animates until it is touched, so the
+   * closed list costs no paint on load.
+   */
+  .cap-item {
+    transition:
+      box-shadow 200ms var(--ease-out),
+      transform 200ms var(--ease-out);
+  }
+  .cap-item:hover,
+  .cap-item:focus-within {
+    box-shadow: var(--shadow-clay-lg);
+    transform: translateY(-2px);
+  }
+  .cap-item:active {
+    box-shadow: var(--shadow-inset-sm);
+    transform: translateY(1px) scale(0.998);
+    transition-duration: 90ms;
+  }
+
+  /* The row is the hit target, so the ring belongs on the summary itself. */
+  .cap-row:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .cap-index {
+    transition:
+      color 200ms var(--ease-out),
+      transform 200ms var(--ease-out);
+  }
+  /* The colour itself is set further down, outside this layer: the `text-faint`
+     utility lives in Tailwind's utilities layer, which is ordered after
+     components, so a rule here would lose no matter how specific it is. */
+  .cap-item:hover .cap-index,
+  .cap-item:focus-within .cap-index {
+    transform: translateX(2px);
+  }
+
+  .cap-label {
+    transition: transform 200ms var(--ease-out);
+  }
+  .cap-item:hover .cap-label,
+  .cap-item:focus-within .cap-label {
+    transform: translateX(2px);
+  }
+
+  /* One container turn; the glyphs cross-fade inside it rather than swapping
+     display, so the change reads as a rotation instead of a blink. */
+  .cap-toggle {
+    transition:
+      box-shadow 200ms var(--ease-out),
+      transform 260ms var(--ease-spring);
+  }
+  .cap-item:hover .cap-toggle,
+  .cap-item:focus-within .cap-toggle {
+    box-shadow: var(--shadow-clay);
+  }
+
+  /* The glyphs turn, not the button: rotating the container carried the minus
+     round with it and stood it on end. Each icon rotates in its own space and
+     they cross-fade, so the open state is a level minus at rest — including
+     under reduced motion, where the transition is flattened but the end state
+     is unchanged. */
+  .cap-plus,
+  .cap-minus {
+    grid-area: 1 / 1;
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 220ms var(--ease-spring);
+  }
+  .cap-minus {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.7);
+  }
+  .cap-item[open] .cap-plus {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.7);
+  }
+  .cap-item[open] .cap-minus {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* details hides a closed panel, so this animation exists only while open and
+     replays on every open — no JS toggle to keep in sync. */
+  /* No fill mode: the panel is legible at rest, and the animation only borrows
+     it for 320ms. A cancelled or suppressed animation therefore leaves the text
+     visible rather than stuck at its first keyframe. */
+  .cap-item[open] .cap-panel {
+    animation: cap-panel-in 320ms var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cap-item[open] .cap-panel {
+      animation: none;
+    }
+    .cap-item:hover,
+    .cap-item:focus-within,
+    .cap-item:active {
+      transform: none;
+    }
+    .cap-item:hover .cap-index,
+    .cap-item:focus-within .cap-index,
+    .cap-item:hover .cap-label,
+    .cap-item:focus-within .cap-label {
+      transform: none;
+    }
+  }
+
+  /* --- mobile menu ------------------------------------------------------ */
+  .menu-panel {
+    overscroll-behavior: contain;
+    touch-action: manipulation;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/*
+ * Motion policy: reveal on entry, press on interaction, one looping element
+ * (the reel) which always has a pause control. Nothing animates layout.
+ */
+/* Footer wordmark. The type is sized in vw so the name spans the screen at any
+   width; the clip wrapper crops the letter bottoms against the page edge. Each
+   letter is its own span so the rise can stagger, and the inner span carries
+   the hover squish so the two transforms never fight over one element. */
+.giant-word-clip {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  margin-top: 2rem;
+  overflow: hidden;
+  user-select: none;
+}
+
+.giant-word {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 0 -0.14em;
+  font-family: var(--font-display);
+  font-size: 14.55vw;
+  font-weight: 700;
+  line-height: 0.74;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.giant-letter {
+  display: inline-block;
+  transform: translate3d(0, 0.45em, 0);
+  opacity: 0;
+  transition:
+    transform 620ms var(--ease-out),
+    opacity 420ms var(--ease-out);
+  transition-delay: var(--letter-delay, 0s);
+  will-change: transform, opacity;
+}
+
+.giant-word[data-visible="true"] .giant-letter {
+  transform: none;
+  opacity: 1;
+}
+
+.giant-letter-in {
+  display: inline-block;
+  transform-origin: bottom center;
+  transition: transform 240ms var(--ease-out);
+}
+
+.giant-letter:hover .giant-letter-in {
+  transform: scale3d(1.07, 0.86, 1);
+}
+
+/* Email as the action: the address itself is the button, so the whole string is
+   one target. The squish is the confirmation; the label beside it is the words. */
+.copy-email-wrap {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+}
+
+.copy-email {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  word-break: break-all;
+  transform-origin: left center;
+  transition:
+    transform 220ms var(--ease-out),
+    color 220ms var(--ease-out);
+}
+
+.copy-email:hover,
+.copy-email:focus-visible {
+  color: var(--color-accent, currentColor);
+}
+
+.copy-email:active {
+  transform: scale3d(0.955, 0.93, 1);
+}
+
+/* The visible/hidden values are inline (React state) so the pulse cannot be
+   swallowed by the cascade; these are only the easing between them. */
+.copy-note {
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+
+/* Live status: city, local time, availability. The dot pulses from a pseudo
+   element so the text itself never moves. */
+.live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: currentColor;
+  flex: none;
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: live-pulse 2.6s var(--ease-out) infinite;
+}
+
+@keyframes live-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .giant-letter {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+
+  .giant-letter-in,
+  .copy-email,
+  .copy-note {
+    transition: none;
+  }
+
+  .giant-letter:hover .giant-letter-in {
+    transform: none;
+  }
+
+  .live-dot::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Portrait ripple: a shader layer over the About portrait. The photograph is a
+   normal <img> and stays in the DOM; the canvas only becomes visible once the
+   component has drawn its first frame, which is why `data-ready` — not the
+   canvas itself — is the switch. Knobs are CSS so they can be tuned per motif
+   without touching the shader. */
+.portrait-ripple {
+  --ripple-strength: 0.02;
+  --ripple-split: 0.006;
+  --ripple-decay: 2.2;
+  position: relative;
+  display: block;
+  /* Vertical swipes still scroll the page; horizontal drags play. */
+  touch-action: pan-y;
+  transition: transform 200ms var(--ease-spring);
+}
+
+.portrait-ripple[data-press="true"] {
+  transform: scale(0.985);
+}
+
+.portrait-ripple__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms var(--ease-out);
+}
+
+.portrait-ripple[data-ready="true"] .portrait-ripple__canvas {
+  opacity: 1;
+}
+
+/* The canvas is opaque and covers the image, but hiding the source as well keeps
+   it from showing through a corner seam while the device pixel ratio settles. */
+.portrait-ripple[data-ready="true"] img {
+  visibility: hidden;
+}
+
+.portrait-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 0.7rem;
+  translate: -50% 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 260ms var(--ease-out);
+}
+
+.portrait-hint[data-dismissed="true"] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-ripple,
+  .portrait-ripple__canvas {
+    transition: none;
+  }
+
+  .portrait-hint {
+    display: none;
+  }
+}
+
+/* --- figures pulled from the evidence sentences ----------------------- */
+.cs-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--color-line);
+}
+
+.cs-stat {
+  background: color-mix(in srgb, var(--color-surface) 92%, var(--color-canvas));
+  padding: 1rem 1.1rem;
+}
+
+.cs-stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+
+.cs-stat-label {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-meta);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+/* --- drag to compare -------------------------------------------------- */
+.cs-compare {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--color-well);
+  box-shadow: var(--shadow-clay-sm);
+  /* Vertical swipes still scroll; horizontal drags move the seam. */
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.cs-compare-img {
+  object-fit: cover;
+}
+
+.cs-compare-clip {
+  position: absolute;
+  inset: 0;
+}
+
+.cs-compare-tag {
+  position: absolute;
+  top: 0.75rem;
+  z-index: 2;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-canvas) 84%, transparent);
+  color: var(--color-ink);
+  font-family: var(--font-meta);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.cs-compare-tag--a {
+  left: 0.75rem;
+}
+
+.cs-compare-tag--b {
+  right: 0.75rem;
+}
+
+.cs-compare-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  translate: -1px 0;
+  background: var(--color-canvas);
+  box-shadow: 0 0 0 1px rgb(36 31 26 / 0.18);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* The control itself is invisible: the picture is the interface, but the range
+   input keeps it keyboard- and screen-reader-operable. */
+.cs-compare-range {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+.cs-compare-range:focus-visible {
+  opacity: 0;
+  outline: none;
+}
+
+.cs-compare:has(.cs-compare-range:focus-visible) {
+  outline: 2px solid var(--project-accent, var(--color-accent));
+  outline-offset: 3px;
+}
+
+/* --- chapter title in the gutter -------------------------------------- */
+.cs-chapter {
+  position: sticky;
+  top: 7.5rem;
+  align-self: start;
+  justify-self: end;
+}
+
+.cs-chapter-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--project-accent, var(--color-accent));
+  transition: opacity 200ms var(--ease-out);
+}
+
+/* --- gallery: image and caption arrive together ----------------------- */
+.cs-gallery li[data-settle="pending"] {
+  transform: translate3d(0, 0.9rem, 0);
+  clip-path: inset(0 0 100% 0);
+}
+
+.cs-gallery li[data-settle="shown"] {
+  animation: cs-gallery-rise 760ms var(--ease-out) both;
+}
+
+@keyframes cs-gallery-rise {
+  from {
+    opacity: 0.001;
+    transform: translate3d(0, 0.9rem, 0);
+    clip-path: inset(0 0 40% 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-chapter-label {
+    transition: none;
+  }
+
+  .cs-gallery li[data-settle="pending"] {
+    transform: none;
+    clip-path: none;
+  }
+
+  .cs-gallery li[data-settle="shown"] {
+    animation: none;
+  }
+}
+
+/* Selected clients bar: a single slow run. The track holds the list twice, so
+   the loop needs a shift of exactly one set — half the track plus half the gap —
+   which is the one detail that stops a visible seam every cycle. */
+.clients-marquee {
+  --clients-gap: 2.5rem;
+  /* Full-bleed: the bar lives inside the 1280px column, so it breaks out to the
+     viewport edges with a negative margin measured from its own centre. The
+     hero clips the overflow, so no horizontal scrollbar appears. */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.clients-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: var(--clients-gap);
+  animation: clients-scroll 28s linear infinite;
+}
+
+.clients-marquee:hover .clients-track,
+.clients-marquee:focus-within .clients-track {
+  animation-play-state: paused;
+}
+
+@keyframes clients-scroll {
+  to {
+    transform: translate3d(calc(-50% - var(--clients-gap) / 2), 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clients-track {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.75rem;
+  }
+
+  /* The seam-filler only exists for the scroll; without it the names would
+     appear twice. */
+  .clients-track > [aria-hidden="true"] {
+    display: none;
+  }
+
+  .clients-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-settle {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--reveal-x, 0px), var(--reveal-lift, 16px), 0);
+    filter: blur(var(--reveal-blur, 8px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/*
+ * Micro-motion: masks and settles for the hero, plus a small amount of
+ * feedback on hover. Transform/opacity only — nothing animates layout, and the
+ * reduced-motion block below collapses every duration to 0.01ms.
+ */
+@keyframes line-rise {
+  from {
+    transform: translateY(112%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes tile-settle {
+  from {
+    opacity: 0;
+    transform: rotate(calc(var(--tilt, 0deg) * 1.9)) translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--tilt, 0deg)) translateY(0) scale(1);
+  }
+}
+
+@keyframes settle-rise {
+  from {
+    transform: translate3d(0, 0.32em, 0);
+    clip-path: inset(-0.18em -0.45em 100% -0.45em);
+  }
+  to {
+    transform: none;
+    clip-path: inset(-0.18em -0.45em -0.3em -0.45em);
+  }
+}
+
+@keyframes stroke-draw {
+  from {
+    stroke-dashoffset: 140;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@layer utilities {
+  .rise {
+    animation: rise-in 0.5s var(--ease-out) both;
+  }
+
+  /* Masked line reveal: the wrapper clips, the word rides up from below. */
+  .hero-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    margin-bottom: -0.06em;
+  }
+  .hero-line > span {
+    display: block;
+    animation: line-rise 0.9s var(--ease-out) var(--line-delay, 0s) backwards;
+  }
+
+
+  .squiggle path {
+    stroke-dasharray: 140;
+    animation: stroke-draw 1.1s var(--ease-out) 0.55s backwards;
+  }
+
+  .cue-arrow {
+    transition: transform 0.3s var(--ease-out);
+  }
+  .group:hover .cue-arrow,
+  .group:focus-visible .cue-arrow {
+    transform: translateY(3px);
+  }
+
+  .card-dot {
+    transition: transform 0.35s var(--ease-spring);
+  }
+  .group:hover .card-dot,
+  .group:focus-within .card-dot {
+    transform: scale(1.3);
+  }
+  .rise-1 {
+    animation-delay: 0.06s;
+  }
+  .rise-2 {
+    animation-delay: 0.12s;
+  }
+  .rise-3 {
+    animation-delay: 0.18s;
+  }
+  .rise-4 {
+    animation-delay: 0.24s;
+  }
+
+  /*
+   * Scroll reveal: a data attribute written by IntersectionObserver after
+   * mount, so server and first client render agree. The hidden state is a soft
+   * defocus as well as a lift, so content settles into focus like a print
+   * being laid down. Without JS the content is visible rather than hidden
+   * behind an effect that cannot run.
+   *
+   * The settle is an animation, not a transition, so the finished element can
+   * drop `filter` entirely: a permanent blur(0) keeps a composited layer and a
+   * stacking context alive on every wrapper.
+   */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(var(--reveal-x, 0px), var(--reveal-lift, 16px), 0);
+    filter: blur(var(--reveal-blur, 8px));
+    will-change: opacity, transform, filter;
+  }
+  .reveal[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    will-change: auto;
+    animation: reveal-settle 0.42s var(--ease-out) var(--reveal-delay, 0s) backwards;
+  }
+
+  /*
+   * Headings and gallery captions below the fold get the hero's masked rise on
+   * their own text box, so no wrapper element is needed and a <figcaption>
+   * stays a child of its <figure>. The pending state is a closed mask; the
+   * shown state animates it open and then drops the clip entirely, so a settled
+   * label keeps no clip layer, stacking context or transform behind.
+   */
+  [data-settle="pending"] {
+    transform: translate3d(0, 0.32em, 0);
+    clip-path: inset(-0.18em -0.45em 100% -0.45em);
+  }
+  [data-settle="shown"] {
+    animation: settle-rise 0.62s var(--ease-out);
+  }
+
+  .menu-in {
+    animation: rise-in 0.24s var(--ease-out) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .clay-btn:hover,
+  .clay-btn:active,
+  .clay-card:hover,
+  .clay-card:active {
+    transform: none;
+  }
+
+  /* Depth change without travel: the card still reads as pressable. */
+  .clay-card:active {
+    box-shadow: var(--shadow-inset-sm);
+  }
+  .clay-card .clay-nudge,
+  .clay-card:hover .clay-nudge {
+    transform: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+    animation: none;
+    will-change: auto;
+  }
+
+  /* No mask to open and no travel: the text is simply there. */
+  [data-settle="pending"] {
+    transform: none;
+    clip-path: none;
+  }
+}
+
+/* No scripting: never hide content behind an effect that cannot run. */
+@media (scripting: none) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  [data-settle="pending"] {
+    transform: none;
+    clip-path: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Intro title card
+ *
+ * The front door: the role settles over the name, a fired-clay hairline draws,
+ * then the porcelain sheet lifts away. A fixed CSS timeline rather than a
+ * client component, so the server-rendered HTML plays the same sequence with
+ * no hydration step, and nothing can strand the page behind an overlay if
+ * scripting fails. It is decoration only: aria-hidden in the markup, no
+ * pointer or scroll capture, and reduced motion removes it outright.
+ *
+ * While the sheet is up, the hero's own entry is offset below so it plays as
+ * the page is uncovered instead of underneath it. Those offsets only exist at
+ * `no-preference`, and only on a page that actually renders the curtain.
+ * ------------------------------------------------------------------------- */
+
+@keyframes intro-lift {
+  0%,
+  32% {
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+  100% {
+    transform: translate3d(0, -100%, 0);
+    visibility: hidden;
+  }
+}
+
+@keyframes intro-content-out {
+  0%,
+  55% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -0.7rem, 0);
+  }
+}
+
+@keyframes intro-rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.intro-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--color-canvas);
+  pointer-events: none;
+  animation: intro-lift 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+}
+
+/* The sheet's leading edge: a fired-clay hairline that trails the lift. */
+.intro-curtain::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: color-mix(in srgb, var(--color-accent) 60%, transparent);
+}
+
+.intro-inner {
+  display: grid;
+  justify-items: center;
+  padding: 0 1.5rem;
+  text-align: center;
+  animation: intro-content-out 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+}
+
+.intro-name {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+/* The name sets just before the sheet starts to move, not during the lift. */
+.intro-name > span {
+  animation-duration: 0.62s;
+  animation-delay: 0.02s;
+}
+
+.intro-rule {
+  width: 88px;
+  height: 2px;
+  margin-top: 1.5rem;
+  background: var(--color-accent);
+  transform-origin: left center;
+  animation: intro-rule-draw 0.7s var(--ease-out) 0.22s backwards;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro-curtain ~ section .hero-line > span {
+    animation-delay: calc(var(--line-delay, 0s) + 0.62s);
+  }
+  .intro-curtain ~ section .squiggle path {
+    animation-delay: 1.1s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-curtain {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Project themes
+ *
+ * Each case study keeps the porcelain grammar but carries its own colour
+ * world: a pale wash sampled from the work, a CSS-drawn motif, and a text-safe
+ * deep shade. `accent` decorates (dots, motif, rule); `accentDeep` is the only
+ * project colour allowed on text, and validateProjects enforces 4.5:1 on the
+ * canvas. Nothing here animates, so the motion policy is untouched.
+ * ------------------------------------------------------------------------- */
+.project-theme {
+  --project-tint: var(--color-surface);
+  --project-accent-deep: var(--color-accent);
+  /* Motif inks: the project accent, held deliberately light. Texture is
+     carried by shape and repetition (thicker strokes, bigger rings, denser
+     stipple), never by darkness, so 12px labels on the band keep >= 4.5:1
+     against the darkest decorative pixel. */
+  --motif-line: color-mix(in srgb, var(--project-accent) 22%, transparent);
+  --motif-soft: color-mix(in srgb, var(--project-accent) 12%, transparent);
+  --motif-dot: color-mix(in srgb, var(--project-accent) 26%, transparent);
+}
+
+/* The band behind the title and hero: wash at the top, fading into the page. */
+.project-band {
+  position: relative;
+  isolation: isolate;
+}
+
+.project-band::before,
+.project-band::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.project-band::before {
+  background:
+    /* the project's own accent bleeding in from the top corner, so the band
+       reads as coloured light rather than a flat paper tint */
+    radial-gradient(
+      120% 80% at 84% -12%,
+      color-mix(in srgb, var(--project-accent) 26%, transparent) 0%,
+      transparent 64%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--project-tint) 94%, var(--color-canvas)) 0%,
+      color-mix(in srgb, var(--project-tint) 62%, var(--color-canvas)) 48%,
+      var(--color-canvas) 96%
+    );
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 74%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 74%, transparent 100%);
+}
+
+.project-band::after {
+  background-image: var(--motif, none);
+  background-size: var(--motif-size, 44px 44px);
+  background-position: var(--motif-position, 0 0);
+  opacity: 0.9;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 78%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 78%);
+}
+
+/* Motifs: decoration only, always in the project's own sampled colour. */
+[data-motif="paddy"] {
+  --cs-bleed: #e6c777;
+  /* Receding rice rows plus grain. Two furrow depths read as a field seen at
+     an angle; two offset stipples at different spacings read as loose grain
+     rather than a printed dot grid. The rows sit lighter than the grain so the
+     gold speckle carries the field. */
+  --motif-line: color-mix(in srgb, var(--project-accent) 20%, transparent);
+  --motif:
+    repeating-linear-gradient(
+      102deg,
+      transparent 0 12px,
+      var(--motif-line) 12px 15px,
+      transparent 15px 22px,
+      var(--motif-soft) 22px 24px,
+      transparent 24px 38px
+    ),
+    radial-gradient(circle at 50% 50%, var(--motif-dot) 2.6px, transparent 3px),
+    radial-gradient(circle at 50% 50%, var(--motif-dot) 2px, transparent 2.4px);
+  --motif-size: 100% 100%, 27px 23px, 17px 19px;
+  --motif-position: 0 0, 0 0, 11px 13px;
+}
+
+[data-motif="weave"] {
+  --cs-bleed: #d9ab55;
+  /* Two crossing thread sets double up where they meet, so the weave gets a
+     lighter ink than the other motifs to keep its gold peaks off the eyebrow. */
+  --motif-line: color-mix(in srgb, var(--project-accent) 12%, transparent);
+  --motif:
+    repeating-linear-gradient(45deg, var(--motif-line) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(-45deg, var(--motif-line) 0 2px, transparent 2px 16px);
+  --motif-size: 30px 30px, 30px 30px;
+}
+
+[data-motif="tide"] {
+  --cs-bleed: #ff9077;
+  --motif:
+    repeating-radial-gradient(circle at 88% 4%, var(--motif-line) 0 2.5px, transparent 2.5px 30px),
+    repeating-radial-gradient(circle at 4% 88%, var(--motif-soft) 0 2px, transparent 2px 38px);
+  --motif-size: 100% 100%, 100% 100%;
+}
+
+[data-motif="circuit"] {
+  --cs-bleed: #6fd0ff;
+  /* Board traces with solder nodes, not graph paper. */
+  --motif:
+    repeating-linear-gradient(90deg, var(--motif-line) 0 2px, transparent 2px 96px),
+    repeating-linear-gradient(0deg, var(--motif-line) 0 2px, transparent 2px 48px),
+    radial-gradient(circle at 50% 50%, var(--motif-dot) 3.4px, transparent 3.8px),
+    radial-gradient(circle at 50% 50%, var(--motif-dot) 3.4px, transparent 3.8px);
+  --motif-size: 96px 100%, 100% 48px, 96px 48px, 96px 48px;
+  --motif-position: 0 0, 0 0, 0 0, 48px 24px;
+}
+
+[data-motif="stamp"] {
+  --cs-bleed: #ff8a76;
+  --motif: radial-gradient(circle, var(--motif-dot) 2.8px, transparent 3.1px);
+  --motif-size: 20px 20px;
+  --motif-position: 0 0;
+}
+
+[data-motif="scan"] {
+  --cs-bleed: #4ff0c8;
+  /* CRT scanlines with a single sweep of the beam, not a second grid. */
+  --motif:
+    repeating-linear-gradient(0deg, var(--motif-line) 0 2px, transparent 2px 9px),
+    linear-gradient(90deg, transparent 0 40%, var(--motif-soft) 50%, transparent 60% 100%);
+  --motif-size: 100% 9px, 100% 100%;
+  --motif-position: 0 0, 0 0;
+}
+
+[data-motif="shelf"] {
+  --cs-bleed: #ffb27a;
+  --motif:
+    repeating-linear-gradient(0deg, var(--motif-line) 0 2px, transparent 2px 46px),
+    repeating-linear-gradient(90deg, var(--motif-soft) 0 2px, transparent 2px 138px),
+    radial-gradient(circle at 14px 14px, var(--motif-dot) 3px, transparent 3.4px);
+  --motif-size: 100% 46px, 100% 92px, 46px 46px;
+  --motif-position: 0 0, 0 24px, 0 0;
+}
+
+/* Mats and cards: enough tint to feel like another room, never enough to
+   disturb the ink (muted text stays >= 4.7:1 on every project tint). */
+.project-mat {
+  background-color: color-mix(in srgb, var(--project-tint) 58%, var(--color-surface));
+}
+
+.project-card-mat {
+  background-color: color-mix(in srgb, var(--project-tint) 62%, var(--color-surface));
+}
+
+/* Small labels living on the patterned band need a little more weight than
+   the page’s faint grey: over the darkest motif pixel (a 22% accent wash)
+   #6B6155 falls to ~3.3:1, while this mix holds >= 5.3:1 at 11-12px. */
+.project-band .text-faint {
+  color: color-mix(in srgb, var(--color-ink) 82%, var(--color-muted));
+}
+
+/* The context label keeps its project hue, pulled a step darker so it clears
+   4.5:1 even over the motif peak (the pale accents, e.g. Anim Hoodie’s gold,
+   are the tight case). accentDeep itself is unchanged and still the value
+   validateProjects measures on the canvas. */
+.project-band .text-accent {
+  color: color-mix(in srgb, var(--project-accent-deep) 72%, var(--color-ink));
+}
+
+/* Thin accent hairline closing the band. */
+.project-rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--project-accent) 85%, transparent) 0%,
+    color-mix(in srgb, var(--project-accent) 28%, transparent) 55%,
+    transparent 88%
+  );
+}
+/* ---------------------------------------------------------------------------
+ * Project page languages
+ *
+ * A project is not only its colour. Each case study restates the same markup
+ * in its own design dialect via [data-motif]: display type, title treatment,
+ * meta style, panel geometry, rule weight and gallery framing. Only
+ * presentation changes — reading order, semantics and copy stay shared, so the
+ * contrast checks still cover every project's text on every surface.
+ * ------------------------------------------------------------------------- */
+
+/*
+ * Signature motion, all one-shot: a stitched hairline that sews itself across
+ * once, clay steps that settle in a 60ms stagger, and a feed that fills upward
+ * like a rising tide. Each animates only background-size, transform, opacity or
+ * clip-path, and each ends on the finished, fully visible state.
+ */
+@keyframes cs-stitch {
+  from {
+    background-size: 0% 2px;
+  }
+  to {
+    background-size: 100% 2px;
+  }
+}
+
+@keyframes pipe-settle {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tide-rise {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Phase two, one-shot each: crops standing up out of the ground, a lesson rail
+   filling tick by tick, stamps pressing onto a card, a single scan pass, and
+   product frames landing on a shelf. */
+@keyframes fmt-stand {
+  from {
+    opacity: 0.35;
+    clip-path: inset(100% 0 0 0);
+    transform: translateY(0.35rem);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+
+@keyframes tick-fill {
+  from {
+    opacity: 0.2;
+    transform: scaleY(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes stamp-press {
+  from {
+    opacity: 0;
+    transform: scale(1.26) rotate(var(--rot, 0deg));
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--rot, 0deg));
+  }
+}
+
+@keyframes scan-pass {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shelf-land {
+  from {
+    opacity: 0;
+    transform: translateY(-0.6rem) rotate(-1.6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===== weave / Anim Hoodie — studio print: centred, tracked, hairline rules = */
+[data-motif="weave"] .cs-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+[data-motif="weave"] .cs-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 3.8vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+[data-motif="weave"] .cs-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 1.35rem;
+  border-top: 1px solid color-mix(in srgb, var(--project-accent) 45%, transparent);
+  padding-top: 1rem;
+}
+[data-motif="weave"] .cs-meta > * {
+  margin: 0;
+}
+[data-motif="weave"] .cs-disciplines,
+[data-motif="weave"] .cs-year {
+  letter-spacing: 0.16em;
+}
+/* Sewn, not printed: a dashed thread pulled left to right once on entry. */
+[data-motif="weave"] .cs-rule {
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--project-accent-deep) 42%, transparent) 0 7px,
+    transparent 7px 12px
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+  animation: cs-stitch 0.7s var(--ease-out) 0.12s both;
+}
+[data-motif="weave"] .cs-hero {
+  border-radius: 8px;
+  padding: 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 34%, transparent);
+}
+[data-motif="weave"] .cs-spec {
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, transparent);
+  background: var(--color-surface);
+  box-shadow: none;
+}
+[data-motif="weave"] .cs-dt {
+  letter-spacing: 0.16em;
+}
+[data-motif="weave"] .cs-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+}
+[data-motif="weave"] .cs-evidence {
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, transparent);
+  background: var(--color-surface);
+}
+[data-motif="weave"] .cs-gallery .clay-sm,
+[data-motif="weave"] .cs-gallery .rounded-\[24px\] {
+  border-radius: 4px;
+}
+[data-motif="weave"] .cs-navlink {
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 30%, transparent);
+  background: transparent;
+  box-shadow: none;
+}
+
+/* --- signature: the four angles, then the seven stages ---------------- */
+[data-motif="weave"] .angle-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 30%, transparent);
+}
+[data-motif="weave"] .angle-frame {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms var(--ease-out);
+}
+[data-motif="weave"] .angle-frame[data-active="true"] {
+  opacity: 1;
+}
+/* In the phone layout the controls stack, where a flex-basis would become the
+   slider's height; the slider only grows once the row is horizontal. */
+[data-motif="weave"] .angle-range {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+}
+[data-motif="weave"] .angle-controls .clay-chip {
+  border-radius: 6px;
+}
+@media (min-width: 640px) {
+  [data-motif="weave"] .angle-range {
+    flex: 1 1 12rem;
+    width: auto;
+    min-width: 9rem;
+  }
+}
+
+[data-motif="weave"] .pipe {
+  /* A grid item defaults to its content's minimum width; without this the
+     7 × 12rem track would widen the page instead of scrolling inside it. */
+  min-width: 0;
+}
+[data-motif="weave"] .pipe-track {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0 0 0.45rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+}
+[data-motif="weave"] .pipe-step {
+  display: flex;
+  flex: 0 0 12rem;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, transparent);
+  border-radius: 8px;
+  background: var(--color-surface);
+  scroll-snap-align: start;
+}
+[data-motif="weave"] .pipe-name {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+[data-motif="weave"] .pipe[data-pipe="pending"] .pipe-step {
+  opacity: 0;
+}
+[data-motif="weave"] .pipe[data-pipe="shown"] .pipe-step {
+  animation: pipe-settle 0.42s var(--ease-out) backwards;
+  animation-delay: var(--d, 0ms);
+}
+@media (min-width: 768px) {
+  [data-motif="weave"] .pipe-track {
+    flex-direction: column;
+    gap: 0.4rem;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+  [data-motif="weave"] .pipe-step {
+    flex: 1 1 auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Final state immediately: a whole, unstaggered thread and visible steps. */
+  [data-motif="weave"] .cs-rule {
+    animation: none;
+    background-size: 100% 2px;
+  }
+  [data-motif="weave"] .pipe[data-pipe="pending"] .pipe-step {
+    opacity: 1;
+  }
+  [data-motif="weave"] .pipe[data-pipe="shown"] .pipe-step {
+    animation: none;
+  }
+}
+
+/* ===== paddy / TK — field notes: warm, organic, gold-stamped labels ======== */
+[data-motif="paddy"] .cs-title {
+  font-weight: 600;
+  font-size: clamp(2.25rem, 4.8vw, 3.9rem);
+  letter-spacing: -0.025em;
+  line-height: 0.98;
+}
+[data-motif="paddy"] .cs-context {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+}
+[data-motif="paddy"] .cs-disciplines,
+[data-motif="paddy"] .cs-year {
+  letter-spacing: 0.12em;
+}
+[data-motif="paddy"] .cs-rule {
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--project-accent) 95%, transparent) 0%,
+    color-mix(in srgb, var(--project-accent) 40%, transparent) 48%,
+    transparent 90%
+  );
+}
+[data-motif="paddy"] .cs-hero {
+  border-radius: 28px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 40%, transparent);
+}
+[data-motif="paddy"] .cs-spec {
+  border-radius: 26px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 28%, transparent);
+}
+[data-motif="paddy"] .cs-dt {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+}
+[data-motif="paddy"] .cs-dt::before {
+  content: "";
+  width: 0.55rem;
+  height: 2px;
+  background: var(--project-accent);
+}
+[data-motif="paddy"] .cs-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+}
+[data-motif="paddy"] .cs-label::before {
+  content: "";
+  width: 1.5rem;
+  height: 2px;
+  background: color-mix(in srgb, var(--project-accent) 85%, transparent);
+}
+[data-motif="paddy"] .cs-text {
+  line-height: 1.72;
+}
+[data-motif="paddy"] .cs-evidence {
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 30%, transparent);
+}
+[data-motif="paddy"] .cs-gallery .clay-sm,
+[data-motif="paddy"] .cs-gallery .rounded-\[24px\] {
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 22%, transparent);
+}
+[data-motif="paddy"] .cs-navlink {
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, transparent);
+}
+
+/* --- signature: the same shoot in three delivery shapes, on one ground ---- */
+[data-motif="paddy"] .fmt-ladder {
+  margin: 0;
+}
+[data-motif="paddy"] .fmt-plots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(0.5rem, 1.6vw, 1.25rem);
+}
+[data-motif="paddy"] .fmt-plot {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+[data-motif="paddy"] .fmt-frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--color-well);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 38%, transparent);
+}
+[data-motif="paddy"] .fmt-label {
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+}
+[data-motif="paddy"] .fmt-ground {
+  height: 2px;
+  margin-top: 0.9rem;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--project-accent) 85%, transparent) 0%,
+    color-mix(in srgb, var(--project-accent) 32%, transparent) 58%,
+    transparent 100%
+  );
+}
+[data-motif="paddy"] .fmt-note {
+  margin-top: 0.6rem;
+  letter-spacing: 0.12em;
+}
+[data-motif="paddy"] .fmt-ladder[data-fmt="pending"] .fmt-frame {
+  clip-path: inset(100% 0 0 0);
+}
+[data-motif="paddy"] .fmt-ladder[data-fmt="shown"] .fmt-frame {
+  animation: fmt-stand 0.55s var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  /* The crop is standing from the start, in full. */
+  [data-motif="paddy"] .fmt-ladder[data-fmt="pending"] .fmt-frame {
+    clip-path: none;
+  }
+  [data-motif="paddy"] .fmt-ladder[data-fmt="shown"] .fmt-frame {
+    animation: none;
+  }
+}
+
+/* ===== tide / Pattaya — weekly magazine: caps masthead, square previews ==== */
+[data-motif="tide"] .cs-title {
+  font-weight: 700;
+  font-size: clamp(2.1rem, 5.2vw, 4.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+[data-motif="tide"] .cs-meta {
+  text-align: right;
+  border-top: 3px double color-mix(in srgb, var(--project-accent-deep) 55%, transparent);
+  padding-top: 0.7rem;
+}
+[data-motif="tide"] .cs-meta > * {
+  margin: 0;
+}
+[data-motif="tide"] .cs-disciplines {
+  margin-top: 0.45rem;
+  letter-spacing: 0.12em;
+}
+[data-motif="tide"] .cs-year {
+  margin-top: 0.2rem;
+  letter-spacing: 0.12em;
+}
+[data-motif="tide"] .cs-rule {
+  height: 5px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--project-accent-deep) 0 2px,
+    transparent 2px 3.5px
+  );
+  opacity: 0.8;
+}
+[data-motif="tide"] .cs-hero {
+  border-radius: 2px;
+  padding: 0.4rem;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+  box-shadow: none;
+}
+[data-motif="tide"] .cs-spec {
+  border-radius: 2px;
+  background: var(--color-surface);
+  box-shadow: none;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+}
+[data-motif="tide"] .cs-spec-list > div {
+  display: grid;
+  grid-template-columns: 6.75rem 1fr;
+  gap: 0.75rem;
+  padding-block: 0.6rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+}
+[data-motif="tide"] .cs-spec-list > div:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+[data-motif="tide"] .cs-spec-list > div:last-child {
+  padding-bottom: 0;
+}
+[data-motif="tide"] .cs-spec-list .cs-dd {
+  margin: 0;
+}
+[data-motif="tide"] .cs-body {
+  counter-reset: cs-section;
+}
+[data-motif="tide"] .cs-section {
+  counter-increment: cs-section;
+}
+[data-motif="tide"] .cs-label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+[data-motif="tide"] .cs-section .cs-label::before {
+  content: counter(cs-section, decimal-leading-zero) " / ";
+  opacity: 0.55;
+}
+[data-motif="tide"] .cs-evidence {
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  background: var(--color-surface);
+}
+[data-motif="tide"] .cs-gallery .clay-sm,
+[data-motif="tide"] .cs-gallery .rounded-\[24px\] {
+  border-radius: 0;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+  background: var(--color-surface);
+  padding: 4px;
+}
+[data-motif="tide"] .cs-navlink {
+  border-radius: 2px;
+  background: var(--color-surface);
+  box-shadow: none;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+}
+
+/* --- signature: the account as it shipped, one screen of it ------------- */
+[data-motif="tide"] .tide-phone {
+  max-width: 22rem;
+  padding: 0.55rem;
+  border-radius: 30px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  box-shadow: var(--shadow-clay);
+}
+[data-motif="tide"] .tide-phone-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.35rem 0.7rem;
+}
+[data-motif="tide"] .tide-avatar {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  overflow: hidden;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink) 14%, transparent);
+}
+[data-motif="tide"] .tide-handle {
+  font-family: var(--font-meta);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+[data-motif="tide"] .tide-handle:hover,
+[data-motif="tide"] .tide-handle:focus-visible {
+  border-bottom-color: currentColor;
+}
+[data-motif="tide"] .tide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px;
+}
+[data-motif="tide"] .tide-tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--color-well);
+}
+[data-motif="tide"] .tide-feed[data-tide="pending"] .tide-tile {
+  clip-path: inset(100% 0 0 0);
+}
+/* `backwards`, so the finished tile keeps no clip-path at all. */
+[data-motif="tide"] .tide-feed[data-tide="shown"] .tide-tile {
+  animation: tide-rise 0.5s var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  /* The tide has already come in: every tile sits at its finished frame. */
+  [data-motif="tide"] .tide-feed[data-tide="pending"] .tide-tile {
+    clip-path: none;
+  }
+  [data-motif="tide"] .tide-feed[data-tide="shown"] .tide-tile {
+    animation: none;
+  }
+}
+
+/* ===== circuit / BlueVenture — spec sheet: mono headings, dashed rules ===== */
+[data-motif="circuit"] .cs-title {
+  font-family: var(--font-meta);
+  font-weight: 400;
+  font-size: clamp(1.2rem, 2.5vw, 2.05rem);
+  line-height: 1.25;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+/* the back link keeps its own arrow — no comment prefix here */
+[data-motif="circuit"] .cs-meta {
+  border-left: 1px solid color-mix(in srgb, var(--project-accent) 50%, transparent);
+  padding-left: 1rem;
+}
+[data-motif="circuit"] .cs-disciplines,
+[data-motif="circuit"] .cs-year {
+  letter-spacing: 0.08em;
+}
+[data-motif="circuit"] .cs-rule {
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--project-accent-deep) 60%, transparent) 0 12px,
+    transparent 12px 20px
+  );
+}
+[data-motif="circuit"] .cs-hero {
+  border-radius: 4px;
+  padding: 0.5rem;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 42%, transparent);
+  box-shadow: none;
+}
+[data-motif="circuit"] .cs-spec {
+  border-radius: 4px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 40%, transparent);
+  box-shadow: none;
+}
+[data-motif="circuit"] .cs-spec-list > div {
+  display: grid;
+  grid-template-columns: 6.25rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px dashed color-mix(in srgb, var(--color-ink) 14%, transparent);
+}
+[data-motif="circuit"] .cs-spec-list > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+[data-motif="circuit"] .cs-spec-list .cs-dd {
+  margin: 0;
+  font-family: var(--font-meta);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+[data-motif="circuit"] .cs-label {
+  letter-spacing: 0.14em;
+}
+[data-motif="circuit"] .cs-label::before {
+  content: "// ";
+  opacity: 0.55;
+}
+[data-motif="circuit"] .cs-evidence {
+  border-radius: 4px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 32%, transparent);
+}
+[data-motif="circuit"] .cs-gallery .clay-sm,
+[data-motif="circuit"] .cs-gallery .rounded-\[24px\] {
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, transparent);
+}
+[data-motif="circuit"] .cs-navlink {
+  border-radius: 4px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 35%, transparent);
+  box-shadow: none;
+}
+
+/* --- signature: the lesson template as a spec sheet, plus one tick a lesson -- */
+[data-motif="circuit"] .tmpl-sheet {
+  padding: clamp(0.9rem, 2.2vw, 1.5rem);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 38%, transparent);
+  border-radius: 4px;
+  background: var(--color-surface);
+}
+[data-motif="circuit"] .tmpl-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.2rem 1.5rem;
+}
+[data-motif="circuit"] .tmpl-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 3px;
+  margin: 0.85rem 0 1.15rem;
+}
+[data-motif="circuit"] .tmpl-tick {
+  height: 14px;
+  background: color-mix(in srgb, var(--project-accent) 52%, transparent);
+}
+[data-motif="circuit"] .tmpl-frames {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 768px) {
+  [data-motif="circuit"] .tmpl-frames {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+}
+[data-motif="circuit"] .tmpl-index {
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.14em;
+}
+[data-motif="circuit"] .tmpl-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-well);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 30%, transparent);
+}
+[data-motif="circuit"] .tmpl-label {
+  font-size: 0.66rem;
+  line-height: 1.45;
+  letter-spacing: 0.06em;
+}
+[data-motif="circuit"] .tmpl-sheet[data-tmpl="pending"] .tmpl-tick {
+  opacity: 0.22;
+}
+[data-motif="circuit"] .tmpl-sheet[data-tmpl="shown"] .tmpl-tick {
+  animation: tick-fill 0.3s var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 18ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-motif="circuit"] .tmpl-sheet[data-tmpl="pending"] .tmpl-tick {
+    opacity: 1;
+  }
+  [data-motif="circuit"] .tmpl-sheet[data-tmpl="shown"] .tmpl-tick {
+    animation: none;
+  }
+}
+
+/* ===== stamp / EN KKU — club poster: heavy caps, sticker panels ============ */
+[data-motif="stamp"] .cs-title {
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5.6vw, 4.35rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+[data-motif="stamp"] .cs-title::after {
+  content: "";
+  display: block;
+  width: 4.5rem;
+  height: 0.4rem;
+  margin-top: 1rem;
+  background: var(--project-accent);
+}
+[data-motif="stamp"] .cs-meta {
+  width: fit-content;
+  border: 2px solid color-mix(in srgb, var(--project-accent-deep) 60%, transparent);
+  border-radius: 999px;
+  padding: 0.6rem 1rem;
+  background: var(--color-surface);
+  transform: rotate(-1.5deg);
+}
+[data-motif="stamp"] .cs-meta > * {
+  margin: 0;
+}
+[data-motif="stamp"] .cs-disciplines {
+  margin-top: 0.3rem;
+  letter-spacing: 0.1em;
+}
+[data-motif="stamp"] .cs-year {
+  margin-top: 0.15rem;
+  letter-spacing: 0.1em;
+}
+[data-motif="stamp"] .cs-rule {
+  height: 5px;
+  background: var(--project-accent);
+}
+[data-motif="stamp"] .cs-hero {
+  border-radius: 2px;
+  padding: 0.5rem;
+  border: 2px solid color-mix(in srgb, var(--project-accent) 50%, transparent);
+  box-shadow: 8px 8px 0 color-mix(in srgb, var(--project-accent) 22%, transparent);
+}
+[data-motif="stamp"] .cs-spec {
+  border-radius: 2px;
+  background: var(--color-surface);
+  border: 2px solid color-mix(in srgb, var(--project-accent-deep) 55%, transparent);
+  box-shadow: 8px 8px 0 color-mix(in srgb, var(--project-accent) 22%, transparent);
+}
+[data-motif="stamp"] .cs-dt {
+  letter-spacing: 0.12em;
+}
+[data-motif="stamp"] .cs-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+[data-motif="stamp"] .cs-label::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--project-accent);
+  flex: none;
+}
+[data-motif="stamp"] .cs-evidence {
+  border-radius: 2px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+}
+[data-motif="stamp"] .cs-gallery .clay-sm,
+[data-motif="stamp"] .cs-gallery .rounded-\[24px\] {
+  border-radius: 2px;
+  border: 2px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+  box-shadow: 6px 6px 0 color-mix(in srgb, var(--project-accent) 20%, transparent);
+}
+[data-motif="stamp"] .cs-navlink {
+  border-radius: 2px;
+  border: 2px solid color-mix(in srgb, var(--project-accent-deep) 45%, transparent);
+  box-shadow: 6px 6px 0 color-mix(in srgb, var(--project-accent) 16%, transparent);
+}
+
+/* --- signature: the club's output stamped onto one record card ------------- */
+[data-motif="stamp"] .stamp-sheet {
+  position: relative;
+  max-width: 52rem;
+  padding: clamp(1rem, 2.4vw, 1.6rem);
+  border: 2px solid color-mix(in srgb, var(--project-accent-deep) 55%, transparent);
+  border-radius: 2px;
+  background: var(--color-surface);
+  box-shadow: 8px 8px 0 color-mix(in srgb, var(--project-accent) 20%, transparent);
+}
+[data-motif="stamp"] .stamp-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px dashed color-mix(in srgb, var(--project-accent-deep) 30%, transparent);
+  pointer-events: none;
+}
+[data-motif="stamp"] .stamp-head {
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.18em;
+}
+[data-motif="stamp"] .stamp-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: clamp(0.5rem, 1.6vw, 1.1rem);
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+[data-motif="stamp"] .stamp-mark {
+  display: flex;
+  flex: 1 1 9rem;
+  max-width: 11rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.8rem 1rem 0.75rem;
+  border: 2px solid color-mix(in srgb, var(--project-accent-deep) 62%, transparent);
+  border-radius: 999px;
+  transform: rotate(var(--rot, 0deg));
+}
+[data-motif="stamp"] .stamp-value {
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+}
+[data-motif="stamp"] .stamp-label {
+  letter-spacing: 0.1em;
+  text-align: center;
+  line-height: 1.3;
+}
+/* Scattered like impressions on a card rather than a row of buttons. */
+@media (min-width: 640px) {
+  [data-motif="stamp"] .stamp-mark:nth-child(2) {
+    margin-top: 1.1rem;
+  }
+  [data-motif="stamp"] .stamp-mark:nth-child(3) {
+    margin-top: 0.3rem;
+  }
+}
+[data-motif="stamp"] .stamp-sheet[data-stamp="pending"] .stamp-mark {
+  opacity: 0;
+}
+[data-motif="stamp"] .stamp-sheet[data-stamp="shown"] .stamp-mark {
+  animation: stamp-press 0.42s var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Ink already dry: the card is stamped, nothing presses. */
+  [data-motif="stamp"] .stamp-sheet[data-stamp="pending"] .stamp-mark {
+    opacity: 1;
+  }
+  [data-motif="stamp"] .stamp-sheet[data-stamp="shown"] .stamp-mark {
+    animation: none;
+  }
+}
+
+/* ===== scan / Sci-Fi — HUD terminal: mono caps, bracketed labels =========== */
+[data-motif="scan"] .cs-title {
+  font-family: var(--font-meta);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.9vw, 2.15rem);
+  line-height: 1.28;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+/* The back link already carries its own arrow, so scan adds no second one. */
+[data-motif="scan"] .cs-meta {
+  border-left: 2px solid color-mix(in srgb, var(--project-accent-deep) 65%, transparent);
+  padding-left: 0.9rem;
+}
+[data-motif="scan"] .cs-disciplines,
+[data-motif="scan"] .cs-year {
+  letter-spacing: 0.16em;
+}
+[data-motif="scan"] .cs-rule {
+  height: 2px;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--project-accent-deep) 70%, transparent) 1px,
+    transparent 1.2px
+  );
+  background-size: 7px 2px;
+}
+[data-motif="scan"] .cs-hero {
+  border-radius: 2px;
+  padding: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--project-tint) 30%, var(--color-surface));
+  box-shadow: none;
+}
+[data-motif="scan"] .cs-spec {
+  position: relative;
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 50%, transparent);
+  background: var(--color-surface);
+  box-shadow: none;
+}
+[data-motif="scan"] .cs-spec::before,
+[data-motif="scan"] .cs-spec::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+[data-motif="scan"] .cs-spec::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--project-accent-deep);
+  border-left: 2px solid var(--project-accent-deep);
+}
+[data-motif="scan"] .cs-spec::after {
+  right: -1px;
+  bottom: -1px;
+  border-right: 2px solid var(--project-accent-deep);
+  border-bottom: 2px solid var(--project-accent-deep);
+}
+[data-motif="scan"] .cs-dt {
+  letter-spacing: 0.18em;
+}
+[data-motif="scan"] .cs-label {
+  letter-spacing: 0.16em;
+}
+[data-motif="scan"] .cs-label::before {
+  content: "[";
+  margin-right: 0.15rem;
+  opacity: 0.6;
+}
+[data-motif="scan"] .cs-label::after {
+  content: "]";
+  margin-left: 0.15rem;
+  opacity: 0.6;
+}
+[data-motif="scan"] .cs-evidence {
+  border-radius: 2px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 40%, transparent);
+}
+[data-motif="scan"] .cs-gallery .clay-sm,
+[data-motif="scan"] .cs-gallery .rounded-\[24px\] {
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 32%, transparent);
+}
+[data-motif="scan"] .cs-navlink {
+  border-radius: 2px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 40%, transparent);
+  box-shadow: none;
+}
+
+/* --- signature: one rendered plate, one scan pass, the study's own readout - */
+[data-motif="scan"] .scan-plate {
+  display: grid;
+  gap: 1.25rem;
+}
+@media (min-width: 768px) {
+  [data-motif="scan"] .scan-plate {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    align-items: start;
+    gap: 1.6rem;
+  }
+}
+[data-motif="scan"] .scan-still {
+  margin: 0;
+}
+[data-motif="scan"] .scan-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--color-well);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 55%, transparent);
+}
+[data-motif="scan"] .scan-frame::before,
+[data-motif="scan"] .scan-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+[data-motif="scan"] .scan-frame::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid var(--project-accent-deep);
+  border-left: 2px solid var(--project-accent-deep);
+}
+[data-motif="scan"] .scan-frame::after {
+  right: 0;
+  bottom: 0;
+  border-right: 2px solid var(--project-accent-deep);
+  border-bottom: 2px solid var(--project-accent-deep);
+}
+/* A full-height sheet whose bottom edge is the beam: translating it sweeps the
+   line down once, without animating a layout property. */
+[data-motif="scan"] .scan-beam {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent calc(100% - 2px),
+    color-mix(in srgb, var(--project-accent-deep) 85%, transparent) 100%
+  );
+}
+[data-motif="scan"] .scan-plate[data-scan="shown"] .scan-beam {
+  animation: scan-pass 0.7s var(--ease-out) both;
+}
+[data-motif="scan"] .scan-log {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid color-mix(in srgb, var(--project-accent) 35%, transparent);
+}
+[data-motif="scan"] .scan-log-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--color-ink) 16%, transparent);
+}
+[data-motif="scan"] .scan-log-num {
+  letter-spacing: 0.14em;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-motif="scan"] .scan-plate[data-scan="shown"] .scan-beam {
+    animation: none;
+  }
+}
+
+/* ===== shelf / Nong Kati — storefront: chips, round cards, product rows ==== */
+[data-motif="shelf"] .cs-title {
+  font-weight: 600;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  letter-spacing: -0.02em;
+}
+[data-motif="shelf"] .cs-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+[data-motif="shelf"] .cs-meta > * {
+  margin: 0;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-tint) 62%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--project-accent) 20%, transparent);
+}
+[data-motif="shelf"] .cs-disciplines,
+[data-motif="shelf"] .cs-year {
+  letter-spacing: 0.06em;
+}
+[data-motif="shelf"] .cs-hero {
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 26%, transparent);
+}
+[data-motif="shelf"] .cs-spec {
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 24%, transparent);
+}
+[data-motif="shelf"] .cs-dt {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--project-tint) 70%, var(--color-surface));
+  letter-spacing: 0.1em;
+}
+[data-motif="shelf"] .cs-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+}
+[data-motif="shelf"] .cs-label::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--project-accent);
+  flex: none;
+}
+[data-motif="shelf"] .cs-evidence {
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 22%, transparent);
+}
+[data-motif="shelf"] .cs-gallery .clay-sm,
+[data-motif="shelf"] .cs-gallery .rounded-\[24px\] {
+  border-radius: 14px;
+  background: var(--color-surface);
+  padding: 6px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 18%, transparent);
+}
+[data-motif="shelf"] .cs-navlink {
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 22%, transparent);
+}
+
+/* --- signature: three shipped screens standing on one shelf rail ----------- */
+[data-motif="shelf"] .shelf-track {
+  display: flex;
+  gap: clamp(0.7rem, 1.8vw, 1.1rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding-bottom: 0.4rem;
+}
+[data-motif="shelf"] .shelf-item {
+  display: flex;
+  flex: 0 0 min(78vw, 24rem);
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  scroll-snap-align: start;
+}
+[data-motif="shelf"] .shelf-tag {
+  letter-spacing: 0.08em;
+}
+[data-motif="shelf"] .shelf-frame {
+  position: relative;
+  height: clamp(10rem, 15vw, 13rem);
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--color-well);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 22%, transparent);
+}
+/* One product height across the row, so the three screens sit on the rail as
+   equal objects however different their captures are; the top of each page
+   stays visible. */
+[data-motif="shelf"] .shelf-frame > img {
+  object-position: top;
+}
+[data-motif="shelf"] .shelf-rail {
+  height: 10px;
+  margin-top: 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--project-tint) 78%, var(--color-surface)) 0%,
+    color-mix(in srgb, var(--project-accent) 30%, var(--project-tint)) 100%
+  );
+  box-shadow: 0 14px 18px -12px color-mix(in srgb, var(--color-ink) 45%, transparent);
+}
+[data-motif="shelf"] .shelf[data-shelf="pending"] .shelf-item {
+  opacity: 0;
+}
+[data-motif="shelf"] .shelf[data-shelf="shown"] .shelf-item {
+  animation: shelf-land 0.5s var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-motif="shelf"] .shelf[data-shelf="pending"] .shelf-item {
+    opacity: 1;
+  }
+  [data-motif="shelf"] .shelf[data-shelf="shown"] .shelf-item {
+    animation: none;
+  }
+}
+/* ---------------------------------------------------------------------------
+ * Card languages
+ *
+ * Home and /work browse the same seven projects, so the tiles can't restyle
+ * their own geometry — the grid has to stay one rhythm. Each card instead
+ * speaks its project's dialect inside a fixed footprint: type, casing and
+ * tracking, corner character, ring/rule/shadow behaviour, and how the tint is
+ * composed (full mat, surface with an accent bar, painted sticker). Outer
+ * padding and cover aspect ratios stay shared, so rows still align.
+ * ------------------------------------------------------------------------- */
+
+/* Meta on a 62% tint falls short of 4.5:1 at 11px, so cards get the same
+   ink-heavy label mix the band uses. Surfaces below only get lighter. */
+.card-theme .card-meta {
+  color: color-mix(in srgb, var(--color-ink) 80%, var(--color-muted));
+}
+
+/* ===== paddy / TK — field notes: warm ring, gold dash, editorial title ===== */
+[data-motif="paddy"].card-theme {
+  border-radius: 26px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 34%, transparent),
+    var(--shadow-clay);
+}
+[data-motif="paddy"] .card-cover {
+  border-radius: 17px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 24%, transparent);
+}
+[data-motif="paddy"] .card-dot {
+  width: 11px;
+  height: 2px;
+  border-radius: 1px;
+}
+[data-motif="paddy"] .card-kicker,
+[data-motif="paddy"] .card-year {
+  letter-spacing: 0.12em;
+}
+[data-motif="paddy"] .card-title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+/* ===== weave / Anim Hoodie — studio plate: centred, tracked, hairline ====== */
+[data-motif="weave"].card-theme {
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--project-accent) 30%, transparent),
+    var(--shadow-clay);
+}
+[data-motif="weave"] .card-cover {
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 20%, transparent);
+}
+[data-motif="weave"] .card-caption {
+  text-align: center;
+}
+[data-motif="weave"] .card-meta {
+  justify-content: center;
+  gap: 0.9rem;
+  letter-spacing: 0.16em;
+}
+[data-motif="weave"] .card-year {
+  margin-left: 0;
+}
+[data-motif="weave"] .card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 0;
+}
+[data-motif="weave"] .card-title {
+  font-weight: 500;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+[data-motif="weave"] .card-roles {
+  letter-spacing: 0.02em;
+}
+/* Cloth tips and settles back: a 1.5° lean on hover or focus, released on
+   leave. Kept inside the motion-allowed query so reduced motion never tilts. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-motif="weave"].card-theme:hover,
+  [data-motif="weave"].card-theme:focus-visible {
+    transform: translateY(-2px) rotate(1.5deg);
+  }
+  [data-motif="weave"].card-theme:active {
+    transform: translateY(1px) scale(0.995) rotate(1.5deg);
+  }
+}
+
+/* ===== tide / Pattaya — magazine cut: square, double rule, caps masthead === */
+[data-motif="tide"].card-theme {
+  border-radius: 2px;
+  background-color: var(--color-surface);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-ink) 12%, transparent),
+    var(--shadow-clay);
+}
+[data-motif="tide"] .card-cover {
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink) 12%, transparent);
+}
+/* Same 16px cover-to-caption distance as every other tile: the 3px double rule
+   lives inside that space instead of adding to it, so rows stay flush. */
+[data-motif="tide"] .card-caption {
+  margin-top: 0;
+  padding-top: calc(1rem - 3px);
+  border-top: 3px double color-mix(in srgb, var(--project-accent-deep) 50%, transparent);
+}
+[data-motif="tide"] .card-dot {
+  width: 8px;
+  height: 3px;
+  border-radius: 0;
+}
+[data-motif="tide"] .card-meta {
+  letter-spacing: 0.12em;
+}
+[data-motif="tide"] .card-title {
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+/* ===== circuit / BlueVenture — spec card: surface, accent bar, mono type === */
+[data-motif="circuit"].card-theme {
+  border-radius: 4px;
+  background-color: var(--color-surface);
+  background-image: linear-gradient(
+    to right,
+    var(--project-accent) 0 100%
+  );
+  background-size: 100% 4px;
+  background-position: top left;
+  background-repeat: no-repeat;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--project-accent) 38%, transparent),
+    var(--shadow-clay);
+}
+[data-motif="circuit"] .card-cover {
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 28%, transparent);
+}
+[data-motif="circuit"] .card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 0;
+}
+[data-motif="circuit"] .card-meta {
+  letter-spacing: 0.06em;
+}
+[data-motif="circuit"] .card-title {
+  font-family: var(--font-meta);
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+[data-motif="circuit"] .card-roles {
+  font-family: var(--font-meta);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+/* ===== stamp / EN KKU — poster sticker: square, offset ink, heavy caps ===== */
+[data-motif="stamp"].card-theme {
+  border-radius: 2px;
+  background-color: var(--color-surface);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--project-accent-deep) 55%, transparent),
+    6px 6px 0 color-mix(in srgb, var(--project-accent) 24%, transparent);
+}
+[data-motif="stamp"] .card-cover {
+  border-radius: 0;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--color-ink) 8%, transparent);
+}
+[data-motif="stamp"] .card-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 0;
+}
+[data-motif="stamp"] .card-meta {
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+/* The boxed year eats the row, so the disciplines wrap instead of ellipsing —
+   a truncated "GRAPHIC DESI…" reads as a bug, not a style. */
+[data-motif="stamp"] .card-kicker {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+[data-motif="stamp"] .card-year {
+  padding: 1px 6px;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 50%, transparent);
+  border-radius: 2px;
+}
+[data-motif="stamp"] .card-title {
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+/* ===== scan / Sci-Fi — HUD tile: surface, corner ticks, mono caps ========== */
+[data-motif="scan"].card-theme {
+  position: relative;
+  border-radius: 2px;
+  background-color: var(--color-surface);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--project-accent) 45%, transparent),
+    var(--shadow-clay);
+}
+[data-motif="scan"].card-theme::before,
+[data-motif="scan"].card-theme::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+[data-motif="scan"].card-theme::before {
+  top: 6px;
+  left: 6px;
+  border-top: 2px solid color-mix(in srgb, var(--project-accent-deep) 70%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--project-accent-deep) 70%, transparent);
+}
+[data-motif="scan"].card-theme::after {
+  right: 6px;
+  bottom: 6px;
+  border-right: 2px solid color-mix(in srgb, var(--project-accent-deep) 70%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--project-accent-deep) 70%, transparent);
+}
+[data-motif="scan"] .card-cover {
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 30%, transparent);
+}
+[data-motif="scan"] .card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 0;
+}
+[data-motif="scan"] .card-meta {
+  letter-spacing: 0.14em;
+}
+[data-motif="scan"] .card-title {
+  font-family: var(--font-meta);
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.07em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+/* ===== shelf / Nong Kati — storefront tile: chips, round corners, warm ===== */
+[data-motif="shelf"].card-theme {
+  border-radius: 22px;
+  background-color: color-mix(in srgb, var(--project-tint) 74%, var(--color-surface));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 22%, transparent),
+    var(--shadow-clay);
+}
+[data-motif="shelf"] .card-cover {
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--project-accent) 16%, transparent);
+}
+[data-motif="shelf"] .card-meta {
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+[data-motif="shelf"] .card-dot {
+  display: none;
+}
+[data-motif="shelf"] .card-kicker,
+[data-motif="shelf"] .card-year {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--project-accent) 18%, transparent);
+  letter-spacing: 0.06em;
+}
+[data-motif="shelf"] .card-year {
+  margin-left: 0;
+}
+[data-motif="shelf"] .card-title {
+  font-weight: 600;
+  font-size: 1.45rem;
+  letter-spacing: -0.02em;
+}
+
+
+/* ===========================================================================
+ * Project bands — each case study leaves the porcelain
+ * ========================================================================= */
+.cs-band {
+  --band-ground: #0b0b0c;
+  --band-ink: #f4efe6;
+  --band-accent: #d9ab55;
+  /* Opaque accent-on-ground rule: 62% keeps every motif above 3:1 (AA non-text). */
+  --band-rule: color-mix(in srgb, var(--band-accent) 62%, var(--band-ground));
+
+  --color-canvas: var(--band-ground);
+  --color-surface: color-mix(in srgb, var(--band-ground) 84%, var(--band-ink));
+  --color-well: color-mix(in srgb, var(--band-ground) 88%, #000);
+  --color-ink: var(--band-ink);
+  --color-muted: color-mix(in srgb, var(--band-ink) 80%, var(--band-ground));
+  --color-faint: color-mix(in srgb, var(--band-ink) 66%, var(--band-ground));
+  --color-accent: var(--band-accent);
+  --color-line: color-mix(in srgb, var(--band-ink) 22%, transparent);
+  --color-on-accent: var(--band-ground);
+
+  color-scheme: dark;
+  overflow: hidden;
+  padding-bottom: 2rem;
+  background: var(--band-ground);
+  border-bottom: 1px solid var(--band-rule);
+}
+
+.cs-band::before {
+  background:
+    radial-gradient(
+      115% 90% at 82% -18%,
+      color-mix(in srgb, var(--band-accent) 24%, transparent) 0%,
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--band-ground) 88%, #000) 0%,
+      var(--band-ground) 62%,
+      color-mix(in srgb, var(--band-ground) 86%, #000) 100%
+    );
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.cs-band::after {
+  opacity: 0.55;
+}
+
+.cs-band > :not(.cs-watermark):not(.cs-sheen) {
+  position: relative;
+  z-index: 1;
+}
+
+[data-motif="weave"] .cs-band {
+  --band-ground: #0b0b0c;
+  --band-ink: #f4efe6;
+  --band-accent: #d9ab55;
+  /* Opaque accent-on-ground rule: 62% keeps every motif above 3:1 (AA non-text). */
+  --band-rule: color-mix(in srgb, var(--band-accent) 62%, var(--band-ground));
+}
+[data-motif="paddy"] .cs-band {
+  --band-ground: #10251a;
+  --band-ink: #f4edd9;
+  --band-accent: #e6c777;
+}
+[data-motif="tide"] .cs-band {
+  --band-ground: #06202a;
+  --band-ink: #eaf5f4;
+  --band-accent: #ff9077;
+}
+[data-motif="circuit"] .cs-band {
+  --band-ground: #061426;
+  --band-ink: #e9f2ff;
+  --band-accent: #6fd0ff;
+}
+[data-motif="stamp"] .cs-band {
+  --band-ground: #280a10;
+  --band-ink: #f8ebe4;
+  --band-accent: #ff8a76;
+}
+[data-motif="scan"] .cs-band {
+  --band-ground: #04120f;
+  --band-ink: #e3fff4;
+  --band-accent: #4ff0c8;
+}
+[data-motif="shelf"] .cs-band {
+  --band-ground: #24160f;
+  --band-ink: #fbeee1;
+  --band-accent: #ffb27a;
+}
+
+.cs-band .text-accent {
+  color: var(--band-accent);
+}
+.cs-band .cs-back {
+  color: color-mix(in srgb, var(--band-ink) 76%, var(--band-ground));
+}
+.cs-band .cs-back:hover {
+  color: var(--band-ink);
+}
+.cs-band .cs-title {
+  color: var(--band-ink);
+}
+.cs-band .text-faint {
+  color: color-mix(in srgb, var(--band-ink) 70%, var(--band-ground));
+}
+
+.cs-band .project-mat {
+  background-color: color-mix(in srgb, var(--band-accent) 7%, var(--band-ground));
+}
+.cs-band .clay,
+.cs-band .clay-lg {
+  box-shadow:
+    0 26px 60px rgb(0 0 0 / 0.5),
+    0 2px 0 color-mix(in srgb, var(--band-accent) 22%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--band-accent) 26%, transparent);
+}
+.cs-band .project-rule {
+  background: linear-gradient(
+    to right,
+    var(--band-accent) 0%,
+    var(--band-rule) 58%,
+    transparent 92%
+  );
+}
+
+.cs-watermark {
+  position: absolute;
+  right: clamp(-0.6rem, -1.2vw, -0.2rem);
+  bottom: 1.4rem;
+  z-index: 0;
+  margin: 0;
+  font-family:
+    "Noto Sans Thai", "Sarabun", "Leelawadee UI", "Thonburi", var(--font-display),
+    system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 7.4vw, 7.5rem);
+  line-height: 0.86;
+  letter-spacing: 0.01em;
+  color: var(--band-ink);
+  opacity: 0.09;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+.cs-watermark[data-mark="stamp"] {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  opacity: 0.1;
+}
+
+/* --- one-shot band effects: one per project ------------------------------ */
+.cs-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: none;
+  pointer-events: none;
+}
+
+@keyframes band-wind {
+  from { opacity: 0; transform: translate3d(-65%, 0, 0) skewX(-14deg); }
+  22% { opacity: 0.6; }
+  to { opacity: 0; transform: translate3d(65%, 0, 0) skewX(-14deg); }
+}
+@keyframes band-crest {
+  from { opacity: 0; transform: translate3d(0, 42%, 0); }
+  38% { opacity: 0.85; }
+  to { opacity: 0; transform: translate3d(0, -12%, 0); }
+}
+@keyframes band-trace {
+  from { opacity: 0; transform: translate3d(-100%, 0, 0); }
+  15% { opacity: 1; }
+  to { opacity: 0; transform: translate3d(100%, 0, 0); }
+}
+@keyframes band-flash {
+  0% { opacity: 0; }
+  16% { opacity: 0.18; }
+  100% { opacity: 0; }
+}
+@keyframes band-beam {
+  from { opacity: 0; transform: translate3d(0, -100%, 0); }
+  14% { opacity: 0.9; }
+  86% { opacity: 0.9; }
+  to { opacity: 0; transform: translate3d(0, 0, 0); }
+}
+@keyframes band-lights {
+  from { opacity: 0; transform: translate3d(0, -6%, 0); }
+  26% { opacity: 0.75; }
+  58% { opacity: 0.28; }
+  to { opacity: 0; transform: translate3d(0, 0, 0); }
+}
+@keyframes wm-stamp {
+  from { opacity: 0; transform: translate3d(0, -0.6em, 0) scale(1.06); }
+  to { opacity: 0.1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+[data-motif="paddy"] .cs-sheen {
+  display: block;
+  inset: -12% -10%;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--band-accent) 20%, transparent) 48%,
+    transparent 68%
+  );
+}
+[data-motif="tide"] .cs-sheen {
+  display: block;
+  inset: 35% 0 -20%;
+  background: radial-gradient(
+    120% 70% at 50% 100%,
+    color-mix(in srgb, var(--band-accent) 24%, transparent) 0%,
+    transparent 68%
+  );
+}
+[data-motif="circuit"] .cs-sheen {
+  display: block;
+  top: 42%;
+  inset-inline: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--band-accent) 45%, transparent 85%);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--band-accent) 60%, transparent);
+}
+[data-motif="stamp"] .cs-sheen {
+  display: block;
+  background: #fff;
+}
+[data-motif="scan"] .cs-sheen {
+  display: block;
+  background: linear-gradient(
+    to bottom,
+    transparent calc(100% - 2px),
+    color-mix(in srgb, var(--band-accent) 70%, transparent) 100%
+  );
+}
+[data-motif="shelf"] .cs-sheen {
+  display: block;
+  background:
+    radial-gradient(28% 44% at 18% 0%, color-mix(in srgb, var(--band-accent) 26%, transparent), transparent 70%),
+    radial-gradient(28% 44% at 50% 0%, color-mix(in srgb, var(--band-accent) 22%, transparent), transparent 70%),
+    radial-gradient(28% 44% at 82% 0%, color-mix(in srgb, var(--band-accent) 26%, transparent), transparent 70%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-motif="paddy"] .cs-sheen { animation: band-wind 0.7s var(--ease-out) 0.1s both; }
+  [data-motif="tide"] .cs-sheen { animation: band-crest 0.7s var(--ease-out) 0.1s both; }
+  [data-motif="circuit"] .cs-sheen { animation: band-trace 0.7s var(--ease-out) 0.1s both; }
+  [data-motif="stamp"] .cs-sheen { animation: band-flash 0.36s ease-out 0.05s both; }
+  [data-motif="stamp"] .cs-watermark { animation: wm-stamp 0.7s var(--ease-spring) 0.16s both; }
+  [data-motif="scan"] .cs-sheen { animation: band-beam 0.7s var(--ease-out) 0.12s both; }
+  [data-motif="shelf"] .cs-sheen { animation: band-lights 0.7s var(--ease-out) 0.1s both; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Motif-level display rules are more specific, so match their weight. */
+  [data-motif] .cs-sheen { display: none; animation: none; }
+  [data-motif] .cs-watermark { display: none; animation: none; }
+}
+
+/* ===========================================================================
+ * Custom scrollbar + scroll progress
+ * ========================================================================= */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) color-mix(in srgb, var(--color-well) 70%, var(--color-canvas));
+}
+
+@supports selector(::-webkit-scrollbar) {
+  html { scrollbar-width: auto; }
+  ::-webkit-scrollbar { width: 15px; height: 15px; }
+  ::-webkit-scrollbar-track {
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-well) 92%, var(--color-canvas)),
+      color-mix(in srgb, var(--color-well) 70%, var(--color-canvas))
+    );
+    border-left: 1px solid var(--color-line);
+  }
+  ::-webkit-scrollbar-thumb {
+    min-height: 64px;
+    border: 4px solid transparent;
+    border-radius: 999px;
+    background-color: var(--color-accent);
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-accent) 70%, #fff) 0%,
+      var(--color-accent) 48%,
+      color-mix(in srgb, var(--color-accent) 76%, #000) 100%
+    );
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 55%, #000);
+    transition: background-color 160ms ease-out, box-shadow 160ms ease-out;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-accent) 82%, #fff) 0%,
+      color-mix(in srgb, var(--color-accent) 88%, #000) 100%
+    );
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 70%, #000),
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 24%, transparent);
+  }
+  ::-webkit-scrollbar-thumb:active {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-accent) 90%, #fff) 0%,
+      var(--color-accent) 100%
+    );
+  }
+  ::-webkit-scrollbar-corner { background: var(--color-canvas); }
+}
+
+.scroll-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 60;
+  height: 3px;
+  display: none;
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--progress-ink, var(--color-accent)) 60%, #fff),
+    var(--progress-ink, var(--color-accent))
+  );
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress { display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-progress {
+      transform: scaleX(0);
+      animation: progress-fill linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+@keyframes progress-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* ===========================================================================
+ * Experience — a workshop wall, not a list of cards
+ * ========================================================================= */
+.exp-page {
+  position: relative;
+  isolation: isolate;
+}
+.exp-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--color-ink) 5%, transparent) 1px, transparent 1.2px),
+    repeating-linear-gradient(
+      92deg,
+      transparent 0 68px,
+      color-mix(in srgb, var(--color-ink) 3.5%, transparent) 68px 69px
+    ),
+    radial-gradient(
+      90% 55% at 88% -8%,
+      color-mix(in srgb, var(--color-accent) 9%, transparent),
+      transparent 70%
+    );
+  background-size: 19px 21px, 100% 100%, 100% 100%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+}
+
+.exp-list {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  list-style: none;
+}
+.exp-list::before {
+  content: "";
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  left: 0.3rem;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-accent) 55%, transparent),
+    var(--color-line) 40%,
+    transparent 100%
+  );
+}
+@media (min-width: 768px) {
+  .exp-list { padding-left: 3.5rem; }
+  .exp-list::before { left: 1.35rem; }
+}
+
+.exp-item { position: relative; }
+.exp-item::before {
+  content: "";
+  position: absolute;
+  top: 2.1rem;
+  left: -1.5rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background: var(--color-canvas);
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-canvas) 90%, transparent);
+  transform: translateX(-50%);
+}
+@media (min-width: 768px) {
+  .exp-item::before {
+    top: 2.4rem;
+    left: -2.15rem;
+    width: 13px;
+    height: 13px;
+  }
+}
+
+.exp-card {
+  --exp-tint: var(--color-surface);
+  --exp-key: var(--color-accent);
+  position: relative;
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--exp-key) 24%, transparent);
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--exp-tint) 92%, var(--color-canvas)) 0%,
+    color-mix(in srgb, var(--exp-tint) 62%, var(--color-surface)) 62%,
+    var(--color-surface) 100%
+  );
+  padding: 1.35rem;
+  box-shadow: var(--shadow-clay-sm);
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
+}
+@media (min-width: 768px) {
+  .exp-card { padding: 1.9rem; }
+}
+.exp-card:hover,
+.exp-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-clay);
+}
+.exp-card::after {
+  content: "";
+  position: absolute;
+  inset-inline: 1.35rem;
+  top: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--exp-key),
+    color-mix(in srgb, var(--exp-key) 20%, transparent)
+  );
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 320ms var(--ease-out);
+}
+.exp-card:hover::after,
+.exp-card:focus-within::after { transform: scaleX(1); }
+
+.exp-item[data-track="video"] .exp-card { --exp-tint: #e7ddd2; --exp-key: #8a4a2c; }
+.exp-item[data-track="motion"] .exp-card { --exp-tint: #e9dcd2; --exp-key: #a63d1b; }
+.exp-item[data-track="3d"] .exp-card { --exp-tint: #e2ddd4; --exp-key: #4a5a63; }
+.exp-item[data-track="graphic"] .exp-card { --exp-tint: #e8e2d3; --exp-key: #6b5a36; }
+
+.exp-index {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-meta);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--exp-key) 78%, var(--color-ink));
+}
+.exp-mark {
+  display: inline-grid;
+  width: 1.7rem;
+  height: 1.7rem;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--exp-key) 40%, transparent);
+  background: color-mix(in srgb, var(--exp-key) 10%, transparent);
+  font-family: var(--font-meta);
+  font-size: 0.6rem;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--exp-key) 82%, var(--color-ink));
+}
+
+/* --- editorial header ------------------------------------------------- */
+/* The page opens like a spread: a short deck on the left, the résumé on the
+   right, and the span set as a graphic underneath. The span is aria-hidden in
+   the markup because the meta line already says it. */
+.exp-deck {
+  max-width: 46ch;
+  color: var(--color-muted);
+  font-size: var(--text-lede);
+  line-height: 1.5;
+}
+
+.exp-hero-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  margin-top: 1.6rem;
+}
+
+.exp-years {
+  margin-top: 1.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 9.5vw, 8.5rem);
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--color-ink) 6%, transparent);
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--color-ink) 16%, transparent);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* --- index rail ------------------------------------------------------- */
+/* A designer's index page: numbers down the side, the entries to the right.
+   Sticky on desktop, dropped from the flow on small screens where the list is
+   already linear and the rail would just be a second navigation. */
+.exp-layout {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .exp-layout {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 3rem;
+    align-items: start;
+  }
+}
+
+.exp-rail {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .exp-rail {
+    position: sticky;
+    top: 7rem;
+    display: block;
+  }
+}
+
+.exp-rail-link {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.3rem 0;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  color: var(--color-muted);
+  transition:
+    color 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+.exp-rail-link:hover,
+.exp-rail-link:focus-visible {
+  color: var(--color-ink);
+  transform: translateX(2px);
+}
+
+.exp-rail-num {
+  font-family: var(--font-meta);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-faint);
+}
+
+.exp-rail-note {
+  margin-top: 1.25rem;
+  font-family: var(--font-meta);
+  font-size: var(--text-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+/* --- entry head ------------------------------------------------------- */
+.exp-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+}
+
+.exp-head-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.exp-head-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.exp-ordinal {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--exp-key) 45%, var(--color-ink));
+  transition: color 200ms var(--ease-out);
+}
+
+.exp-card:hover .exp-ordinal,
+.exp-card:focus-within .exp-ordinal {
+  color: var(--exp-key);
+}
+
+.exp-type {
+  font-family: var(--font-meta);
+  font-size: var(--text-meta);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--exp-key) 55%, var(--color-muted));
+}
+
+.exp-role {
+  font-size: clamp(1.3rem, 2.1vw, 1.9rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.exp-year {
+  font-family: var(--font-meta);
+  font-size: var(--text-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+}
+
+.exp-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-meta);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.exp-now::before {
+  content: "";
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+/* Jumping in from the index should land with the card lit, not just scrolled. */
+.exp-item:target .exp-card {
+  border-color: var(--exp-key);
+  box-shadow: var(--shadow-clay);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exp-card,
+  .exp-card::after,
+  .exp-rail-link,
+  .exp-ordinal { transition: none; }
+}
+
+/* Thai front door: Thai glyphs arrive through the fallbacks in the font
+ * stacks above, so this only fixes what Thai typography needs that the Latin
+ * scale does not give it. Thai stacks vowels and tone marks above and below
+ * the baseline: the 0.92 display leading clips them (a marked syllable reaches
+ * ~1.2em above the baseline in Bai Jamjuree), and the -0.035em Latin tracking
+ * closes the gaps between vowels and their consonants, so both are loosened
+ * here. Small meta type likewise needs air above it, not letter spacing, which
+ * reads as a break between Thai syllables.
+ */
+.thai-type {
+  --text-display-xl--line-height: 1.24;
+  --text-display-xl--letter-spacing: -0.005em;
+  --text-display-l--line-height: 1.26;
+  --text-display-l--letter-spacing: -0.005em;
+  --text-title--line-height: 1.4;
+  --text-title--letter-spacing: 0;
+  /* section heads step up to text-3xl at md, whose Latin 1.2 clips marks */
+  --text-3xl--line-height: 1.34;
+  --text-lede--line-height: 1.75;
+  --text-meta--line-height: 1.45;
+  --text-meta--letter-spacing: 0.04em;
+}
+
+/* In-band inherited text follows the band's own ink. */
+.cs-band { color: var(--band-ink); }
+/* ---------------------------------------------------------------------------
+ * Noise gradient background — liquid colour + film grain
+ *
+ * One fixed layer behind every page: four oversized, heavily blurred colour
+ * fields drifting under two static film-grain tiles. Colour comes from four
+ * variables, so a case study can warm or cool the whole room without touching
+ * a token.
+ *
+ * Only `transform` animates — never filter, blur, radius or opacity — which
+ * keeps the drift on the compositor. The fields are non-circular ellipses
+ * rotating in opposite directions at different speeds, so the silhouette
+ * changes as much as the position and the result reads as liquid rather than
+ * as circles sliding about. The tooth over them judders on its own clock.
+ *
+ * Readability: every field multiplies into the canvas and the layer is masked
+ * to full strength over the first viewport and a faint tint below it, so the
+ * darkest composite body copy can sit on stays light. Densities are set by
+ * measurement, not taste: with the tooth at 0.19 on a 170px tile — measured
+ * while an extra page-wide fog layer was still running, so these are floors.
+ * It ships thinner than that now (0.12 on a 200px tile, faded out past the
+ * hero), so the floors below gained headroom rather than spending it —
+ * the darkest pixel behind real text measures 4.89:1 on the weave study and
+ * 4.62:1 on the scan study, with --color-ink at 6.4:1 — the
+ * 4.5:1 floor with almost nothing to spare, which is why the two tokens below
+ * carry a second darkening. The grain used to be lifted into 0.80–1.00 so it
+ * could only lighten; that also made it invisible (sd 1.9 on real pixels), so
+ * the plates are ink now and spend the same headroom the fields do. Their
+ * strength is measured, not guessed — the numbers live in the film-grain
+ * comment further down. Cards keep their own surfaces.
+ *
+ * Knobs, all in one place:
+ *   --grain-a … --grain-d   the four field colours (overridden per motif)
+ *   --grain-opacity         ink tooth strength         (default 0.12, faded
+ *                           out once the hero is scrolled past)
+ *   --fine-opacity          the dither plate under it  (default 0.03)
+ *   --grain-fade            1 at the top of the page, 0 past the hero
+ *   --grain-size            coarse tile edge           (default 200px)
+ *   --grain-speed           drift multiplier: 2 = twice as fast
+ *   --grain-shimmer         1 = judder the tooth (default), 0 = park it
+ *   --gradient-strength     hero band colour mix (0.9)
+ *   --distort-strength      warp + split inside the band (0.35)
+ *   --distort-streak        darkening of the band (0)
+ *   --lens-size             radius of the folded disc (1.15)
+ *   --text-invert           0 = invert over dark areas, 1 = always (0)
+ *   --grain-amount          hero film grain (0.09)
+ * ------------------------------------------------------------------------- */
+
+/* Registered so a project's palette arrives as a cross-fade instead of a snap
+   (see the body transition below). Engines without @property simply swap. */
+@property --grain-a {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c4623a;
+}
+@property --grain-b {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f2d3bc;
+}
+@property --grain-c {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #2f6b70;
+}
+@property --grain-d {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c9776a;
+}
+
+:root {
+  /* Warm default: an orange, a deep brown and a purple, so the hero gradient
+     can run pale beige → orange/brown → a violet edge. These are darker and more
+     saturated than a paper palette; the hero's text inverts against them rather
+     than the colours being lifted to fit the text. */
+  --grain-a: #c9772b;
+  --grain-b: #3a1f14;
+  --grain-c: #5b2a86;
+  --grain-d: #c9776a;
+
+  --grain-opacity: 0.12;
+  --fine-opacity: 0.03;
+  --grain-size: 200px;
+  --grain-speed: 2;
+  --grain-shimmer: 1;
+  /* Written by GrainBackground: 1 at the top of the page, 0 once the hero has
+     been scrolled past. The plates multiply their opacity by it. */
+  --grain-fade: 1;
+
+  /* Hero gradient + headline distortion. The three field colours are mixed 35%
+     toward the paper in JS and then lifted until each clears relative luminance
+     0.30, so ink keeps 4.5:1 even where the band is at its strongest.
+     --distort-strength scales the warp and the channel split, which only ever
+     affects pixels inside the moving band; --distort-streak darkens it. */
+  --gradient-strength: 0.9;
+  --distort-strength: 0.35;
+  --distort-streak: 0;
+  --lens-size: 1.15;
+  --text-invert: 0;
+  --grain-amount: 0.09;
+}
+
+body {
+  transition:
+    --grain-a 600ms var(--ease-out),
+    --grain-b 600ms var(--ease-out),
+    --grain-c 600ms var(--ease-out),
+    --grain-d 600ms var(--ease-out);
+}
+
+/* The homepage stage still isolates its hero from the reel below. */
+.liquid-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  /* Chroma is the one thing the palette can spend freely: pulling saturation
+     up makes the fields read as colour while the multiply stays at the same
+     luminance, so the contrast floor below does not move (measured: identical
+     worst pixel at 1.7). */
+  filter: saturate(1.7);
+  /* Strongest over the first viewport, a whisper at the floor. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 58%,
+    rgb(0 0 0 / 0.62) 78%,
+    rgb(0 0 0 / 0.38) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 58%,
+    rgb(0 0 0 / 0.62) 78%,
+    rgb(0 0 0 / 0.38) 100%
+  );
+}
+
+/* Hero gradient + headline texture. One opaque canvas behind the content
+   (z-index 0 against the content's 10), masked away over the bottom quarter so
+   the client row sits on plain paper rather than on a cut edge. */
+.hero-distort {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Hidden until the component says it is presenting. The context is opaque
+     (alpha: false), so an undrawn canvas is black; this keeps that out of the
+     page on every fallback path — no WebGL, wrapped text, Thai, small screens. */
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 75%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 75%, transparent 100%);
+}
+
+/* No fade on reveal: the first frame is drawn before this attribute is set, so
+   the swap is pixel-identical with the text it replaces. A transition here would
+   fade the headline out and back in. */
+[data-distort="on"] .hero-distort {
+  opacity: 1;
+}
+
+/* The canvas carries a raster of these lines, so the DOM copy is hidden only
+   while the effect is presenting. Removing `data-distort` is the whole fallback:
+   if WebGL, the shader, the upload or the fonts fail, this never applies. */
+[data-distort="on"]:not([data-distort-debug="on"]) [data-distort-text],
+[data-distort="on"]:not([data-distort-debug="on"]) [data-distort-text] * {
+  color: transparent !important;
+}
+
+/* The copy the canvas does not rasterise — eyebrow, lede, cue, availability.
+   White type in `difference` mode becomes 1 - background, exactly the inversion
+   the shader applies to the headline, so these lines flip to pale over the lens
+   and back to near-black on the beige instead of disappearing. The attribute is
+   set by HeroDistort at runtime; nothing is added to the markup. */
+[data-distort="on"] [data-distort-blend] {
+  mix-blend-mode: difference;
+}
+
+[data-distort="on"] [data-distort-blend] p:not([data-distort-text]),
+[data-distort="on"] [data-distort-blend] a,
+[data-distort="on"] [data-distort-blend] a span {
+  color: #fff !important;
+}
+
+/* ?distort=debug: the real text stays visible in red at 35% beneath the canvas,
+   so any drift between the raster and the layout shows up immediately. */
+[data-distort-debug="on"] [data-distort-text],
+[data-distort-debug="on"] [data-distort-text] * {
+  color: #f00 !important;
+  opacity: 0.35;
+}
+
+/* While the canvas owns the headline its own reveal replaces the CSS entrance.
+   Running both would slide the hidden text out from under the raster. */
+[data-distort="on"] .hero-line > span,
+[data-distort="on"] [data-distort-text].rise {
+  animation: none;
+}
+
+.grain-bg__blob {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  filter: blur(60px);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-fill-mode: both;
+  transform: translate3d(0, 0, 0) rotate(0deg);
+  /* The only hint the browser gets, and the only property that ever moves. */
+  will-change: transform;
+}
+
+/* Clay: the accent warming the top-left corner. */
+.grain-bg__blob:nth-child(1) {
+  top: -20vw;
+  left: -16vw;
+  width: 68vw;
+  height: 52vw;
+  opacity: 0.91;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    color-mix(in srgb, var(--grain-a) 14.2%, transparent) 0%,
+    color-mix(in srgb, var(--grain-a) 5.6%, transparent) 46%,
+    transparent 99%
+  );
+  animation-name: grain-drift-a;
+  animation-duration: calc(58s / var(--grain-speed, 1));
+  animation-delay: -6s;
+}
+
+/* Peach light pushing in from the right. */
+.grain-bg__blob:nth-child(2) {
+  top: 4vw;
+  right: -22vw;
+  width: 56vw;
+  height: 70vw;
+  opacity: 0.8;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    color-mix(in srgb, var(--grain-b) 16.1%, transparent) 0%,
+    color-mix(in srgb, var(--grain-b) 6.6%, transparent) 48%,
+    transparent 100%
+  );
+  animation-name: grain-drift-b;
+  animation-duration: calc(66s / var(--grain-speed, 1));
+  animation-delay: -18s;
+}
+
+/* Teal: the cool note the warm fields read against. It used to sit at 42vh,
+   which put a cool pool directly behind the hero statement and read as blue
+   under the ink plume; the note now lands below the fold instead. */
+.grain-bg__blob:nth-child(3) {
+  top: 72vh;
+  left: 6vw;
+  width: 62vw;
+  height: 46vw;
+  opacity: 0.69;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    color-mix(in srgb, var(--grain-c) 12.3%, transparent) 0%,
+    color-mix(in srgb, var(--grain-c) 4.7%, transparent) 50%,
+    transparent 100%
+  );
+  animation-name: grain-drift-c;
+  animation-duration: calc(48s / var(--grain-speed, 1));
+  animation-delay: -30s;
+}
+
+/* Rose: a soft mid-tone pooling under the headline. */
+.grain-bg__blob:nth-child(4) {
+  top: 26vh;
+  right: 0;
+  width: 48vw;
+  height: 60vw;
+  opacity: 0.84;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    color-mix(in srgb, var(--grain-d) 13.2%, transparent) 0%,
+    color-mix(in srgb, var(--grain-d) 5.3%, transparent) 48%,
+    transparent 100%
+  );
+  animation-name: grain-drift-d;
+  animation-duration: calc(70s / var(--grain-speed, 1));
+  animation-delay: -12s;
+}
+
+/* Non-circular ellipses rotating slowly, a pair each way. */
+@keyframes grain-drift-a {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-8deg) scale(1);
+  }
+  to {
+    transform: translate3d(11%, 8%, 0) rotate(16deg) scale(1.22);
+  }
+}
+
+@keyframes grain-drift-b {
+  from {
+    transform: translate3d(0, 0, 0) rotate(6deg) scale(1.08);
+  }
+  to {
+    transform: translate3d(-12%, 9%, 0) rotate(-20deg) scale(0.88);
+  }
+}
+
+@keyframes grain-drift-c {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-12deg) scale(0.95);
+  }
+  to {
+    transform: translate3d(9%, -11%, 0) rotate(15deg) scale(1.24);
+  }
+}
+
+@keyframes grain-drift-d {
+  from {
+    transform: translate3d(0, 0, 0) rotate(14deg) scale(1.04);
+  }
+  to {
+    transform: translate3d(-9%, -8%, 0) rotate(-10deg) scale(0.84);
+  }
+}
+
+/* Film grain: two noise plates painted in the text colour. Each plate is a
+   mask — turbulence, hardened into alpha — and the pseudo-element fills it with
+   `--color-ink`, so the tooth is the colour the type uses rather than a paler
+   paper speckle. The fine plate is the dither that keeps the fields from
+   banding; the coarse one is the tooth.
+
+   It moves by default: the coarse plate judders through steps(8) every 1.2s
+   while the fields drift, which is what reads as film rather than print. The
+   fields run at --grain-speed: 2, so a full pass is 24–35s.
+
+   Strength is a legibility trade, measured on the production build behind real
+   text at the worst (darkest) speckle pixel rather than the mean. At the
+   shipped 0.19 on a 170px tile the tooth by itself leaves ink 7.48:1, muted
+   5.70:1, faint 5.53:1, accentDeep 5.47:1 on weave; 7.41 / 5.76 / 5.53 /
+   5.51:1 on scan. It ships at 0.12 on a 200px tile now, thinner than that,
+   so those figures are floors with margin rather than targets. With the ether fog running as well the composite bottoms out
+   at 4.89:1 on weave (muted) and 4.62:1 on scan (accentDeep). --color-muted and
+   --color-faint were darkened a second time, and the weave and scan accentDeep
+   values with them, to pay for the extra tooth — the palette moved, not the
+   floor. Raising either knob means paying again: this is the contrast budget,
+   not a taste dial. */
+
+.grain-bg::before,
+.grain-bg::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: -20px;
+  pointer-events: none;
+  background-color: var(--color-ink);
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+.grain-bg::after {
+  opacity: calc(var(--grain-opacity) * var(--grain-fade, 1));
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22%3E%3Cfilter id=%22grainCoarse%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.62%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix type=%22saturate%22 values=%220%22/%3E%3CfeComponentTransfer%3E%3CfeFuncR type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncG type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncB type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type=%22matrix%22 values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0%22/%3E%3C/filter%3E%3Crect width=%22220%22 height=%22220%22 filter=%22url(%23grainCoarse)%22/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22%3E%3Cfilter id=%22grainCoarse%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.62%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix type=%22saturate%22 values=%220%22/%3E%3CfeComponentTransfer%3E%3CfeFuncR type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncG type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncB type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type=%22matrix%22 values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0%22/%3E%3C/filter%3E%3Crect width=%22220%22 height=%22220%22 filter=%22url(%23grainCoarse)%22/%3E%3C/svg%3E");
+  -webkit-mask-size: var(--grain-size) var(--grain-size);
+  mask-size: var(--grain-size) var(--grain-size);
+  /* Still only when --grain-shimmer: 0 — the duration collapses to 0s and the
+     tooth parks. Transform only, ~1.2s a cycle. */
+  animation-name: grain-jitter;
+  animation-timing-function: steps(8);
+  animation-iteration-count: infinite;
+  animation-duration: calc(1.2s * var(--grain-shimmer));
+}
+
+.grain-bg::before {
+  opacity: calc(var(--fine-opacity) * var(--grain-fade, 1));
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22%3E%3Cfilter id=%22grainFine%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.95%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix type=%22saturate%22 values=%220%22/%3E%3CfeComponentTransfer%3E%3CfeFuncR type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncG type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncB type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type=%22matrix%22 values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0%22/%3E%3C/filter%3E%3Crect width=%22140%22 height=%22140%22 filter=%22url(%23grainFine)%22/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22%3E%3Cfilter id=%22grainFine%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.95%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix type=%22saturate%22 values=%220%22/%3E%3CfeComponentTransfer%3E%3CfeFuncR type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncG type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncB type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type=%22matrix%22 values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0%22/%3E%3C/filter%3E%3Crect width=%22140%22 height=%22140%22 filter=%22url(%23grainFine)%22/%3E%3C/svg%3E");
+  -webkit-mask-size: calc(var(--grain-size) * 0.64) calc(var(--grain-size) * 0.64);
+  mask-size: calc(var(--grain-size) * 0.64) calc(var(--grain-size) * 0.64);
+}
+
+@keyframes grain-jitter {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-8px, 12px, 0);
+  }
+}
+
+/* The tab went to the background: hold the pose rather than tearing the layer
+   down, so it resumes where it left off. */
+.grain-bg[data-paused="true"] .grain-bg__blob {
+  animation-play-state: paused;
+}
+
+/* Phones: half the fields and a cheaper blur. */
+@media (max-width: 639px) {
+  .grain-bg__blob {
+    filter: blur(40px);
+  }
+
+  .grain-bg__blob:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+/* Reduced motion: the gradient and the grain stay, the drift never starts. The
+   global 0.01ms rule would otherwise snap each field to its end pose. */
+@media (prefers-reduced-motion: reduce) {
+  /* Specific enough to beat the per-field `animation-name` above. */
+  .grain-bg .grain-bg__blob:nth-child(n) {
+    animation: none;
+  }
+
+  .grain-bg::after {
+    animation: none;
+  }
+}
+
+/* Paper does not need a film grain. */
+@media print {
+  .grain-bg {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Per-project ambience
+ *
+ * Each case study tints the whole room in its own accent family plus one
+ * contrasting partner, so a gold project drifts warm-to-blue and a blue one
+ * warm-to-copper. Decoration only: no token, no text colour and no contrast
+ * budget changes hands here.
+ * ------------------------------------------------------------------------- */
+
+body:has(.project-theme[data-motif="weave"]) {
+  /* The reading bar wears the project's own accent on its page. */
+  --progress-ink: #d9ab55;
+  --grain-a: #e3b25a;
+  --grain-b: #f4e0be;
+  --grain-c: #4a6e8a;
+  --grain-d: #b97f2e;
+}
+
+body:has(.project-theme[data-motif="paddy"]) {
+  /* The reading bar wears the project's own accent on its page. */
+  --progress-ink: #e6c777;
+  --grain-a: #c9a33c;
+  --grain-b: #e8dfbc;
+  --grain-c: #2f6e6b;
+  --grain-d: #7e8f4e;
+}
+
+body:has(.project-theme[data-motif="tide"]) {
+  /* The reading bar wears the project's own accent on its page. */
+  --progress-ink: #ff9077;
+  --grain-a: #ff8a5b;
+  --grain-b: #f8dbc7;
+  --grain-c: #2e6e7e;
+  --grain-d: #c0573e;
+}
+
+body:has(.project-theme[data-motif="circuit"]) {
+  /* The reading bar wears the project's own accent on its page. */
+  --progress-ink: #6fd0ff;
+  --grain-a: #5aa8ee;
+  --grain-b: #d9e7f2;
+  --grain-c: #c0743a;
+  --grain-d: #35709c;
+}
+
+body:has(.project-theme[data-motif="stamp"]) {
+  /* The reading bar wears the project's own accent on its page. */
+  --progress-ink: #ff8a76;
+  --grain-a: #e86a60;
+  --grain-b: #f5d8d2;
+  --grain-c: #33566e;
+  --grain-d: #b3433a;
+}
+
+body:has(.project-theme[data-motif="scan"]) {
+  /* The reading bar wears the project's own accent on its page. */
+  --progress-ink: #4ff0c8;
+  --grain-a: #57d8d0;
+  --grain-b: #d3eae7;
+  --grain-c: #b06a3a;
+  --grain-d: #2e8e8a;
+}
+
+body:has(.project-theme[data-motif="shelf"]) {
+  /* The reading bar wears the project's own accent on its page. */
+  --progress-ink: #ffb27a;
+  --grain-a: #ea7a3c;
+  --grain-b: #f6dec9;
+  --grain-c: #3e6b78;
+  --grain-d: #c25a22;
+}
+
+/* ---------------------------------------------------------------------------
+ * Case study: the band's colour continues into the body
+ *
+ * Under the dark header the project's accent bleeds ~200px into the beige page,
+ * and the body's first viewport carries an 8% wash of the same hue, so the page
+ * opens as light falling off the band rather than a hard cut.
+ *
+ * `--cs-bleed` is declared per motif with that motif's band accent; the wash
+ * falls back to `--project-accent`, which the case study sets inline, so a
+ * future motif cannot drop the declaration. Decoration only: at 18% and 8%
+ * over the canvas the darkest composite keeps --color-muted at 4.9:1 and every
+ * accentDeep label at 4.85:1, and the cards keep their own solid fills.
+ * ------------------------------------------------------------------------- */
+
+.cs-flow {
+  background-image:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--cs-bleed, var(--project-accent)) 18%, transparent) 0%,
+      color-mix(in srgb, var(--cs-bleed, var(--project-accent)) 6%, transparent) 55%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--project-accent) 8%, transparent) 0%,
+      color-mix(in srgb, var(--project-accent) 4%, transparent) 58%,
+      transparent 100%
+    );
+  background-repeat: no-repeat, no-repeat;
+  background-size: 100% 200px, 100% 100vh;
+  background-position: 0 0, 0 0;
+}
+
+/* The reading bar is site-wide (`.scroll-progress`); a case study only changes
+   its ink, so there is one bar at the top edge instead of two stacked. */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Type is flat colour
+ *
+ * The headlines used to paint two background layers clipped to the glyphs — a
+ * solid ink ground plus a crawling turbulence speck — so grain appeared inside
+ * the letters. At display size it read as broken type rather than as film, so
+ * the type is plain --color-ink again and the tooth lives only in the paper
+ * behind it. Nothing clips a background to text any more.
+ * ------------------------------------------------------------------------- */
+
+/* The capability drawer's panel settles in with the same short rise the rest of
+   the page uses, so opening a row feels like part of one system rather than a
+   native <details> snap. It runs on every open because the closed panel is not
+   rendered at all. */
+@keyframes cap-panel-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Unlayered on purpose: the row is styled with Tailwind's `text-faint`
+   utility, and utilities are ordered after components, so only an unlayered
+   rule can outrank it. The number warms to the accent while the row is hovered,
+   focused or open. */
+.cap-item:hover .cap-index,
+.cap-item:focus-within .cap-index,
+.cap-item[open] .cap-index {
+  color: var(--color-accent);
+}
+/* ===========================================================================
+ * Case study — micro-motion
+ * ========================================================================= */
+
+/* Hero mat: the photograph unmasks from the top on entry and then drifts inside
+   its clay frame as the page scrolls. The clip lives on the mat's own rounded
+   box so the motion never escapes the print. */
+.reveal[data-visible="true"] .cs-hero .clay-sm {
+  animation: cs-unmask 900ms var(--ease-out) both;
+}
+
+@keyframes cs-unmask {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.cs-hero img,
+.cs-hero video {
+  transform: translate3d(0, var(--cs-parallax, 0px), 0) scale(var(--cs-zoom, 1));
+  transition: transform 90ms linear;
+}
+
+/* Chapter rail: a fixed spine on wide screens, marking the section being read. */
+.cs-rail {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .cs-rail {
+    position: fixed;
+    top: 50%;
+    right: 1.5rem;
+    z-index: 5;
+    display: block;
+    translate: 0 -50%;
+  }
+}
+
+.cs-rail-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cs-rail-link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  font-family: var(--font-meta);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-faint) 70%, transparent);
+  transition:
+    color 200ms var(--ease-out),
+    letter-spacing 200ms var(--ease-out);
+}
+
+.cs-rail-tick {
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+  transition:
+    width 240ms var(--ease-out),
+    background 240ms var(--ease-out);
+}
+
+.cs-rail-link:hover,
+.cs-rail-link:focus-visible {
+  color: var(--color-ink);
+}
+
+.cs-rail-link[data-active="true"] {
+  color: var(--project-accent, var(--color-accent));
+}
+
+.cs-rail-link[data-active="true"] .cs-rail-tick {
+  width: 26px;
+  background: currentColor;
+}
+
+/* Project ordinal in the hero meta: “02 / 08”. */
+.cs-ordinal {
+  letter-spacing: 0.16em;
+}
+
+/* Gallery: a slow push on hover, so the grid feels made rather than dropped in. */
+.cs-gallery img {
+  transition: transform 700ms var(--ease-out);
+}
+
+.cs-gallery figure:hover img,
+.cs-gallery figure:focus-within img {
+  transform: scale(1.025);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-visible="true"] .cs-hero .clay-sm {
+    animation: none;
+  }
+
+  .cs-hero img,
+  .cs-hero video,
+  .cs-rail-link,
+  .cs-rail-tick,
+  .cs-gallery img {
+    transition: none;
+  }
+
+  .cs-gallery figure:hover img,
+  .cs-gallery figure:focus-within img {
+    transform: none;
+  }
+}

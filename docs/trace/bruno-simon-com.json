@@ -1,0 +1,171 @@
+{
+  "url": "https://bruno-simon.com",
+  "status": {
+    "http": 200,
+    "finalUrl": "https://bruno-simon.com",
+    "error": null
+  },
+  "finalUrl": "https://bruno-simon.com/",
+  "frames": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "scripts": [
+    "https://www.googletagmanager.com/gtag/js?id=G-JMSN30BQ5J",
+    "https://bruno-simon.com/assets/index-DZgz1LCb.js"
+  ],
+  "found": {
+    "title": "Bruno's",
+    "generator": null,
+    "framework": {
+      "next": false,
+      "nuxt": false,
+      "webflow": false,
+      "framer": false,
+      "squarespace": false,
+      "shopify": false
+    },
+    "globals": {
+      "gsap": false,
+      "scrollTrigger": false,
+      "lenis": false,
+      "three": true,
+      "lottie": false,
+      "splitType": false,
+      "scrollTriggerData": false
+    },
+    "canvases": 1,
+    "webgl": true,
+    "videos": 0,
+    "autoplayVideos": 0,
+    "iframes": [],
+    "cssAnimations": [],
+    "cssAnimationCount": 0,
+    "keyframeNames": [
+      "map-player-animation"
+    ],
+    "hoverRules": [
+      {
+        "hover": "html:not(.is-mode-touch) .button:not(.is-disabled):hover",
+        "sample": "color: rgb(255, 255, 255); border: 1px solid rgb(255, 255, 255);"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .input-group .input-flag .flag-button:hover svg *",
+        "sample": "fill: rgb(204, 204, 204);"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .input-group .input-flag .flag-select .close-mini:hover",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .input-group .input-flag .flag-select .remove:hover",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .input-group .input-flag .flag-select .choices .choice:hover .lab",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .modals .content .close:hover",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu-trigger:hover .button-inner",
+        "sample": "transform: translate(-4px);"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu-trigger:hover .button-inner::after",
+        "sample": "opacity: 0.8;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu-trigger:hover .button-inner .icon-container",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu .navigation .item:hover .button-inner",
+        "sample": "transform: translateY(-4px);"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu .navigation .item:hover .button-inner::after",
+        "sample": "opacity: 0.8;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu .navigation .item:hover .button-inner .icon-container",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu .close:hover .button-inner",
+        "sample": "transform: translateY(-4px);"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu .close:hover .button-inner::after",
+        "sample": "opacity: 0.8;"
+      },
+      {
+        "hover": ".tabs .tabs-navigation .tab.is-active .icon-container, html:not(.is-mode-touch) .tabs .tab",
+        "sample": "opacity: 0.7;"
+      },
+      {
+        "hover": ".tabs .tabs-navigation .tab.is-active .label, html:not(.is-mode-touch) .tabs .tabs-navigat",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu .contents .achievements-content .rewards-container .reward:",
+        "sample": "opacity: 0.75;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .menu .contents .achievements-content .rewards-container .reward:",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .notifications .notification:hover .bottom .open-icon",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .discord .content .item .button-container .button:hover",
+        "sample": "color: rgb(255, 255, 255); border-color: rgb(255, 255, 255);"
+      },
+      {
+        "hover": ".has-tooltip:hover .tooltip",
+        "sample": "display: block;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .map-trigger:hover .button-inner",
+        "sample": "transform: translate(-4px);"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .map-trigger:hover .button-inner::after",
+        "sample": "opacity: 0.8;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .map-trigger:hover .button-inner .icon-container",
+        "sample": "opacity: 1;"
+      },
+      {
+        "hover": "html:not(.is-mode-touch) .map .close:hover .button-inner",
+        "sample": "transform: translateY(-4px);"
+      }
+    ],
+    "reducedMotionMedia": 0,
+    "smoothScroll": "auto",
+    "positionFixed": [
+      "div.js-fonts-loader",
+      "div.game",
+      "div.js-menu",
+      "div.js-modals"
+    ],
+    "docHeight": 900,
+    "transitions": [
+      "all",
+      "all",
+      "all",
+      "all",
+      "all",
+      "all",
+      "all",
+      "all"
+    ]
+  }
+}

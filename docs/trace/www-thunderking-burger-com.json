@@ -1,0 +1,72 @@
+{
+  "url": "https://www.thunderking-burger.com/",
+  "status": {
+    "http": 404,
+    "finalUrl": "https://www.thunderking-burger.com/",
+    "error": null
+  },
+  "finalUrl": "https://www.thunderking-burger.com/",
+  "frames": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "scripts": [
+    "https://static.parastorage.com/unpkg-semver/fedops-logger@5/fedops-logger.bundle.min.js",
+    "https://static.parastorage.com/unpkg-semver/header-footer-provider/app.bundle.min.js",
+    "https://static.parastorage.com/unpkg/react@18.2.0/umd/react.production.min.js",
+    "https://static.parastorage.com/unpkg/react-dom@18.2.0/umd/react-dom.production.min.js",
+    "https://static.parastorage.com/services/classic-error-pages-statics/1.98.0/app.bundle.min.js"
+  ],
+  "found": {
+    "title": "Reconnect Your Domain | Wix.com",
+    "generator": null,
+    "framework": {
+      "next": false,
+      "nuxt": false,
+      "webflow": false,
+      "framer": false,
+      "squarespace": false,
+      "shopify": false
+    },
+    "globals": {
+      "gsap": false,
+      "scrollTrigger": false,
+      "lenis": false,
+      "three": false,
+      "lottie": false,
+      "splitType": false,
+      "scrollTriggerData": false
+    },
+    "canvases": 0,
+    "webgl": true,
+    "videos": 0,
+    "autoplayVideos": 0,
+    "iframes": [],
+    "cssAnimations": [],
+    "cssAnimationCount": 0,
+    "keyframeNames": [],
+    "hoverRules": [
+      {
+        "hover": ".aALe9q:active, .aALe9q:hover",
+        "sample": "background: rgb(22, 106, 234); border-color: rgb(22, 106, 234);"
+      },
+      {
+        "hover": ".hN9f27:active, .hN9f27:hover",
+        "sample": "background: rgb(0, 0, 0); color: rgb(255, 255, 255);"
+      }
+    ],
+    "reducedMotionMedia": 0,
+    "smoothScroll": "auto",
+    "positionFixed": [],
+    "docHeight": 900,
+    "transitions": [
+      "all",
+      "background-color 0.3s, color 0.3s, border-color 0.3s",
+      "all",
+      "background-color 0.3s, color 0.3s, border-color 0.3s",
+      "all"
+    ]
+  }
+}

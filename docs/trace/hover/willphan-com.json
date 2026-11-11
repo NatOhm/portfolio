@@ -1,0 +1,19 @@
+{
+  "url": "https://willphan.com",
+  "sel": "a.block.group",
+  "clip": {
+    "x": 3.703125,
+    "y": 300,
+    "width": 475.0625,
+    "height": 296.359375
+  },
+  "detail": {
+    "cursor": "auto",
+    "transitions": "all",
+    "transform": "none",
+    "opacity": "1",
+    "filter": "blur(0px)",
+    "boxShadow": "none",
+    "html": "<a class=\"w-full min-w-0 block group outline-none focus-visible:ring-1 focus-visible:ring-ink/20 focus-visible:ring-inset\" style=\"--ratio: 1.7777777777777777; opacity: 1; filter: blur(0px); will-change: opacity, filter;\" href=\"/clients/uniswap\"><div data-wave-slot=\"true\" class=\"relative \"><div data-wave-frame=\"true\" class=\"relative\"><div data-wave-media=\"true\" class=\"relative aspect-[var(--ratio)]"
+  }
+}

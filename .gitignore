@@ -42,3 +42,6 @@ next-env.d.ts
 
 # kept out of the repo: full-length source videos
 /media-originals/
+
+# local logs
+*.log

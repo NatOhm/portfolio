@@ -182,9 +182,26 @@ void main() { gl_Position = vec4(a, 0., 1.); }`;
     let elapsed = 0;
     let visible = false;
     let painted = false;
+    let lastRaf = 0;
+    let slow = 0;
+    let exhausted = false;
 
+    /* A driver name is not a speedometer: a machine can report an ordinary GPU
+       and still spend 40ms on this plate, which is the shake felt on every
+       scroll. So the backdrop watches the browser's own clock instead — four
+       frames more than 55ms apart mean the page is under 18fps with this canvas
+       running, and a backdrop is the first thing that should give way. It then
+       stops on its last frame and never restarts for the rest of the visit. */
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
+      const gap = lastRaf ? now - lastRaf : 16;
+      lastRaf = now;
+      slow = gap > 55 ? slow + 1 : 0;
+      if (slow >= 4) {
+        exhausted = true;
+        stop();
+        return;
+      }
       if (now - last < 33) return;
       const step = Math.min(0.1, (now - last) / 1000);
       last = now;
@@ -193,7 +210,9 @@ void main() { gl_Position = vec4(a, 0., 1.); }`;
     };
 
     const start = () => {
-      if (raf || still) return;
+      if (raf || still || exhausted) return;
+      lastRaf = 0;
+      slow = 0;
       last = performance.now();
       raf = requestAnimationFrame(tick);
     };

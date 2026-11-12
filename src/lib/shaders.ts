@@ -343,27 +343,45 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
  * the surface reads as moving rather than as a texture.
  */
 export const PADDY = /* glsl */ `
+float hash21(vec2 p) {
+  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.545);
+}
+
+float sdSegment(vec2 p, vec2 a, vec2 b) {
+  vec2 pa = p - a, ba = b - a;
+  float h = clamp(dot(pa, ba) / dot(ba, ba), 0., 1.);
+  return length(pa - ba * h);
+}
+
 void mainImage(out vec4 O, vec2 U) {
   vec2 R = iResolution.xy;
   vec2 uv = U / R.y;
-  float t = iTime * .18;
 
-  /* The wind bends the terrace lines but they stay horizontal, like water
-     standing in a paddy, so the field reads as landscape and not as stripes. */
-  float wind = sin(uv.x * 1.5 + sin(uv.y * 2.2 + t) * 1.1 + t) * .5 + .5;
-  float y = uv.y * 5.5 + wind * .22 - t * .35;
-  float terrace = smoothstep(.55, .98, 1. - abs(fract(y) - .5) * 2.);
+  /* Harvest light: deep green shade below, warm sun coming over the top edge.
+     Values stay high because the band scrim takes four fifths of the light. */
+  vec3 col = mix(vec3(.10, .21, .09), vec3(.38, .32, .12), smoothstep(0., 1., uv.y));
+  float sun = exp(-pow(length((uv - vec2(.80, .84)) * vec2(1.3, 1.9)), 2.) * 2.6);
+  col += vec3(1., .76, .34) * sun * 1.2;
 
-  vec3 low = vec3(.04, .045, .03);
-  vec3 high = vec3(.92, .70, .28);
-  vec3 col = mix(low, high, terrace * terrace);
-
-  /* A wash at the top, so the terraces fade into the band instead of stacking
-     into a wall of lines behind the title. */
-  col += vec3(.35, .24, .10) * smoothstep(.62, 0., uv.y) * .5;
-
-  float gust = exp(-pow(fract(uv.x * .4 - t * .14) - .5, 2.) * 60.);
-  col += vec3(1., .82, .45) * gust * terrace * 1.4;
+  /* Four ranks of loose grain drifting down and to the left, each rank finer and
+     slower than the one behind it. A single grain is a short stroke drawn from a
+     per-cell hash, so the field is texture rather than pattern. */
+  for (int i = 0; i < 4; i++) {
+    float fi = float(i);
+    float scale = 16. + fi * 8.;
+    vec2 p = uv * scale + vec2(fi * 7.3, -iTime * (.08 + fi * .05));
+    vec2 cell = floor(p);
+    vec2 f = fract(p) - .5;
+    float h1 = hash21(cell + fi * 13.7);
+    float h2 = hash21(cell.yx + fi * 7.1);
+    float ang = (h1 - .5) * 6.2831 + sin(iTime * .2 + h2 * 6.28) * .25;
+    vec2 dir = vec2(cos(ang), sin(ang));
+    float half_len = .20 + .16 * h2;
+    float d = sdSegment(f, -dir * half_len, dir * half_len) - .052;
+    float grain = smoothstep(.026, .0, d);
+    vec3 tone = mix(vec3(.62, .46, .16), vec3(1., .90, .60), h2);
+    col = mix(col, tone * (.62 + .38 * h1), grain * (.56 + .12 * fi));
+  }
 
   O = vec4(col, 1.);
 }

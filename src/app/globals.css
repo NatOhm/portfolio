@@ -3051,6 +3051,14 @@
   opacity: 0.55;
 }
 
+/* TK paints a field now, so the backdrop it used to carry — the diagonal rice
+   rows and the accent wash under them — comes out instead of stacking behind
+   the canvas. Its base ground stays, so nothing below the field changes. */
+.cs-band[data-motif="paddy"]::before,
+.cs-band[data-motif="paddy"]::after {
+  content: none;
+}
+
 .cs-band > :not(.cs-watermark):not(.cs-sheen):not(.cs-shader-bg) {
   position: relative;
   z-index: 1;

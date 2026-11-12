@@ -46,6 +46,21 @@ export default function ProjectShader({
     });
     if (!gl) return;
 
+    /* Chromium falls back to a software rasteriser (SwiftShader, or the Basic
+       Render Driver) when a machine has no usable GPU, which is common on
+       Windows laptops with stale drivers and on battery-saver profiles. There
+       this shader runs on the CPU: one 1600x900 plate blocked the main thread
+       for most of a second, which is the stutter a visitor feels while
+       scrolling. Those devices keep the CSS gradient and never paint a plate. */
+    const rendererExt = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = rendererExt
+      ? String(gl.getParameter(rendererExt.UNMASKED_RENDERER_WEBGL) ?? "")
+      : "";
+    if (/swiftshader|llvmpipe|swangle|software|basic render/i.test(renderer)) {
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      return;
+    }
+
     const FRAGMENT = `#version 300 es
 precision highp float;
 precision highp int;
@@ -130,6 +145,10 @@ void main() { gl_Position = vec4(a, 0., 1.); }`;
        same treatment as the hero: one composed frame, no loop. The cheap
        fields keep running — they are a couple of dozen instructions a pixel. */
     const still = calm || small || (window.innerWidth < 640 && heavy);
+    /* A once-only frame on a four-core machine can still be the most expensive
+       single task on the page, so it is drawn at roughly half the pixels: the
+       plate is soft, and one frame at 880x480 is indistinguishable at 720px. */
+    const stillScale = small ? 0.55 : 1;
 
     const draw = (seconds: number) => {
       gl.uniform2f(uResolution, canvas.width, canvas.height);
@@ -146,7 +165,7 @@ void main() { gl_Position = vec4(a, 0., 1.); }`;
          that is only ever drawn once can afford the full sharpen, though, so
          the still path asks for it. */
       const dpr = crisp
-        ? Math.min(window.devicePixelRatio || 1, 2)
+        ? Math.min(window.devicePixelRatio || 1, 2) * stillScale
         : Math.min(window.devicePixelRatio || 1, 1.25) * quality;
       const scale = crisp ? dpr : dpr * Math.min(1, rect.width / 900);
       const width = Math.max(240, Math.round(rect.width * scale));

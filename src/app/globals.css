@@ -3919,7 +3919,11 @@ body {
   display: block;
   border-radius: 50%;
   mix-blend-mode: multiply;
-  filter: blur(60px);
+  /* No blur filter: every field is already a radial gradient with soft stops,
+     so blurring it again changed almost nothing and cost the most of anything
+     on the page. Four 60vw blurred plates drifting on a fixed layer put the
+     rasteriser into per-frame CPU work — the drop from 2.6 to 8.9 fps on a
+     software rasteriser, and real heat on weak Windows GPUs. */
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -4121,12 +4125,9 @@ body {
   opacity: 0;
 }
 
-/* Phones: half the fields and a cheaper blur. */
+/* Phones: half the fields. The gradients are soft on their own, so there is no
+   blur radius left to cheapen. */
 @media (max-width: 639px) {
-  .grain-bg__blob {
-    filter: blur(40px);
-  }
-
   .grain-bg__blob:nth-child(n + 3) {
     display: none;
   }

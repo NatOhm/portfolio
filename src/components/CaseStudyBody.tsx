@@ -39,8 +39,6 @@ const SHADERS: Record<
   },
   "anim-hoodie": {
     source: HEXAGONS,
-    /* A slow rotation of the panel palette; the only field that drifts. */
-    hue: 0.55,
   },
   "tk-campaign": {
     source: PADDY,

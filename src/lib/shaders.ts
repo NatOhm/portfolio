@@ -306,10 +306,12 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   float ew = .0065;
 
   float rnd = hash21(id + .05);
-  float sat = 1.;
-  vec3 pCol = .5 + .45 * cos(TAU * rnd / 4. + vec3(0, PI / 2., PI) * sat - .5);
+  /* Two inks only: a red that runs from oxblood to warm coral, and paper white.
+     Roughly half the cells take the white, so the wall reads as red and white
+     torn paper instead of a colour ramp. */
+  vec3 pCol = mix(vec3(.55, .07, .08), vec3(.95, .34, .26), rnd);
   vec3 svCol = pCol;
-  if (hash21(id + .32) < .5) pCol = vec3(.8, .85, 1) * vec3(rnd * .5 + .15);
+  if (hash21(id + .32) < .45) pCol = vec3(.97, .93, .88) * (.80 + .20 * rnd);
 
   if (grate == 1) {
     pCol = pCol / (.5 + pCol) * .4;
@@ -330,6 +332,10 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
   uv = fragCoord / iResolution.xy;
   col *= pow(16. * uv.x * uv.y * (1. - uv.x) * (1. - uv.y), 1. / 16.);
+
+  /* Two inks need the white to stay white through the shader's own shading, so
+     the plate sits a third brighter than the torn-paper study it came from. */
+  col *= 1.35;
 
   col = hueShift(col, iHue * sin(iTime * .35));
 

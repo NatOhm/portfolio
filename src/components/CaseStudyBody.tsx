@@ -9,7 +9,7 @@ import Reveal from "@/components/Reveal";
 import ProjectSignature from "@/components/project/Signature";
 import CompareSlider from "@/components/CompareSlider";
 import ProjectShader from "@/components/ProjectShader";
-import { MENGER, GRID, HEXAGONS } from "@/lib/shaders";
+import { MENGER, GRID, HEXAGONS, PADDY, TIDE, SHELF } from "@/lib/shaders";
 
 /**
  * Oversized marks that sit behind the band. Only projects with a real,
@@ -21,9 +21,10 @@ const WATERMARKS: Partial<Record<string, { text: string; mark: "thai" | "stamp" 
 };
 
 /**
- * The backdrop field, by project slug. Each is a port of a study made for these
- * pages: ENPHOTO gets the raymarched fly-through, the 3D environment study the
- * receding grid, and Anim Hoodie the hexagon subdivision.
+ * The backdrop field, by project slug. ENPHOTO and Anim Hoodie and the 3D study
+ * are ports of studies made for those pages; the TK, Pattaya and Nong-kati
+ * fields are written for their subject (wind over a paddy, sea caustics, a
+ * stocked shelf) rather than reused.
  */
 const SHADERS: Record<
   string,
@@ -42,14 +43,13 @@ const SHADERS: Record<
     hue: 0.55,
   },
   "tk-campaign": {
-    source: HEXAGONS,
+    source: PADDY,
   },
   "pattaya-guide": {
-    source: GRID,
+    source: TIDE,
   },
   "nong-kati-store": {
-    source: MENGER,
-    heavy: true,
+    source: SHELF,
   },
 };
 

@@ -336,3 +336,92 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   fragColor = vec4(sqrt(max(col, 0.)), 1.);
 }
 `;
+
+/**
+ * Wind over a paddy. For the TK campaign: contour bands that bend with a slow
+ * wind field, in the brand's gold, with one gust crossing the field at a time so
+ * the surface reads as moving rather than as a texture.
+ */
+export const PADDY = /* glsl */ `
+void mainImage(out vec4 O, vec2 U) {
+  vec2 R = iResolution.xy;
+  vec2 uv = U / R.y;
+  float t = iTime * .18;
+
+  /* The wind bends the terrace lines but they stay horizontal, like water
+     standing in a paddy, so the field reads as landscape and not as stripes. */
+  float wind = sin(uv.x * 1.5 + sin(uv.y * 2.2 + t) * 1.1 + t) * .5 + .5;
+  float y = uv.y * 5.5 + wind * .22 - t * .35;
+  float terrace = smoothstep(.55, .98, 1. - abs(fract(y) - .5) * 2.);
+
+  vec3 low = vec3(.04, .045, .03);
+  vec3 high = vec3(.92, .70, .28);
+  vec3 col = mix(low, high, terrace * terrace);
+
+  /* A wash at the top, so the terraces fade into the band instead of stacking
+     into a wall of lines behind the title. */
+  col += vec3(.35, .24, .10) * smoothstep(.62, 0., uv.y) * .5;
+
+  float gust = exp(-pow(fract(uv.x * .4 - t * .14) - .5, 2.) * 60.);
+  col += vec3(1., .82, .45) * gust * terrace * 1.4;
+
+  O = vec4(col, 1.);
+}
+`;
+
+export const TIDE = /* glsl */ `
+void mainImage(out vec4 O, vec2 U) {
+  vec2 R = iResolution.xy;
+  vec2 uv = (U - R * .5) / R.y;
+  float t = iTime * .35;
+
+  /* Water lines run across the frame and tighten toward the horizon; the two
+     frequencies interfere into crests instead of a regular stripe. */
+  float depth = 1. / (uv.y * .55 + .8);
+  float wave = sin(depth * 9. + uv.x * 3.2 + t * 1.6)
+             + sin(depth * 14. - uv.x * 2.1 - t * 1.1);
+  float crest = smoothstep(-.2, .9, wave * .5);
+
+  float horizon = exp(-pow((uv.y - .16) * 3.2, 2.));
+  vec3 deep = vec3(.03, .09, .12);
+  vec3 sea = vec3(.22, .82, .92);
+  vec3 sun = vec3(1., .80, .55);
+
+  O = vec4(deep + sea * crest * (1.6 + 1.2 * smoothstep(.5, -.6, uv.y))
+               + sun * horizon * (.35 + crest * 1.4), 1.);
+}
+`;
+
+export const SHELF = /* glsl */ `
+float sdRoundBox(vec2 p, vec2 b, float r) {
+  vec2 q = abs(p) - b + r;
+  return length(max(q, 0.)) + min(max(q.x, q.y), 0.) - r;
+}
+
+void mainImage(out vec4 O, vec2 U) {
+  vec2 R = iResolution.xy;
+  vec2 uv = (U - R * .5) / R.y;
+  float t = iTime * .09;
+
+  vec2 grid = vec2(5., 3.);
+  vec2 p = uv * grid;
+  p.y += t * 1.6;
+  vec2 cell = floor(p);
+  vec2 f = fract(p) - .5;
+  float d = sdRoundBox(f, vec2(.31, .34), .06);
+  float tile = smoothstep(.03, -.01, d);
+  float h = fract(sin(dot(cell, vec2(12.9898, 78.233))) * 43758.545);
+
+  vec3 dark = vec3(.07, .055, .045);
+  vec3 lit = mix(vec3(.62, .46, .30), vec3(.95, .76, .50), h);
+  vec3 col = mix(dark, lit, tile * (.55 + .45 * step(.45, h)));
+
+  /* One bright edge per row, so the stack reads as shelves rather than bricks. */
+  col += vec3(.62, .46, .28) * smoothstep(.92, 1., fract(p.y)) * .7;
+
+  float sweep = exp(-pow(fract(uv.x * .45 - iTime * .08) - .5, 2.) * 45.);
+  col += vec3(1., .80, .52) * sweep * (.25 + tile * .55);
+
+  O = vec4(col, 1.);
+}
+`;

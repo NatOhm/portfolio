@@ -468,10 +468,11 @@ export default function HeroDistort() {
 
     let dpr = 1;
     let ready = false;
-    let stopAt = 0;
+    let lastRaf = 0;
+    let slow = 0;
+    let exhausted = false;
     /* True once the opening has played out: from then on the canvas is redrawn
        frame by frame only when something asks it to, never on a clock. */
-    let settled = false;
     let distortKnob = 1;
     let speedKnob = 0.44;
     let raf = 0;
@@ -852,16 +853,11 @@ export default function HeroDistort() {
       if (!startedAt) {
         startedAt = entrancePlayed ? performance.now() - REVEAL_MS : performance.now();
       }
-            if (!raf) {
-        if (settled) {
-          /* A rebuild after the reveal (fonts landing, a resize, edited copy) is
-             a new raster to draw once — not a reason to start the band again. */
-          draw((performance.now() / 1000) * speedKnob, distortKnob, 1);
-        } else {
-          last = 0;
-          stopAt = performance.now() + REVEAL_MS + 1400;
-          raf = requestAnimationFrame(render);
-        }
+      if (!raf && !exhausted) {
+        last = 0;
+        lastRaf = 0;
+        slow = 0;
+        raf = requestAnimationFrame(render);
       }
     };
 
@@ -873,12 +869,18 @@ export default function HeroDistort() {
         raf = 0;
         return;
       }
-      /* The reveal is the only part that has to play to the end. Past `stopAt`
-         the last frame is drawn once and the loop ends — an effect that never
-         stops is a fan that never stops. */
-      if (now > stopAt) {
+      /* The band drifts for as long as it is on screen — the hero is the first
+         thing a visitor sees, and a headline that settles after two seconds
+         reads as a still page. The cost stays bounded by the 24fps cap and by
+         the same watchdog the case-study plates use: four frames more than 55ms
+         apart mean the page cannot carry it, so it settles on one frame and
+         stops for the rest of the visit. */
+      const gap = lastRaf ? now - lastRaf : 16;
+      lastRaf = now;
+      slow = gap > 55 ? slow + 1 : 0;
+      if (slow >= 4) {
         raf = 0;
-        settled = true;
+        exhausted = true;
         draw((now / 1000) * speedKnob, distortKnob, 1);
         return;
       }
@@ -889,13 +891,14 @@ export default function HeroDistort() {
       draw((now / 1000) * speedKnob, distortKnob, 1 - (1 - reveal) ** 3);
     };
 
-    /* Interaction is the only thing that brings the band back, for a couple of
-       seconds at a time. Pointer moves only count over the hero itself. */
+    /* The loop pauses itself off-screen and in a hidden tab, so interaction only
+       has to nudge it awake again. */
     const stir = () => {
-      if (motionQuery.matches || !ready || document.hidden || !visible) return;
-      stopAt = Math.max(stopAt, performance.now() + 2400);
+      if (motionQuery.matches || !ready || document.hidden || !visible || exhausted) return;
       if (!raf) {
         last = 0;
+        lastRaf = 0;
+        slow = 0;
         raf = requestAnimationFrame(render);
       }
     };

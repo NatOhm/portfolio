@@ -5,8 +5,6 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/space-mono/400.css";
 import "@fontsource/instrument-serif/400.css";
-import "@fontsource/bai-jamjuree/thai-600.css";
-import "@fontsource-variable/anuphan";
 import "./globals.css";
 import GrainBackground from "@/components/GrainBackground";
 import Navbar from "@/components/Navbar";

@@ -8,6 +8,8 @@ import { mediaDims } from "@/lib/media-dimensions";
 import Reveal from "@/components/Reveal";
 import ProjectSignature from "@/components/project/Signature";
 import CompareSlider from "@/components/CompareSlider";
+import ProjectShader from "@/components/ProjectShader";
+import { MENGER, GRID, HEXAGONS } from "@/lib/shaders";
 
 /**
  * Oversized marks that sit behind the band. Only projects with a real,
@@ -16,6 +18,39 @@ import CompareSlider from "@/components/CompareSlider";
 const WATERMARKS: Partial<Record<string, { text: string; mark: "thai" | "stamp" }>> = {
   "tk-campaign": { text: "ทีเค ทรัพย์เจริญรุ่งเรือง", mark: "thai" },
   "en-kku": { text: "ENPHOTO", mark: "stamp" },
+};
+
+/**
+ * The backdrop field, by project slug. Each is a port of a study made for these
+ * pages: ENPHOTO gets the raymarched fly-through, the 3D environment study the
+ * receding grid, and Anim Hoodie the hexagon subdivision.
+ */
+const SHADERS: Record<
+  string,
+  { source: string; quality?: number; heavy?: boolean; hue?: number }
+> = {
+  "en-kku": {
+    source: MENGER,
+    heavy: true,
+  },
+  "sci-fi-environments": {
+    source: GRID,
+  },
+  "anim-hoodie": {
+    source: HEXAGONS,
+    /* A slow rotation of the panel palette; the only field that drifts. */
+    hue: 0.55,
+  },
+  "tk-campaign": {
+    source: HEXAGONS,
+  },
+  "pattaya-guide": {
+    source: GRID,
+  },
+  "nong-kati-store": {
+    source: MENGER,
+    heavy: true,
+  },
 };
 
 const CONTEXT_LABELS: Record<Project["context"], string> = {
@@ -315,6 +350,7 @@ export default function CaseStudyBody({
       }
     >
       <div className="project-band cs-band">
+      {SHADERS[project.slug] ? <ProjectShader {...SHADERS[project.slug]} /> : null}
       <span className="cs-sheen" aria-hidden="true" />
       {WATERMARKS[project.slug] ? (
         <span

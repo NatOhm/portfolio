@@ -12,11 +12,11 @@ import { useEffect, useRef, useState } from "react";
  * compositor — and it is paused (not removed) while the tab is in the
  * background, so coming back resumes the same pose instead of restarting it.
  *
- * The tooth is for the opening statement, not for reading. A scroll listener
- * writes `--grain-fade` (1 at the top, 0 by the end of the first viewport) and
- * the plates multiply their opacity by it, so the grain thins out as soon as
- * the hero is behind you. It is a paint-only property on a fixed layer, rAF
- * throttled, and it never touches layout.
+ * The tooth is for the opening statement, not for reading. Once the first
+ * viewport is behind you the plates fade out through a single `data-faded`
+ * switch and a CSS opacity transition, so the grain thins out exactly the way
+ * it always did — without restyling a blurred fixed layer on every scroll
+ * frame.
  *
  * The colours live in CSS (`--grain-a` … `--grain-d`), including the per-project
  * overrides, so this component stays four empty spans.
@@ -35,26 +35,35 @@ export default function GrainBackground() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    let raf = 0;
 
-    const apply = () => {
-      raf = 0;
-      const span = Math.max(320, window.innerHeight * 0.8);
-      const fade = Math.max(0, Math.min(1, 1 - window.scrollY / span));
-      el.style.setProperty("--grain-fade", fade.toFixed(3));
+    /*
+     * The tooth thins out once the opening statement is behind you — but this
+     * element contains four blurred fields and two noise plates on a fixed
+     * layer, so writing a style here is not free: it invalidates that whole
+     * surface and repaints it. The old version set a custom property every
+     * scroll frame, which is a full blurred repaint sixty times a second.
+     *
+     * Now the handler only compares a number and writes when the threshold is
+     * actually crossed, once each way; the fade itself is a CSS opacity
+     * transition on the two plates, which the compositor runs. Scrolling costs
+     * no style invalidation at all.
+     */
+    const span = () => Math.max(320, window.innerHeight * 0.8);
+    let faded = false;
+
+    const check = () => {
+      const next = window.scrollY > span();
+      if (next === faded) return;
+      faded = next;
+      el.dataset.faded = next ? "true" : "false";
     };
 
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(apply);
-    };
-
-    apply();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check, { passive: true });
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
     };
   }, []);
 
@@ -63,6 +72,7 @@ export default function GrainBackground() {
       ref={ref}
       className="grain-bg"
       data-paused={hidden ? "true" : "false"}
+      data-faded="false"
       aria-hidden="true"
     >
       <span className="grain-bg__blob" />

@@ -21,17 +21,14 @@
   --color-line: #d6ccbd; /* hairline, decorative only */
 
   /* --- type ------------------------------------------------------------- */
-  /* Each stack keeps its Latin face first and a Thai face behind it, so a
-     Thai word inside an English line (or a Latin word inside a Thai one)
-     keeps the site's voice: only the glyphs the Latin face does not have fall
-     through. Thai display = Bai Jamjuree, the squarish grotesk that sits
-     closest to Bricolage; Thai text = Anuphan, the loopless sans built to sit
-     beside Inter. See `.thai-type` for the leading and tracking Thai needs. */
-  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Bai Jamjuree",
-    system-ui, sans-serif;
+  /* One Latin face per role. The Thai fallbacks that used to sit behind each
+     stack went with the /th route: keeping them loaded a second family, and
+     its files, for text the site no longer serves. */
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", system-ui,
+    sans-serif;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
-  --font-body: "Inter", "Anuphan Variable", system-ui, sans-serif;
-  --font-meta: "Space Mono", "Anuphan Variable", ui-monospace, monospace;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-meta: "Space Mono", ui-monospace, monospace;
 
   --text-display-xl: clamp(3rem, 8vw, 7.5rem);
   --text-display-xl--line-height: 0.92;
@@ -2955,6 +2952,60 @@
 /* ===========================================================================
  * Project bands — each case study leaves the porcelain
  * ========================================================================= */
+/* ---------------------------------------------------------------------------
+ * Generative backdrop — one live shader behind the top of a case study
+ * --------------------------------------------------------------------------- */
+/*
+ * The field sits behind the title block and is masked away before the hero
+ * media, so it reads as light in the room rather than as a picture on the wall.
+ * The scrim travels in the same fading layer, which means a device that never
+ * paints the shader keeps the band exactly as it was before.
+ */
+.cs-shader-bg {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  height: min(82vh, 720px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 46%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 46%, transparent 100%);
+}
+
+.cs-shader-bg[data-shader-state="on"] {
+  opacity: 1;
+}
+
+.cs-shader-bg canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Measured over the brightest frame of each field: cream ink holds above 7:1 at
+   the title and above 4.6:1 at the meta, so the field never decides legibility. */
+.cs-shader-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--band-ground) 80%, transparent) 0%,
+    color-mix(in srgb, var(--band-ground) 70%, transparent) 44%,
+    color-mix(in srgb, var(--band-ground) 92%, transparent) 82%,
+    var(--band-ground) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-shader-bg {
+    transition: none;
+  }
+}
+
 .cs-band {
   --band-ground: #0b0b0c;
   --band-ink: #f4efe6;
@@ -3000,7 +3051,7 @@
   opacity: 0.55;
 }
 
-.cs-band > :not(.cs-watermark):not(.cs-sheen) {
+.cs-band > :not(.cs-watermark):not(.cs-sheen):not(.cs-shader-bg) {
   position: relative;
   z-index: 1;
 }
@@ -3641,29 +3692,6 @@ html {
   .exp-ordinal { transition: none; }
 }
 
-/* Thai front door: Thai glyphs arrive through the fallbacks in the font
- * stacks above, so this only fixes what Thai typography needs that the Latin
- * scale does not give it. Thai stacks vowels and tone marks above and below
- * the baseline: the 0.92 display leading clips them (a marked syllable reaches
- * ~1.2em above the baseline in Bai Jamjuree), and the -0.035em Latin tracking
- * closes the gaps between vowels and their consonants, so both are loosened
- * here. Small meta type likewise needs air above it, not letter spacing, which
- * reads as a break between Thai syllables.
- */
-.thai-type {
-  --text-display-xl--line-height: 1.24;
-  --text-display-xl--letter-spacing: -0.005em;
-  --text-display-l--line-height: 1.26;
-  --text-display-l--letter-spacing: -0.005em;
-  --text-title--line-height: 1.4;
-  --text-title--letter-spacing: 0;
-  /* section heads step up to text-3xl at md, whose Latin 1.2 clips marks */
-  --text-3xl--line-height: 1.34;
-  --text-lede--line-height: 1.75;
-  --text-meta--line-height: 1.45;
-  --text-meta--letter-spacing: 0.04em;
-}
-
 /* In-band inherited text follows the band's own ink. */
 .cs-band { color: var(--band-ink); }
 /* ---------------------------------------------------------------------------
@@ -3701,7 +3729,6 @@ html {
  *   --grain-opacity         ink tooth strength         (default 0.12, faded
  *                           out once the hero is scrolled past)
  *   --fine-opacity          the dither plate under it  (default 0.03)
- *   --grain-fade            1 at the top of the page, 0 past the hero
  *   --grain-size            coarse tile edge           (default 200px)
  *   --grain-speed           drift multiplier: 2 = twice as fast
  *   --grain-shimmer         1 = judder the tooth (default), 0 = park it
@@ -3751,9 +3778,6 @@ html {
   --grain-size: 200px;
   --grain-speed: 2;
   --grain-shimmer: 1;
-  /* Written by GrainBackground: 1 at the top of the page, 0 once the hero has
-     been scrolled past. The plates multiply their opacity by it. */
-  --grain-fade: 1;
 
   /* Hero gradient + headline distortion. The three field colours are mixed 35%
      toward the paper in JS and then lifted until each clears relative luminance
@@ -3833,6 +3857,13 @@ body {
    the swap is pixel-identical with the text it replaces. A transition here would
    fade the headline out and back in. */
 [data-distort="on"] .hero-distort {
+  opacity: 1;
+}
+
+/* The low-power path: the canvas is showing (one static gradient frame) but the
+   headline is still real text, so this switch reveals the layer without the
+   transparent-text rule below. */
+[data-distort-static="on"] .hero-distort {
   opacity: 1;
 }
 
@@ -4036,7 +4067,8 @@ body {
 }
 
 .grain-bg::after {
-  opacity: calc(var(--grain-opacity) * var(--grain-fade, 1));
+  opacity: var(--grain-opacity);
+  transition: opacity 480ms linear;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22%3E%3Cfilter id=%22grainCoarse%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.62%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix type=%22saturate%22 values=%220%22/%3E%3CfeComponentTransfer%3E%3CfeFuncR type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncG type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncB type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type=%22matrix%22 values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0%22/%3E%3C/filter%3E%3Crect width=%22220%22 height=%22220%22 filter=%22url(%23grainCoarse)%22/%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22%3E%3Cfilter id=%22grainCoarse%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.62%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix type=%22saturate%22 values=%220%22/%3E%3CfeComponentTransfer%3E%3CfeFuncR type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncG type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncB type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type=%22matrix%22 values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0%22/%3E%3C/filter%3E%3Crect width=%22220%22 height=%22220%22 filter=%22url(%23grainCoarse)%22/%3E%3C/svg%3E");
   -webkit-mask-size: var(--grain-size) var(--grain-size);
@@ -4050,7 +4082,8 @@ body {
 }
 
 .grain-bg::before {
-  opacity: calc(var(--fine-opacity) * var(--grain-fade, 1));
+  opacity: var(--fine-opacity);
+  transition: opacity 480ms linear;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22%3E%3Cfilter id=%22grainFine%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.95%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix type=%22saturate%22 values=%220%22/%3E%3CfeComponentTransfer%3E%3CfeFuncR type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncG type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncB type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type=%22matrix%22 values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0%22/%3E%3C/filter%3E%3Crect width=%22140%22 height=%22140%22 filter=%22url(%23grainFine)%22/%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22%3E%3Cfilter id=%22grainFine%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.95%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix type=%22saturate%22 values=%220%22/%3E%3CfeComponentTransfer%3E%3CfeFuncR type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncG type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3CfeFuncB type=%22linear%22 slope=%223%22 intercept=%22-1%22/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix type=%22matrix%22 values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2126 0.7152 0.0722 0 0%22/%3E%3C/filter%3E%3Crect width=%22140%22 height=%22140%22 filter=%22url(%23grainFine)%22/%3E%3C/svg%3E");
   -webkit-mask-size: calc(var(--grain-size) * 0.64) calc(var(--grain-size) * 0.64);
@@ -4070,6 +4103,14 @@ body {
    down, so it resumes where it left off. */
 .grain-bg[data-paused="true"] .grain-bg__blob {
   animation-play-state: paused;
+}
+
+/* Past the opening viewport the tooth is gone. One attribute flip, then an
+   opacity transition the compositor can run on its own — no per-scroll style
+   writes on a fixed layer full of blurred fields. */
+.grain-bg[data-faded="true"]::before,
+.grain-bg[data-faded="true"]::after {
+  opacity: 0;
 }
 
 /* Phones: half the fields and a cheaper blur. */

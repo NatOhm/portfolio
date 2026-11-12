@@ -10,6 +10,8 @@ import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
+import { archiveCollections } from "../src/lib/archive-collections.ts";
+
 const root = fileURLToPath(new URL("..", import.meta.url));
 const PORT = Number(process.env.VERIFY_PORT ?? 4211);
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -175,12 +177,17 @@ async function verifyCompleteArchive(browser) {
   await page.goto(`${BASE}/work#archive`, { waitUntil: "load" });
 
   const cards = page.locator(`a[href^="/work/collection/"]`);
-  check("archive index lists every collection", (await cards.count()) === 24, `${await cards.count()} cards`);
+  const collectionTotal = archiveCollections.length;
+  check(
+    "archive index lists every collection",
+    (await cards.count()) === collectionTotal,
+    `${await cards.count()} cards`,
+  );
 
   const archiveCount = page.locator('[aria-live="polite"]').nth(1);
   check(
     "archive count reports the full catalogue",
-    /24 collections/.test((await archiveCount.textContent()) ?? ""),
+    new RegExp(`${collectionTotal} collections`).test((await archiveCount.textContent()) ?? ""),
     (await archiveCount.textContent()) ?? "",
   );
 
@@ -280,7 +287,8 @@ async function verifyMobileMenu(browser) {
       (el) => el.getAttribute("aria-label") || el.textContent.trim().replace(/\s+/g, " "),
     ),
   );
-  check("menu exposes its focusable order", focusables.length === 7, focusables.join(" → "));
+  /* Close, four nav links and Résumé — the panel's whole tab ring. */
+  check("menu exposes its focusable order", focusables.length === 6, focusables.join(" → "));
 
   let state = await describeActive();
   check(

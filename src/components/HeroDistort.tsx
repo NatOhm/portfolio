@@ -209,9 +209,40 @@ type Target = { el: HTMLElement; inner: HTMLElement };
 /* 24 rather than 30: the band drifts over seconds and the grain shimmers 8 times
    a second, so the extra six frames buy nothing the eye can find, while every
    frame costs a full-canvas commit — the single largest recurring cost on the
-   home page. */
-const FPS = 24;
+   home page. Phones get half of that: the effect is a slow drift, not motion
+   that gains anything from the extra frames, and the same shader on a phone GPU
+   is the difference between a warm lap and a hot one. */
 const REVEAL_MS = 700;
+
+/*
+ * Can this machine carry a live shader?
+ *
+ * Chromium silently falls back to a software rasteriser (SwiftShader, or
+ * llvmpipe/SwANGLE on Linux) whenever there is no usable GPU: virtual machines,
+ * remote desktops, GPU-blocklisted drivers, and any browser launched with
+ * hardware acceleration switched off. A 24 fps full-canvas fragment shader on
+ * that path is the worst thing on the page — it turns into hundreds of
+ * milliseconds of CPU per frame. The same is true, if less dramatically, on
+ * four-core or memory-starved devices and under Save-Data.
+ *
+ * In those cases the component draws one frame of the gradient and leaves the
+ * headline as real DOM text: no loop, no rAF, no texture rasterisation.
+ */
+function isLowPower(gl: WebGLRenderingContext): boolean {
+  const nav = navigator as Navigator & {
+    deviceMemory?: number;
+    connection?: { saveData?: boolean };
+  };
+  if ((nav.hardwareConcurrency ?? 8) <= 4) return true;
+  if ((nav.deviceMemory ?? 8) <= 4) return true;
+  if (nav.connection?.saveData) return true;
+
+  const ext = gl.getExtension("WEBGL_debug_renderer_info");
+  const renderer = ext
+    ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) ?? "")
+    : "";
+  return /swiftshader|llvmpipe|swangle|software|basic render/i.test(renderer);
+}
 
 function parseColor(value: string): Rgb | null {
   const v = value.trim();
@@ -402,6 +433,20 @@ export default function HeroDistort() {
       grain: gl.getUniformLocation(program, "uGrain"),
     };
 
+    /* Decided once, before any texture exists: everything below either takes
+       the live path or the single-frame one. `?distort=static` forces the
+       low-power path on a capable machine, the way `?distort=debug` forces the
+       debug overlay, so the fallback can be looked at on real hardware. */
+    const forced = new URLSearchParams(window.location.search).get("distort") === "static";
+    /*
+     * Phones take the single-frame path too, and not for performance: at 390px
+     * the warp's channel split is measured in normalised coordinates, so it
+     * covers a much larger share of a much smaller headline and the type reads
+     * as doubled rather than warped. The still frame keeps everything a phone
+     * can actually show — the gradient, the palette, the typography over it —
+     * without the artefact. */
+    const lowPower = forced || isLowPower(gl) || window.innerWidth < 640;
+
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -417,8 +462,16 @@ export default function HeroDistort() {
     const sheet = document.createElement("canvas");
     const ctx = sheet.getContext("2d");
 
+    /* Small screens also get fewer frames: the drift is unreadable at 12 fps
+       from a phone's distance anyway. */
+    const fps = window.innerWidth < 640 ? 12 : 24;
+
     let dpr = 1;
     let ready = false;
+    let stopAt = 0;
+    /* True once the opening has played out: from then on the canvas is redrawn
+       frame by frame only when something asks it to, never on a clock. */
+    let settled = false;
     let distortKnob = 1;
     let speedKnob = 0.44;
     let raf = 0;
@@ -460,6 +513,10 @@ export default function HeroDistort() {
       /* Cached: the loop runs at 30fps and must not read computed styles each
          frame, which would force style resolution 30 times a second. */
       distortKnob = readKnob("--distort-strength", 0.35);
+      /* The band is measured in normalised coordinates, so on a 390px screen it
+         covers a far larger share of the headline than it does on a desktop and
+         the split reads as damage. Scale it back with the viewport. */
+      if (window.innerWidth < 640) distortKnob *= 0.55;
       speedKnob = readKnob("--grain-speed", 2) * 0.22;
 
       if (!checkedContrast) {
@@ -490,9 +547,10 @@ export default function HeroDistort() {
         );
         range.detach();
         if (!rects.length) return [];
-        /* One line only: more than one distinct top means it wrapped. */
-        const tops = new Set(rects.map((r) => Math.round(r.top)));
-        if (tops.size > 1) return [];
+        /* A wrapped line used to disqualify the whole effect, which is why the
+           hero went flat on phones: at 390px the headline sets over two lines.
+           The raster now places every line the browser laid out, so wrapping is
+           ordinary rather than fatal. */
         out.push({ el, inner });
       }
       return out;
@@ -512,6 +570,51 @@ export default function HeroDistort() {
       else scope.removeAttribute("data-distort-blend");
     };
 
+    /*
+     * The visual lines of a text node, as the browser actually laid them out.
+     *
+     * One character at a time through a Range gives the real line breaks and the
+     * real origin of each line, which is what the rasteriser needs to place
+     * wrapped text exactly where the DOM put it. Phone headlines are only two or
+     * three lines, so the per-character cost is a few dozen range reads once per
+     * rebuild — nothing next to the raster itself.
+     */
+    const linesOf = (inner: HTMLElement, heroRect: DOMRect) => {
+      const node = Array.from(inner.childNodes).find(
+        (n) => n.nodeType === Node.TEXT_NODE && (n.textContent ?? "").trim().length > 0,
+      );
+      if (!node) return [];
+      const text = node.textContent ?? "";
+      const range = document.createRange();
+      const lines: { text: string; left: number; top: number }[] = [];
+      let current: { text: string; left: number; top: number } | null = null;
+      let lastTop = Number.NaN;
+      let space = "";
+      for (let i = 0; i < text.length; i += 1) {
+        const ch = text[i];
+        range.setStart(node, i);
+        range.setEnd(node, i + 1);
+        const rect = range.getBoundingClientRect();
+        /* A space has no ink; it only ever joins two words on one line. */
+        if (!rect.width || ch.trim() === "") {
+          space += ch;
+          continue;
+        }
+        const absTop = Math.round(rect.top);
+        if (!current || Math.abs(absTop - lastTop) > 1) {
+          lastTop = absTop;
+          current = { text: "", left: rect.left - heroRect.left, top: rect.top - heroRect.top };
+          lines.push(current);
+        } else {
+          current.text += space;
+        }
+        space = "";
+        current.text += ch;
+      }
+      range.detach();
+      return lines.filter((line) => line.text.trim().length > 0);
+    };
+
     const drawText = (targets: Target[]) => {
       if (!ctx) return false;
       const scale = canvas.width / Math.max(1, hero.clientWidth);
@@ -524,38 +627,33 @@ export default function HeroDistort() {
 
       for (const { inner } of targets) {
         const cs = getComputedStyle(inner);
-        const range = document.createRange();
-        range.selectNodeContents(inner);
-        const rects = Array.from(range.getClientRects()).filter(
-          (r) => r.width > 1 && r.height > 1,
-        );
-        range.detach();
-        if (!rects.length) return false;
-        const rect = rects[0];
-
-        const raw = (inner.textContent ?? "").trim();
-        if (!raw) return false;
-        const text = cs.textTransform === "uppercase" ? raw.toUpperCase() : raw;
+        const lines = linesOf(inner, heroRect);
+        if (!lines.length) return false;
 
         ctx.font = `${cs.fontStyle === "normal" ? "" : `${cs.fontStyle} `}${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-        const metrics = ctx.measureText(text);
-        const ascent = metrics.fontBoundingBoxAscent ?? parseFloat(cs.fontSize) * 0.8;
-        const x = rect.left - heroRect.left;
-        const y = rect.top - heroRect.top + ascent;
-
         const spacing = cs.letterSpacing === "normal" ? "0px" : cs.letterSpacing;
         const spaced = ctx as CanvasRenderingContext2D & { letterSpacing?: string };
-        if (typeof spaced.letterSpacing === "string") {
-          spaced.letterSpacing = spacing;
-          ctx.fillText(text, x, y);
-          spaced.letterSpacing = "0px";
-        } else {
-          let cursor = x;
-          for (const ch of text) {
-            ctx.fillText(ch, cursor, y);
-            cursor += ctx.measureText(ch).width;
+        const canSpace = typeof spaced.letterSpacing === "string";
+        if (canSpace) spaced.letterSpacing = spacing;
+
+        for (const line of lines) {
+          const text = cs.textTransform === "uppercase" ? line.text.toUpperCase() : line.text;
+          const metrics = ctx.measureText(text);
+          const ascent = metrics.fontBoundingBoxAscent ?? parseFloat(cs.fontSize) * 0.8;
+          const y = line.top + ascent;
+
+          if (canSpace) {
+            ctx.fillText(text, line.left, y);
+          } else {
+            let cursor = line.left;
+            for (const ch of text) {
+              ctx.fillText(ch, cursor, y);
+              cursor += ctx.measureText(ch).width;
+            }
           }
         }
+
+        if (canSpace) spaced.letterSpacing = "0px";
       }
 
       gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -569,7 +667,14 @@ export default function HeroDistort() {
       /* 1.35 is the soft ceiling: this layer is a gradient and a grain, not a
          photograph, and at 1.35 the type still reads crisp while the fill drops
          by about a third against 1.5. Phones stay at 1 to spare the battery. */
-      dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 640 ? 1 : 1.35);
+      /* Phones used to render this layer at 1 device pixel per CSS pixel. The
+         type is small enough there that a 1x raster plus the band's channel
+         split read as a doubled, ragged headline rather than as warp. 1.5x costs
+         a quarter of the fill of a 2x layer and keeps the glyphs intact. */
+      dpr = Math.min(
+        window.devicePixelRatio || 1,
+        lowPower ? 1 : window.innerWidth < 640 ? 1.5 : 1.35,
+      );
       const width = Math.max(320, Math.min(maxTex, Math.round(cssWidth * dpr)));
       const height = Math.max(240, Math.min(maxTex, Math.round(cssHeight * dpr)));
       if (canvas.width !== width || canvas.height !== height) {
@@ -590,6 +695,62 @@ export default function HeroDistort() {
       gl.uniform1f(u.reveal, reveal);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
+
+    /*
+     * The single-frame path.
+     *
+     * One draw of the gradient, no text rasterised into it, no loop — and the
+     * headline stays ordinary DOM text because `data-distort-static` is a
+     * different switch from `data-distort`, which hides the real text. The lens
+     * and half the field colour are dropped so ink keeps its contrast on a
+     * background no shader is going to invert the type against.
+     */
+    if (lowPower) {
+      resize();
+      applyPalette();
+      /* The shader mixes its background with the text texture's alpha. Nothing
+         has been rasterised into the texture on this path, and an empty texture
+         samples as opaque, so the whole canvas would fill with the text colour.
+         One transparent pixel is all it takes to mean "no text here" — and it
+         is the only upload this path ever does. */
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        1,
+        1,
+        0,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        new Uint8Array([0, 0, 0, 0]),
+      );
+      gl.uniform1f(u.lens, 0.0001);
+      /* 0.7 rather than the live 0.9: with the text kept in the DOM there is no
+         per-pixel inversion to carry it, so the field is held where ink keeps
+         its contrast (measured at 5.5:1 or better across the hero). */
+      gl.uniform1f(u.strength, 0.7);
+      gl.uniform1f(u.grain, 0.06);
+      draw(0, 0, 1);
+      hero.setAttribute("data-distort-static", "on");
+
+      const repaint = () => {
+        resize();
+        draw(0, 0, 1);
+      };
+      const ro = new ResizeObserver(repaint);
+      ro.observe(hero);
+
+      return () => {
+        ro.disconnect();
+        hero.removeAttribute("data-distort-static");
+        gl.deleteTexture(texture);
+        gl.deleteBuffer(buffer);
+        gl.deleteProgram(program);
+        gl.deleteShader(vs);
+        gl.deleteShader(fs);
+      };
+    }
 
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -691,25 +852,52 @@ export default function HeroDistort() {
       if (!startedAt) {
         startedAt = entrancePlayed ? performance.now() - REVEAL_MS : performance.now();
       }
-      if (!raf) {
-        last = 0;
-        raf = requestAnimationFrame(render);
+            if (!raf) {
+        if (settled) {
+          /* A rebuild after the reveal (fonts landing, a resize, edited copy) is
+             a new raster to draw once — not a reason to start the band again. */
+          draw((performance.now() / 1000) * speedKnob, distortKnob, 1);
+        } else {
+          last = 0;
+          stopAt = performance.now() + REVEAL_MS + 1400;
+          raf = requestAnimationFrame(render);
+        }
       }
     };
 
     const render = (now: number) => {
-      /* Stop the clock entirely when the hero is off-screen or the tab is in
-         the background. Scheduling frames only to return from them keeps the
+      /* Stop the clock entirely when the hero is off-screen or the tab is in the
+         background. Scheduling frames only to return from them keeps the
          compositor awake (and a laptop fan on) for nothing. */
       if (document.hidden || !visible || !ready) {
         raf = 0;
         return;
       }
+      /* The reveal is the only part that has to play to the end. Past `stopAt`
+         the last frame is drawn once and the loop ends — an effect that never
+         stops is a fan that never stops. */
+      if (now > stopAt) {
+        raf = 0;
+        settled = true;
+        draw((now / 1000) * speedKnob, distortKnob, 1);
+        return;
+      }
       raf = requestAnimationFrame(render);
-      if (now - last < 1000 / FPS) return;
+      if (now - last < 1000 / fps) return;
       last = now;
       const reveal = Math.min(1, Math.max(0, (now - startedAt) / REVEAL_MS));
       draw((now / 1000) * speedKnob, distortKnob, 1 - (1 - reveal) ** 3);
+    };
+
+    /* Interaction is the only thing that brings the band back, for a couple of
+       seconds at a time. Pointer moves only count over the hero itself. */
+    const stir = () => {
+      if (motionQuery.matches || !ready || document.hidden || !visible) return;
+      stopAt = Math.max(stopAt, performance.now() + 2400);
+      if (!raf) {
+        last = 0;
+        raf = requestAnimationFrame(render);
+      }
     };
 
     const observer = new ResizeObserver(() => scheduleRebuild());
@@ -723,10 +911,7 @@ export default function HeroDistort() {
     const io = new IntersectionObserver(
       (entries) => {
         visible = entries.some((entry) => entry.isIntersecting);
-        if (visible && ready && !motionQuery.matches && !raf) {
-          last = 0;
-          raf = requestAnimationFrame(render);
-        }
+        if (visible) stir();
       },
       { threshold: 0 },
     );
@@ -734,14 +919,14 @@ export default function HeroDistort() {
 
     const onMotion = () => scheduleRebuild();
     const onVisibility = () => {
-      if (!document.hidden && ready && visible && !motionQuery.matches && !raf) {
-        last = 0;
-        raf = requestAnimationFrame(render);
-      }
+      if (!document.hidden) stir();
     };
     const onFonts = () => scheduleRebuild();
     const onAnimationEnd = () => scheduleRebuild();
     hero.addEventListener("animationend", onAnimationEnd);
+    hero.addEventListener("pointerdown", stir, { passive: true });
+    hero.addEventListener("pointermove", stir, { passive: true });
+    window.addEventListener("scroll", stir, { passive: true });
 
     motionQuery.addEventListener("change", onMotion);
     document.addEventListener("visibilitychange", onVisibility);
@@ -756,6 +941,7 @@ export default function HeroDistort() {
       ready = false;
       hero.removeAttribute("data-distort");
       hero.removeAttribute("data-distort-debug");
+      hero.removeAttribute("data-distort-static");
     });
 
     scheduleRebuild();
@@ -774,6 +960,9 @@ export default function HeroDistort() {
       document.removeEventListener("visibilitychange", onVisibility);
       if (document.fonts) document.fonts.removeEventListener("loadingdone", onFonts);
       hero.removeEventListener("animationend", onAnimationEnd);
+      hero.removeEventListener("pointerdown", stir);
+      hero.removeEventListener("pointermove", stir);
+      window.removeEventListener("scroll", stir);
       gl.deleteTexture(texture);
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
